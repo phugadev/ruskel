@@ -265,16 +265,14 @@
   /* On a mark: paper, because editorial marks are dark. */
   --rsk-on-mark: var(--rsk-n-12);
 
-  /* Shadow-shaped "off" values, so box-shadow lists stay valid in both. */
-  --rsk-glow-sm: 0 0 0 0 transparent;
-  --rsk-glow-md: 0 0 0 0 transparent;
-  --rsk-glow-lg: 0 0 0 0 transparent;
+  /* Paper does not emit. See the EMISSION block below for why this is a
+     scalar rather than three shadow-shaped "off" values. */
+  --rsk-emit: 0;
   /* Editorial marks sit at 2.2:1 against paper — chosen for chroma, since
      the 3:1 floor was costing 9-13% saturation on the warm hues and making
      paper look dull. A 6px dot needs help at that level, so it gets a ring
      rather than a darker hue. */
   --rsk-dot-ring: inset 0 0 0 1px color-mix(in oklab, var(--rsk-n-01) 24%, transparent);
-  --rsk-wash: transparent;
   --rsk-band-fill: 10%;
   --rsk-band-edge: 40%;
 }
@@ -331,12 +329,8 @@
   --rsk-on-mark: var(--rsk-n-01);
 
   --rsk-dot-ring: 0 0 0 0 transparent;   /* emission already separates it */
-  --rsk-glow-sm: 0 0 10px -1px color-mix(in oklab, var(--rsk-mark, transparent) 55%, transparent);
-  --rsk-glow-md: 0 0 22px -2px color-mix(in oklab, var(--rsk-mark, transparent) 65%, transparent);
-  --rsk-glow-lg: 0 0 48px -6px color-mix(in oklab, var(--rsk-mark, transparent) 75%, transparent);
-  --rsk-wash: radial-gradient(120% 100% at 50% 0%,
-          color-mix(in oklab, var(--rsk-mark, transparent) 18%, transparent) 0%,
-          transparent 70%);
+  /* Ink emits. */
+  --rsk-emit: 1;
   --rsk-band-fill: 14%;
   --rsk-band-edge: 45%;
 }
@@ -372,6 +366,57 @@
    RULES — translucent, and deliberately so.
 
    A solid hairline is the same colour wherever it sits, so a card border
+/* ══════════════════════════════════════════════════════════════════════
+   EMISSION — and why it cannot be declared on the exposure
+
+   The glow is the mark's own colour, blurred. So the token has to read
+   --rsk-mark, and --rsk-mark is set by [data-band] on the element that
+   carries the band.
+
+   This is exactly what a custom property cannot survive being declared
+   above. var() inside a custom property is substituted at computed-value
+   time on the element where the DECLARATION sits, and the resulting value
+   is what inherits. Declared on [data-exposure], --rsk-glow-sm resolved
+   --rsk-mark against the exposure element — which has no band — baked in
+   `transparent`, and inherited that. Every descendant then read a glow that
+   had already been decided, so setting --rsk-mark lower down changed
+   nothing. Nothing in the luminous exposure emitted. The tokens looked
+   right, the components were written correctly, and the whole effect was
+   dead.
+
+   The fix is to declare the recipe on every element in the exposure, so
+   each one substitutes against the --rsk-mark in its own scope, and to move
+   the per-exposure part into a scalar that CAN inherit safely:
+
+     --rsk-emit: 0   paper   pigment does not emit
+     --rsk-emit: 1   ink     light does
+
+   --rsk-emit carries no colour, so it survives inheritance intact — which
+   also keeps nested exposures correct. A product plate inside an essay sets
+   --rsk-emit: 1 on itself, its subtree inherits 1, and the surrounding page
+   stays at 0. Had the recipe instead been split into two exposure-scoped
+   selectors, [data-exposure="luminous"] * would have matched straight
+   through an editorial boundary at equal specificity, and the nested plate
+   would have leaked its glow into the essay around it.
+
+   The component contract is unchanged and is the point of the whole
+   arrangement: write box-shadow: var(--rsk-glow-sm) unconditionally, and it
+   simply resolves to nothing on paper. No dark: variant, no
+   [data-exposure] override. Rule 3 holds.
+   ══════════════════════════════════════════════════════════════════════ */
+
+[data-exposure], [data-exposure] * {
+  --rsk-glow-sm: 0 0 calc(10px * var(--rsk-emit)) -1px
+        color-mix(in oklab, var(--rsk-mark, transparent) calc(55% * var(--rsk-emit)), transparent);
+  --rsk-glow-md: 0 0 calc(22px * var(--rsk-emit)) -2px
+        color-mix(in oklab, var(--rsk-mark, transparent) calc(65% * var(--rsk-emit)), transparent);
+  --rsk-glow-lg: 0 0 calc(48px * var(--rsk-emit)) -6px
+        color-mix(in oklab, var(--rsk-mark, transparent) calc(75% * var(--rsk-emit)), transparent);
+  --rsk-wash: radial-gradient(120% 100% at 50% 0%,
+        color-mix(in oklab, var(--rsk-mark, transparent) calc(18% * var(--rsk-emit)), transparent) 0%,
+        transparent 70%);
+}
+
    over a raised surface looks identical to one over the ground, and the
    surface reads flatter than it is. Deriving the rule from --rsk-text at
    low alpha makes it composite with whatever is behind: the same border
