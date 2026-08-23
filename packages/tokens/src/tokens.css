@@ -112,6 +112,25 @@
   --rsk-text-2xl: 1.5rem;    --rsk-text-3xl: 1.875rem; --rsk-text-4xl: 2.5rem;
   --rsk-measure: 68ch;
 
+  /* ── Leading, paired to the scale ──────────────────────────────────────
+     Leading tightens as size grows: at 11px the line needs air to stay
+     scannable, at 40px it needs none and the gap reads as a gutter.
+
+     Three of these are not new — they are what the component layer already
+     sets, lifted to tokens so the scale is complete:
+
+       1.55  body copy      [data-exposure]
+       1.40  labels         .rsk-label
+       1.25  display/serif  .rsk-pullquote
+
+     The rest interpolate between them. They matter most to the Tailwind
+     bridge, where `text-sm` carries its own line-height and would otherwise
+     inherit Tailwind's ratio — a number computed for Tailwind's 14px, not
+     this system's 13px. */
+  --rsk-leading-2xs: 1.4;   --rsk-leading-xs: 1.45;  --rsk-leading-sm: 1.5;
+  --rsk-leading-base: 1.55; --rsk-leading-lg: 1.5;   --rsk-leading-xl: 1.35;
+  --rsk-leading-2xl: 1.25;  --rsk-leading-3xl: 1.18; --rsk-leading-4xl: 1.1;
+
   /* ── Geometry ──────────────────────────────────────────────────────── */
   /* ── Radius encodes ROLE, not brand ──────────────────────────────────
      An earlier reading of rule 7 — "near-square, no pills" — was too blunt.
@@ -135,11 +154,23 @@
 
      This is why mixing them is not "two schools of design" — it is one
      rule with two outcomes, and it is legible precisely because the shape
-     tells you which kind of element you are looking at. */
-  --radius: 4px;                    /* structure — shadcn ships 8px */
-  --radius-sm: 2px;                 /* structure, small: checkboxes, cells */
-  --radius-lg: 6px;                 /* structure, large: dialogs, plates */
-  --radius-pill: 999px;             /* tokens: chips, tags, status, switches */
+     tells you which kind of element you are looking at.
+
+     The --rsk-* names are the source of truth; the unprefixed ones alias
+     them for the shadcn contract. Two names for one value looks redundant
+     until you bridge to Tailwind: a @theme key of --radius-sm cannot read a
+     custom property also called --radius-sm without self-referencing, and
+     the cycle silently voids the declaration. The prefixed name gives the
+     bridge something to point at. See src/tailwind.css. */
+  --rsk-radius: 4px;                /* structure — shadcn ships 8px */
+  --rsk-radius-sm: 2px;             /* structure, small: checkboxes, cells */
+  --rsk-radius-lg: 6px;             /* structure, large: dialogs, plates */
+  --rsk-radius-pill: 999px;         /* tokens: chips, tags, status, switches */
+
+  --radius: var(--rsk-radius);
+  --radius-sm: var(--rsk-radius-sm);
+  --radius-lg: var(--rsk-radius-lg);
+  --radius-pill: var(--rsk-radius-pill);
   --rsk-hairline: 1px;
 
   /* ── Density ───────────────────────────────────────────────────────────
@@ -336,37 +367,6 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   L1 — the four named bands. A band is a named position on the spectrum,
-   never its own colour. Each resolves to a mark and a text value.
-   ══════════════════════════════════════════════════════════════════════ */
-
-[data-band="interface"]    { --rsk-mark: var(--rsk-mark-590); --rsk-tint: var(--rsk-text-590); }
-[data-band="systems"]      { --rsk-mark: var(--rsk-mark-520); --rsk-tint: var(--rsk-text-520); }
-[data-band="compute"]      { --rsk-mark: var(--rsk-mark-470); --rsk-tint: var(--rsk-text-470); }
-[data-band="intelligence"] { --rsk-mark: var(--rsk-mark-405); --rsk-tint: var(--rsk-text-405); }
-[data-band="warning"]      { --rsk-mark: var(--rsk-mark-620); --rsk-tint: var(--rsk-text-620); }
-[data-band="critical"]     { --rsk-mark: var(--rsk-mark-700); --rsk-tint: var(--rsk-text-700); }
-
-/* ══════════════════════════════════════════════════════════════════════
-   VOICE — orthogonal to exposure.
-
-   Mark the subtree where a person is speaking:
-
-     <article data-voice="author">
-
-   That is the only thing that unlocks the serif, on either ground. Product
-   surfaces need no attribute; product is the default, so nothing leaks.
-   ══════════════════════════════════════════════════════════════════════ */
-
-[data-voice="author"] {
-  --rsk-font-serif: var(--rsk-serif-face);
-}
-
-/* ══════════════════════════════════════════════════════════════════════
-   RULES — translucent, and deliberately so.
-
-   A solid hairline is the same colour wherever it sits, so a card border
-/* ══════════════════════════════════════════════════════════════════════
    EMISSION — and why it cannot be declared on the exposure
 
    The glow is the mark's own colour, blurred. So the token has to read
@@ -417,6 +417,37 @@
         transparent 70%);
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   L1 — the four named bands. A band is a named position on the spectrum,
+   never its own colour. Each resolves to a mark and a text value.
+   ══════════════════════════════════════════════════════════════════════ */
+
+[data-band="interface"]    { --rsk-mark: var(--rsk-mark-590); --rsk-tint: var(--rsk-text-590); }
+[data-band="systems"]      { --rsk-mark: var(--rsk-mark-520); --rsk-tint: var(--rsk-text-520); }
+[data-band="compute"]      { --rsk-mark: var(--rsk-mark-470); --rsk-tint: var(--rsk-text-470); }
+[data-band="intelligence"] { --rsk-mark: var(--rsk-mark-405); --rsk-tint: var(--rsk-text-405); }
+[data-band="warning"]      { --rsk-mark: var(--rsk-mark-620); --rsk-tint: var(--rsk-text-620); }
+[data-band="critical"]     { --rsk-mark: var(--rsk-mark-700); --rsk-tint: var(--rsk-text-700); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   VOICE — orthogonal to exposure.
+
+   Mark the subtree where a person is speaking:
+
+     <article data-voice="author">
+
+   That is the only thing that unlocks the serif, on either ground. Product
+   surfaces need no attribute; product is the default, so nothing leaks.
+   ══════════════════════════════════════════════════════════════════════ */
+
+[data-voice="author"] {
+  --rsk-font-serif: var(--rsk-serif-face);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   RULES — translucent, and deliberately so.
+
+   A solid hairline is the same colour wherever it sits, so a card border
    over a raised surface looks identical to one over the ground, and the
    surface reads flatter than it is. Deriving the rule from --rsk-text at
    low alpha makes it composite with whatever is behind: the same border
