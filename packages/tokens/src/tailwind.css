@@ -105,13 +105,6 @@
   --color-rule: var(--rsk-rule);
   --color-rule-strong: var(--rsk-rule-strong);
 
-  /* ── Deep stops ──────────────────────────────────────────────────────
-     The second categorical of each named band. A fifth chart series that
-     reads as a variant of a band rather than a category nobody can name. */
-  --color-deep-590: var(--rsk-deep-590);
-  --color-deep-520: var(--rsk-deep-520);
-  --color-deep-470: var(--rsk-deep-470);
-  --color-deep-405: var(--rsk-deep-405);
 
 
   /* ── The role scale ──────────────────────────────────────────────────
@@ -252,8 +245,6 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-chart-6: var(--chart-6);
-  --color-chart-7: var(--chart-7);
-  --color-chart-8: var(--chart-8);
   --color-chart-grid: var(--chart-grid);
   --color-chart-axis: var(--chart-axis);
   --color-chart-label: var(--chart-label);

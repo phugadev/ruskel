@@ -398,11 +398,6 @@
   --rsk-mark-405: var(--rsk-405-solid);   --rsk-text-405: var(--rsk-405-text);
   --rsk-mark-370: var(--rsk-370-solid);   --rsk-text-370: var(--rsk-370-text);
 
-  /* Deep stops — chart series 5–8 */
-  --rsk-deep-590: oklch(0.400 0.078 var(--rsk-h-590));
-  --rsk-deep-520: oklch(0.380 0.089 var(--rsk-h-520));
-  --rsk-deep-470: oklch(0.420 0.121 var(--rsk-h-470));
-  --rsk-deep-405: oklch(0.340 0.176 var(--rsk-h-405));
 
 
   /* On a mark: paper, because editorial marks are dark. */
@@ -546,11 +541,6 @@
   --rsk-mark-405: var(--rsk-405-solid);   --rsk-text-405: var(--rsk-405-text);
   --rsk-mark-370: var(--rsk-370-solid);   --rsk-text-370: var(--rsk-370-text);
 
-  /* Deep stops — chart series 5–8 */
-  --rsk-deep-590: oklch(0.480 0.093 var(--rsk-h-590));
-  --rsk-deep-520: oklch(0.540 0.125 var(--rsk-h-520));
-  --rsk-deep-470: oklch(0.460 0.132 var(--rsk-h-470));
-  --rsk-deep-405: oklch(0.760 0.133 var(--rsk-h-405));
 
 
   /* On a mark: ink, because luminous marks are light. */
@@ -1048,10 +1038,6 @@
   --chart-5: var(--rsk-mark-405);   /* violet  */
   --chart-6: var(--rsk-mark-370);   /* magenta */
 
-  /* Overflow only, and a deliberate step down in vividness. Reach for
-     these when a chart genuinely needs 7-8 series and direct labelling
-     is not possible — never as a first choice. */
-  --chart-7: var(--rsk-deep-470);  --chart-8: var(--rsk-deep-405);
 
   /* Chart furniture. Gridlines sit below the hairline weight so they never
      compete with the series. */
