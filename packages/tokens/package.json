@@ -1,6 +1,6 @@
 {
   "name": "@ruskel/tokens",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Two-exposure design tokens. Ink on paper, paper on ink.",
   "license": "MIT",
   "type": "module",
