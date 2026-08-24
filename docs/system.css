@@ -94,7 +94,7 @@ section:first-of-type { border-top:0; }
 
 .codeframe { background:var(--rsk-code-bg); border:1px solid var(--rsk-rule);
              border-radius:var(--radius); padding:var(--rsk-space-06); overflow-x:auto; }
-.codeframe pre { margin:0; font-family:var(--rsk-font-mono); font-size:var(--rsk-text-sm);
+.codeframe pre { margin:0; font-family:var(--rsk-font-mono); font-size:var(--rsk-text-base);
                  line-height:1.6; color:var(--rsk-code-text); }
 
 /* type */
@@ -130,17 +130,35 @@ section:first-of-type { border-top:0; }
 
 /* rules + audit */
 .rules { list-style:none; counter-reset:r; padding:0; margin:0; }
-.rules li { counter-increment:r; display:grid; grid-template-columns:34px 1fr;
-            gap:var(--rsk-space-05); padding:14px 0; border-top:1px solid var(--rsk-rule); }
+/* Three columns, not two. The number, the rule, and the reasoning each get
+   their own, so the rule reads as a heading at a fixed width instead of
+   wrapping to one word per line against a 34px gutter. */
+.rules li { counter-increment:r; display:grid; grid-template-columns:34px minmax(0,22ch) minmax(0,1fr);
+            gap:var(--rsk-space-06); padding:var(--rsk-space-05) 0;
+            border-top:1px solid var(--rsk-rule); align-items:baseline; }
 .rules li::before { content:counter(r,decimal-leading-zero); font-family:var(--rsk-font-mono);
-                    font-size:var(--rsk-text-2xs); color:var(--rsk-text-faint); padding-top:2px; }
-.rules b { display:block; font-size:var(--rsk-text-sm); font-weight:500; }
-.rules span { display:block; font-size:var(--rsk-text-sm); color:var(--rsk-text-muted); line-height:1.5; margin-top:3px; }
-.audit__row { display:grid; grid-template-columns:210px 28px 1fr; gap:var(--rsk-space-05);
-              padding:14px 0; border-top:1px solid var(--rsk-rule); align-items:start; }
+                    font-size:var(--rsk-text-2xs); color:var(--rsk-text-faint); }
+.rules b { font-size:var(--rsk-text-sm); font-weight:500; text-wrap:balance; }
+.rules span { font-size:var(--rsk-text-sm); color:var(--rsk-text-prose);
+              line-height:1.55; text-wrap:pretty; max-width:64ch; }
+/* minmax(0,…) on both text columns: a bare 1fr has min-width:auto, so a
+   long unbroken answer pushes the column past the container instead of
+   wrapping inside it. */
+.audit__row { display:grid; grid-template-columns:minmax(0,200px) 28px minmax(0,1fr);
+              gap:var(--rsk-space-06); padding:var(--rsk-space-05) 0;
+              border-top:1px solid var(--rsk-rule); align-items:start; }
 .audit__dim b { display:block; font-size:var(--rsk-text-sm); font-weight:500; }
 .audit__dim i { font-style:normal; font-size:var(--rsk-text-2xs); color:var(--rsk-text-faint); line-height:1.4; display:block; margin-top:2px; }
-.audit__a { font-size:var(--rsk-text-sm); color:var(--rsk-text-muted); line-height:1.55; }
+.audit__a { font-size:var(--rsk-text-sm); color:var(--rsk-text-prose); line-height:1.55;
+             text-wrap:pretty; max-width:70ch; }
+
+@media (max-width:820px) {
+  .rules li { grid-template-columns:34px minmax(0,1fr); }
+  .rules span { grid-column:2; margin-top:4px; }
+  .audit__row { grid-template-columns:28px minmax(0,1fr); }
+  .audit__dim, .audit__a { grid-column:2; }
+  .audit__a { margin-top:6px; }
+}
 .dot { width:9px; height:9px; border-radius:999px; display:block; margin-top:5px; }
 .dot--green { background:var(--rsk-520-solid); box-shadow:var(--rsk-glow-sm); }
 .dot--amber { background:var(--rsk-620-solid); }

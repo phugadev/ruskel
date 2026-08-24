@@ -168,6 +168,7 @@
 <section id="components">
   <h2 class="sec">Components</h2>
   <p class="note">Every class in <code>@ruskel/ui</code>. None of them knows which exposure it is in — flip the toggle and nothing here has a variant.</p>
+  <p class="note">Solid <b>destructive</b> takes ink type, not paper, and the measurement is not close: near-black on <code>#F92040</code> is 5.00:1 where paper is 3.29:1. That holds for all ten marks. <b>Destructive subtle</b> is the alarm hue as a wash with the alarm hue as type — legible as dangerous rather than as urgent, and only expressible since the role scale gave 700nm its own <code>bg</code> and <code>text</code>.</p>
 
   <h3>Buttons</h3>
   <div class="row">
@@ -176,6 +177,7 @@
     <button class="rsk-btn rsk-btn--outline">Outline</button>
     <button class="rsk-btn rsk-btn--ghost">Ghost</button>
     <button class="rsk-btn rsk-btn--destructive">Destructive</button>
+    <button class="rsk-btn rsk-btn--destructive-subtle">Destructive subtle</button>
     <button class="rsk-btn rsk-btn--link">Link</button>
     <button class="rsk-btn rsk-btn--primary" disabled>Disabled</button>
   </div>
