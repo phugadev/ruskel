@@ -103,37 +103,6 @@
   --color-rule: var(--rsk-rule);
   --color-rule-strong: var(--rsk-rule-strong);
 
-  /* ── The MARK ring — seen, not read ──────────────────────────────────
-     Fills, bars, dots, glows, solid buttons, borders. WCAG text ratios do
-     not apply; these are at 93% of each hue's own sRGB ceiling. Never set
-     type in one: use the tint ring below. */
-  --color-mark-700: var(--rsk-mark-700);
-  --color-mark-620: var(--rsk-mark-620);
-  --color-mark-590: var(--rsk-mark-590);
-  --color-mark-550: var(--rsk-mark-550);
-  --color-mark-520: var(--rsk-mark-520);
-  --color-mark-490: var(--rsk-mark-490);
-  --color-mark-470: var(--rsk-mark-470);
-  --color-mark-440: var(--rsk-mark-440);
-  --color-mark-405: var(--rsk-mark-405);
-  --color-mark-370: var(--rsk-mark-370);
-
-  /* ── The TEXT ring — read, not seen ──────────────────────────────────
-     `tint`, matching what [data-band] already calls it. Same hue angle as
-     the mark, pulled back until it passes AA on its ground: 4.6:1 on
-     paper, 6.5:1 on ink. This is the only ring that re-solves per
-     exposure. */
-  --color-tint-700: var(--rsk-text-700);
-  --color-tint-620: var(--rsk-text-620);
-  --color-tint-590: var(--rsk-text-590);
-  --color-tint-550: var(--rsk-text-550);
-  --color-tint-520: var(--rsk-text-520);
-  --color-tint-490: var(--rsk-text-490);
-  --color-tint-470: var(--rsk-text-470);
-  --color-tint-440: var(--rsk-text-440);
-  --color-tint-405: var(--rsk-text-405);
-  --color-tint-370: var(--rsk-text-370);
-
   /* ── Deep stops ──────────────────────────────────────────────────────
      The second categorical of each named band. A fifth chart series that
      reads as a variant of a band rather than a category nobody can name. */
@@ -141,6 +110,112 @@
   --color-deep-520: var(--rsk-deep-520);
   --color-deep-470: var(--rsk-deep-470);
   --color-deep-405: var(--rsk-deep-405);
+
+
+  /* ── The role scale ──────────────────────────────────────────────────
+     Eight steps per hue, each named for the job it does rather than for how
+     light it is. bg-520 is a wash you can set body copy on; line-520 is a
+     hairline; solid-520 is the mark; text-520 is type at AA. The -2 of each
+     pair is its hover or emphasis.
+
+     This is what lets a component be built entirely out of one hue without
+     reaching for color-mix: bg + line + tint is a complete tinted panel.
+
+     mark-NNN and tint-NNN are the same keys the two-value ring used, so
+     `bg-mark-520` and `text-tint-520` mean exactly what they always did —
+     the scale grew around them rather than replacing them. `text` and
+     `solid` are not used as key names here: --color-text-520 would generate
+     the class `text-text-520`. */
+  /* 700nm */
+  --color-bg-700: var(--rsk-700-bg);
+  --color-bg2-700: var(--rsk-700-bg2);
+  --color-line-700: var(--rsk-700-line);
+  --color-line2-700: var(--rsk-700-line2);
+  --color-mark-700: var(--rsk-700-solid);
+  --color-mark2-700: var(--rsk-700-solid2);
+  --color-tint-700: var(--rsk-700-text);
+  --color-tint2-700: var(--rsk-700-text2);
+  /* 620nm */
+  --color-bg-620: var(--rsk-620-bg);
+  --color-bg2-620: var(--rsk-620-bg2);
+  --color-line-620: var(--rsk-620-line);
+  --color-line2-620: var(--rsk-620-line2);
+  --color-mark-620: var(--rsk-620-solid);
+  --color-mark2-620: var(--rsk-620-solid2);
+  --color-tint-620: var(--rsk-620-text);
+  --color-tint2-620: var(--rsk-620-text2);
+  /* 590nm · interface */
+  --color-bg-590: var(--rsk-590-bg);
+  --color-bg2-590: var(--rsk-590-bg2);
+  --color-line-590: var(--rsk-590-line);
+  --color-line2-590: var(--rsk-590-line2);
+  --color-mark-590: var(--rsk-590-solid);
+  --color-mark2-590: var(--rsk-590-solid2);
+  --color-tint-590: var(--rsk-590-text);
+  --color-tint2-590: var(--rsk-590-text2);
+  /* 550nm */
+  --color-bg-550: var(--rsk-550-bg);
+  --color-bg2-550: var(--rsk-550-bg2);
+  --color-line-550: var(--rsk-550-line);
+  --color-line2-550: var(--rsk-550-line2);
+  --color-mark-550: var(--rsk-550-solid);
+  --color-mark2-550: var(--rsk-550-solid2);
+  --color-tint-550: var(--rsk-550-text);
+  --color-tint2-550: var(--rsk-550-text2);
+  /* 520nm · systems */
+  --color-bg-520: var(--rsk-520-bg);
+  --color-bg2-520: var(--rsk-520-bg2);
+  --color-line-520: var(--rsk-520-line);
+  --color-line2-520: var(--rsk-520-line2);
+  --color-mark-520: var(--rsk-520-solid);
+  --color-mark2-520: var(--rsk-520-solid2);
+  --color-tint-520: var(--rsk-520-text);
+  --color-tint2-520: var(--rsk-520-text2);
+  /* 490nm */
+  --color-bg-490: var(--rsk-490-bg);
+  --color-bg2-490: var(--rsk-490-bg2);
+  --color-line-490: var(--rsk-490-line);
+  --color-line2-490: var(--rsk-490-line2);
+  --color-mark-490: var(--rsk-490-solid);
+  --color-mark2-490: var(--rsk-490-solid2);
+  --color-tint-490: var(--rsk-490-text);
+  --color-tint2-490: var(--rsk-490-text2);
+  /* 470nm · compute */
+  --color-bg-470: var(--rsk-470-bg);
+  --color-bg2-470: var(--rsk-470-bg2);
+  --color-line-470: var(--rsk-470-line);
+  --color-line2-470: var(--rsk-470-line2);
+  --color-mark-470: var(--rsk-470-solid);
+  --color-mark2-470: var(--rsk-470-solid2);
+  --color-tint-470: var(--rsk-470-text);
+  --color-tint2-470: var(--rsk-470-text2);
+  /* 440nm */
+  --color-bg-440: var(--rsk-440-bg);
+  --color-bg2-440: var(--rsk-440-bg2);
+  --color-line-440: var(--rsk-440-line);
+  --color-line2-440: var(--rsk-440-line2);
+  --color-mark-440: var(--rsk-440-solid);
+  --color-mark2-440: var(--rsk-440-solid2);
+  --color-tint-440: var(--rsk-440-text);
+  --color-tint2-440: var(--rsk-440-text2);
+  /* 405nm · intelligence */
+  --color-bg-405: var(--rsk-405-bg);
+  --color-bg2-405: var(--rsk-405-bg2);
+  --color-line-405: var(--rsk-405-line);
+  --color-line2-405: var(--rsk-405-line2);
+  --color-mark-405: var(--rsk-405-solid);
+  --color-mark2-405: var(--rsk-405-solid2);
+  --color-tint-405: var(--rsk-405-text);
+  --color-tint2-405: var(--rsk-405-text2);
+  /* 370nm */
+  --color-bg-370: var(--rsk-370-bg);
+  --color-bg2-370: var(--rsk-370-bg2);
+  --color-line-370: var(--rsk-370-line);
+  --color-line2-370: var(--rsk-370-line2);
+  --color-mark-370: var(--rsk-370-solid);
+  --color-mark2-370: var(--rsk-370-solid2);
+  --color-tint-370: var(--rsk-370-text);
+  --color-tint2-370: var(--rsk-370-text2);
 
   /* ── The contextual band ─────────────────────────────────────────────
      Inside [data-band="systems"], bg-mark is the 520nm mark and text-tint
@@ -152,8 +227,8 @@
   --color-on-mark: var(--rsk-on-mark);
 
   /* ── L0 neutral ramp ─────────────────────────────────────────────────
-     Shared across exposures, warm at H 85. Ordinal 01-12, light-last, so
-     n-01 is ink and n-12 is paper in BOTH exposures — these do not flip.
+     Shared across exposures, warm at H 85. Ordinal 01-10, light-last, so
+     n-01 is ink and n-10 is paper in BOTH exposures — these do not flip.
      Reach for them when you need a specific step rather than a role. */
   --color-n-01: var(--rsk-n-01);
   --color-n-02: var(--rsk-n-02);
@@ -165,8 +240,6 @@
   --color-n-08: var(--rsk-n-08);
   --color-n-09: var(--rsk-n-09);
   --color-n-10: var(--rsk-n-10);
-  --color-n-11: var(--rsk-n-11);
-  --color-n-12: var(--rsk-n-12);
 
   /* ── Charts ──────────────────────────────────────────────────────────
      Six series at dE 0.131, then two overflow stops that are deliberately
