@@ -778,6 +778,7 @@
     --rsk-370-text2: oklch(0.774 0.162 var(--rsk-h-370));  /* ~#E291F5  9.05 */
   }
 
+
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -1124,5 +1125,29 @@
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SYNTAX IN P3 — last, because source order decides this one
+
+   The syntax colours are declared near the bottom of this file, after
+   the main @media (color-gamut: p3) block. Both selectors are
+   [data-exposure], so they carry identical specificity and the later
+   declaration wins regardless of which one is inside a media query.
+   Putting the override up there compiled, matched, and did nothing.
+
+   Same lightnesses, same hue angles, same fraction of ceiling each
+   colour already used — only the ceiling moves.
+   ══════════════════════════════════════════════════════════════════════ */
+
+@media (color-gamut: p3) {
+  [data-exposure] {
+    --rsk-code-keyword: oklch(0.665 0.208 var(--rsk-h-405));
+    --rsk-code-string: oklch(0.730 0.234 var(--rsk-h-520));
+    --rsk-code-number: oklch(0.750 0.169 var(--rsk-h-590));
+    --rsk-code-function: oklch(0.645 0.200 var(--rsk-h-470));
+    --rsk-code-type: oklch(0.735 0.162 var(--rsk-h-490));
+    --rsk-code-special: oklch(0.680 0.289 var(--rsk-h-370));
   }
 }
