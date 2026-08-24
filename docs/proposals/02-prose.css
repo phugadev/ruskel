@@ -1,0 +1,37 @@
+/* ══════════════════════════════════════════════════════════════════════
+   PROPOSAL 02 — the prose register.  Paste-ready; not yet in tokens.css.
+
+   Sizes for reading, distinct from the interface scale. The default IS
+   the interface scale, so product surfaces are unchanged and nothing
+   leaks; only data-voice="author" opens the reading sizes, exactly as it
+   opens the serif.
+
+   Leading takes the halation scalar instead: light on ink blooms, so the
+   same measure needs a touch more room on a dark ground. That is a
+   property of the ground, not the speaker — so it rides exposure while
+   size rides voice. Same shape as --rsk-emit.
+   ══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --rsk-halation: 0;
+  --rsk-prose-size:    var(--rsk-text-base);      /* 14px — product */
+  --rsk-prose-measure: var(--rsk-measure);        /* 68ch */
+  --rsk-prose-leading: calc(var(--rsk-leading-base) + var(--rsk-halation));
+}
+
+[data-exposure="luminous"] { --rsk-halation: 0.06; }
+
+[data-voice="author"] {
+  --rsk-prose-size:    1.0625rem;                 /* 17px — reading */
+  --rsk-prose-measure: 54ch;                      /* measured: ~72 chars */
+  --rsk-prose-leading: calc(1.62 + var(--rsk-halation));
+}
+
+.rsk-prose {
+  font-size: var(--rsk-prose-size);
+  line-height: var(--rsk-prose-leading);
+  max-width: var(--rsk-prose-measure);
+  color: var(--rsk-text-prose);
+}
+.rsk-prose p { margin: 0 0 1em; }
+.rsk-prose p:last-child { margin-bottom: 0; }

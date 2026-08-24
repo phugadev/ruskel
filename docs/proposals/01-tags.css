@@ -1,0 +1,50 @@
+/* ══════════════════════════════════════════════════════════════════════
+   PROPOSAL 01 — the tag ring.  Paste-ready; not yet in tokens.css.
+
+   L2c TAG RING — ten hues, no meaning. Category colour for taxonomies
+   outside the band vocabulary. Ordinal by construction: these are
+   indices, not wavelengths. 55% of gamut ceiling (marks are 95%) so a
+   page of twenty reads as an index, not an alarm. Angles solved by
+   tools/solve_tags.py; worst pair dE 0.080 against a 0.063 floor.
+
+   A tag ring and a band ring never share a surface.
+   ══════════════════════════════════════════════════════════════════════ */
+
+[data-exposure="editorial"] {
+  --rsk-tag-01: oklch(0.635 0.136  31.0);   /* #D06756  3.04 */
+  --rsk-tag-02: oklch(0.710 0.103  50.0);   /* #D68E65  2.21 */
+  --rsk-tag-03: oklch(0.700 0.081 103.0);   /* #A7A165  2.20 */
+  --rsk-tag-04: oklch(0.690 0.127 143.0);   /* #69AF65  2.21 */
+  --rsk-tag-05: oklch(0.690 0.070 178.0);   /* #6AAA9B  2.23 */
+  --rsk-tag-06: oklch(0.700 0.091 242.0);   /* #69A5D3  2.21 */
+  --rsk-tag-07: oklch(0.625 0.113 255.0);   /* #578ACB  2.96 */
+  --rsk-tag-08: oklch(0.510 0.161 288.0);   /* #6551BB  5.07 */
+  --rsk-tag-09: oklch(0.670 0.173 324.0);   /* #C86BD0  2.70 */
+  --rsk-tag-10: oklch(0.650 0.147 355.0);   /* #D26594  2.90 */
+}
+
+[data-exposure="luminous"] {
+  --rsk-tag-01: oklch(0.635 0.136  31.0);   /* #D06756  5.42 */
+  --rsk-tag-02: oklch(0.720 0.105  50.0);   /* #DA9168  7.76 */
+  --rsk-tag-03: oklch(0.745 0.086 103.0);   /* #B6AF6E  8.81 */
+  --rsk-tag-04: oklch(0.735 0.135 143.0);   /* #73BF6F  8.87 */
+  --rsk-tag-05: oklch(0.740 0.075 178.0);   /* #75BBAB  8.91 */
+  --rsk-tag-06: oklch(0.705 0.092 242.0);   /* #6AA7D5  7.63 */
+  --rsk-tag-07: oklch(0.625 0.113 255.0);   /* #578ACB  5.56 */
+  --rsk-tag-08: oklch(0.585 0.133 288.0);   /* #796DC6  4.54 */
+  --rsk-tag-09: oklch(0.670 0.173 324.0);   /* #C86BD0  6.10 */
+  --rsk-tag-10: oklch(0.650 0.147 355.0);   /* #D26594  5.68 */
+}
+
+/* Sets --rsk-mark, so chip, status, meter, density and spark all work
+   untouched. No component learns a new contract. */
+[data-tag="01"] { --rsk-mark: var(--rsk-tag-01); }
+[data-tag="02"] { --rsk-mark: var(--rsk-tag-02); }
+[data-tag="03"] { --rsk-mark: var(--rsk-tag-03); }
+[data-tag="04"] { --rsk-mark: var(--rsk-tag-04); }
+[data-tag="05"] { --rsk-mark: var(--rsk-tag-05); }
+[data-tag="06"] { --rsk-mark: var(--rsk-tag-06); }
+[data-tag="07"] { --rsk-mark: var(--rsk-tag-07); }
+[data-tag="08"] { --rsk-mark: var(--rsk-tag-08); }
+[data-tag="09"] { --rsk-mark: var(--rsk-tag-09); }
+[data-tag="10"] { --rsk-mark: var(--rsk-tag-10); }
