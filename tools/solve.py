@@ -137,8 +137,19 @@ def parse_tokens():
         if not block:
             raise SystemExit(f"could not find the {exposure} block in {TOKENS}")
         found = {}
-        for m in re.finditer(r'--rsk-(mark|text)-(\d{3}):\s*oklch\(([\d.]+)\s+([\d.]+)\s+var\(--rsk-h-(\d{3})\)\)', block.group(1)):
-            found[(m.group(1), m.group(2))] = (float(m.group(3)), float(m.group(4)), m.group(5))
+        # The two-value ring became an eight-step role scale, so the names
+        # moved: --rsk-mark-520 is now --rsk-520-solid and --rsk-text-520 is
+        # --rsk-520-text. Only those two steps carry the constraints this
+        # file asserts — the wash and hairline steps answer to contrast
+        # targets instead, which tools/solve_scale.py check owns.
+        ROLE = {"solid": "mark", "text": "text"}
+        for m in re.finditer(r'--rsk-(\d{3})-(\w+):\s*oklch\(([\d.]+)\s+([\d.]+)\s+var\(--rsk-h-(\d{3})\)\)', block.group(1)):
+            role = ROLE.get(m.group(2))
+            if role:
+                found[(role, m.group(1))] = (float(m.group(3)), float(m.group(4)), m.group(5))
+        if not found:
+            raise SystemExit(f"parsed no role-scale steps from the {exposure} block — "
+                             f"did the token names change without this parser?")
         out[exposure] = found
     return out
 
