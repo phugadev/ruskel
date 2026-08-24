@@ -173,6 +173,29 @@
   --radius-pill: var(--rsk-radius-pill);
   --rsk-hairline: 1px;
 
+  /* ── Spacing ───────────────────────────────────────────────────────────
+     There was no spacing scale. Padding existed only as three control-
+     specific values, so every gap in every layout was a number someone
+     picked, which is exactly the improvisation the token layer exists to
+     prevent.
+
+     The grid is 4px. Ten ordinal steps, matching the neutral ramp's
+     spelling, because a scale you index is a scale you can reason about:
+
+       01-03  interior — inside a control, between a dot and its label
+       04-06  component — padding, the gap between related things
+       07-08  section — the gap between unrelated things
+       09-10  page — the gap that says a new idea starts here
+
+     02 is the base unit. 01 is its half, and exists because hairline-
+     adjacent spacing genuinely needs 2px and rounding it to 4 shows. Above
+     06 the scale doubles rather than steps, because at that size the eye
+     reads ratio, not difference. */
+  --rsk-space-01: 2px;   --rsk-space-02: 4px;   --rsk-space-03: 6px;
+  --rsk-space-04: 8px;   --rsk-space-05: 12px;  --rsk-space-06: 16px;
+  --rsk-space-07: 24px;  --rsk-space-08: 32px;  --rsk-space-09: 48px;
+  --rsk-space-10: 64px;
+
   /* ── Density ───────────────────────────────────────────────────────────
      One step tighter than shadcn's defaults across the board. Instrument
      panels are dense; marketing pages are not. */
