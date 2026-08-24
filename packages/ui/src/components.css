@@ -237,7 +237,7 @@
    best anywhere is 3.65:1. White-on-red looks like the obvious answer and
    fails AA. */
 .rsk-btn--destructive { background: var(--destructive); color: var(--destructive-foreground); }
-.rsk-btn--destructive:hover:not(:disabled) { background: var(--rsk-700-solid2); }
+.rsk-btn--destructive:hover:not(:disabled) { background: var(--rsk-spectrum-700-solid2); }
 
 /* The quieter destructive: the alarm hue as a wash with the alarm hue as
    type, rather than as a filled block. A solid red button shouts before the
@@ -246,12 +246,12 @@
    actions actually want — legible as dangerous, not as urgent — and it only
    became expressible when the role scale gave 700nm a bg and a text step. */
 .rsk-btn--destructive-subtle {
-  background: var(--rsk-700-bg);
-  color: var(--rsk-700-text);
-  border-color: var(--rsk-700-line);
+  background: var(--rsk-spectrum-700-bg);
+  color: var(--rsk-spectrum-700-text);
+  border-color: var(--rsk-spectrum-700-line);
 }
-.rsk-btn--destructive-subtle:hover:not(:disabled) { background: var(--rsk-700-bg2); }
-.rsk-btn--destructive-subtle:active:not(:disabled) { background: var(--rsk-700-line); }
+.rsk-btn--destructive-subtle:hover:not(:disabled) { background: var(--rsk-spectrum-700-bg2); }
+.rsk-btn--destructive-subtle:active:not(:disabled) { background: var(--rsk-spectrum-700-line); }
 
 /* Link */
 /* Ink, not amber. This was the last place a band colour was touching
@@ -469,7 +469,7 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   background: var(--rsk-surface-2);
   box-shadow: none;
 }
-.rsk-overlay { background: color-mix(in oklab, var(--rsk-n-01) 62%, transparent); }
+.rsk-overlay { background: color-mix(in oklab, var(--rsk-neutral-01) 62%, transparent); }
 .rsk-tooltip {
   background: var(--rsk-text); color: var(--rsk-ground);
   padding: 4px 7px; border-radius: var(--radius-sm);

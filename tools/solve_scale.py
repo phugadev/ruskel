@@ -341,7 +341,7 @@ def cmd_emit(args):
         print("}\n")
     print("/* neutral ramp */")
     for step, L, C in neutral_ramp():
-        print(f"  --rsk-n-{step}: oklch({L:.3f} {C:.3f} var(--rsk-h-neutral));"
+        print(f"  --rsk-neutral-{step}: oklch({L:.3f} {C:.3f} var(--rsk-neutral-hue));"
               f"  /* {oklch_to_hex(L, C, N_HUE)} */")
 
 

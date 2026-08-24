@@ -81,8 +81,8 @@ function oklab([r,g,b]) {
 const dE=(p,q)=>Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2]);
 const varOf = n => getComputedStyle(document.body).getPropertyValue(n).trim();
 const onOf = v => { const c=rgbOf(v);
-  return contrast(c, rgbOf(varOf("--rsk-n-01"))) > contrast(c, rgbOf(varOf("--rsk-n-10")))
-    ? varOf("--rsk-n-01") : varOf("--rsk-n-10"); };
+  return contrast(c, rgbOf(varOf("--rsk-neutral-01"))) > contrast(c, rgbOf(varOf("--rsk-neutral-10")))
+    ? varOf("--rsk-neutral-01") : varOf("--rsk-neutral-10"); };
 
 /* ── static scaffolding, built once ──────────────────────────────────── */
 document.getElementById("gamut").textContent =
@@ -121,7 +121,7 @@ function render() {
   const ramp = document.querySelector('[data-ramp="n"]');
   ramp.innerHTML = "";
   for (let i = 1; i <= 10; i++) {
-    const id = String(i).padStart(2,"0"), fill = varOf(`--rsk-n-${id}`), rgb = rgbOf(fill);
+    const id = String(i).padStart(2,"0"), fill = varOf(`--rsk-neutral-${id}`), rgb = rgbOf(fill);
     ramp.insertAdjacentHTML("beforeend",
       `<div class="ramp__step" style="background:${fill};color:${onOf(fill)}">
          <span>${id}</span><span class="ramp__hex">${hex(rgb)}</span></div>`);
@@ -134,7 +134,7 @@ function render() {
     m.insertAdjacentHTML("beforeend",
       `<div class="mg__row"><b>${nm}</b><i>${plain}${band!==plain?" · "+band:""}</i></div>`);
     STEPS.forEach(st => {
-      const v = varOf(`--rsk-${nm}-${st}`), rgb = rgbOf(v);
+      const v = varOf(`--rsk-spectrum-${nm}-${st}`), rgb = rgbOf(v);
       const r = contrast(rgb, rgbOf(varOf("--rsk-ground")));
       m.insertAdjacentHTML("beforeend",
         `<div class="mg__cell" style="background:${v}"><span style="color:${onOf(v)}">${hex(rgb)}<br>${r.toFixed(2)}</span></div>`);
@@ -145,7 +145,7 @@ function render() {
   host.innerHTML = "";
   for (let i = 1; i <= 6; i++) {
     const v = varOf(`--chart-${i}`), rgb = rgbOf(v);
-    const nm = NM.find(n => varOf(`--rsk-mark-${n}`) === v);
+    const nm = NM.find(n => varOf(`--rsk-spectrum-${n}-solid`) === v);
     host.insertAdjacentHTML("beforeend",
       `<figure class="sw"><div class="sw__fill" style="background:${v}"></div>
        <figcaption><b>chart-${i}</b><i>${nm ? nm+"nm · "+NAME[nm][1] : "overflow"}</i>

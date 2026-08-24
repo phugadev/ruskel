@@ -109,7 +109,7 @@ section:first-of-type { border-top:0; }
                      gap:var(--rsk-space-05); padding:7px 0; border-top:1px solid var(--rsk-rule); }
 .ts__row p { margin:0; }
 .sp__row { align-items:center; }
-.sp__bar { height:12px; background:var(--rsk-n-06); border-radius:var(--radius-sm); }
+.sp__bar { height:12px; background:var(--rsk-neutral-06); border-radius:var(--radius-sm); }
 
 /* geometry + depth */
 .geo { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--rsk-space-05); }
@@ -160,9 +160,9 @@ section:first-of-type { border-top:0; }
   .audit__a { margin-top:6px; }
 }
 .dot { width:9px; height:9px; border-radius:999px; display:block; margin-top:5px; }
-.dot--green { background:var(--rsk-520-solid); box-shadow:var(--rsk-glow-sm); }
-.dot--amber { background:var(--rsk-620-solid); }
-.dot--red   { background:var(--rsk-700-solid); }
+.dot--green { background:var(--rsk-spectrum-520-solid); box-shadow:var(--rsk-glow-sm); }
+.dot--amber { background:var(--rsk-spectrum-620-solid); }
+.dot--red   { background:var(--rsk-spectrum-700-solid); }
 
 .prosedemo { display:grid; grid-template-columns:1fr 280px; gap:var(--rsk-space-07); align-items:start; }
 .prosedemo .rsk-prose p { font-size:var(--rsk-text-lg); line-height:1.6; margin:0; max-width:62ch; }
