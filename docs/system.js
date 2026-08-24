@@ -29,8 +29,8 @@ const AUDIT = [
    "Every value is solver output, re-derived in CI. 72 token constraints, 360 role-scale checks across two gamuts. Nothing here was eyedropped."],
   ["Neutrals","Does 10-step provide enough range?","green",
    "Yes — resampled from the old twelve rather than redrawn, endpoints pinned. Steps 04–06 of the twelve were cited once between the entire token and component layers; ten is the same curve without the choices nobody used."],
-  ["Surfaces","Do backgrounds actually create hierarchy?","amber",
-   "Three levels — ground, surface, surface-2. Enough for a card on a page, thin for a dialog over a panel over a page. A fourth level is the clearest remaining gap in the neutral system."],
+  ["Surfaces","Do backgrounds actually create hierarchy?","green",
+   "Four levels — page, card, popover, dialog — with even rungs inside each exposure. Editorial shares the 0.063 of lightness between paper and white evenly across all four; ink uses ramp steps 01-04 with widening rungs, because a fixed lightness step is less visible the darker it is."],
   ["Vibrancy","Can accents punch without contaminating the system?","green",
    "Solids sit at 95% of each hue's own ceiling, and on P3 displays that ceiling is up to 39% higher. Containment is structural: solids are the only vivid step, and rule 8 caps them at one per view."],
   ["Typography","Does type carry enough of the personality?","amber",
@@ -51,8 +51,8 @@ const AUDIT = [
    "Same hue angles, same components, same markup. Only the ground and the type ring re-solve. Flip the toggle at the top — nothing on this page has a variant."],
   ["Accessibility","Does the expressive palette remain usable?","green",
    "Every text step is solved to AA against its own ground and every mark carries near-black foreground at 4.94:1 worst case. Colour is never the only carrier — rule 9."],
-  ["Documentation","Can another engineer understand the system?","amber",
-   "SYSTEM.md argues every decision and the solvers are in the repo. What is missing is the thing you are reading — until today there was no page that showed the system rather than describing it."],
+  ["Documentation","Can another engineer understand the system?","green",
+   "SYSTEM.md argues every decision, the solvers are in the repo, and this page links the token sources rather than inlining them — change a value and this page changes with it."],
 ];
 
 /* ── measurement ─────────────────────────────────────────────────────── */
@@ -143,7 +143,7 @@ function render() {
 
   const host = document.querySelector('[data-ring="chart"]');
   host.innerHTML = "";
-  for (let i = 1; i <= 8; i++) {
+  for (let i = 1; i <= 6; i++) {
     const v = varOf(`--chart-${i}`), rgb = rgbOf(v);
     const nm = NM.find(n => varOf(`--rsk-mark-${n}`) === v);
     host.insertAdjacentHTML("beforeend",
@@ -185,12 +185,27 @@ function render() {
       <div class="sp__bar" style="width:${v}"></div></div>`;
   }).join("");
 
+  const surf = ["--rsk-ground","--rsk-surface","--rsk-surface-2","--rsk-surface-3"];
+  document.getElementById("surfsteps").innerHTML =
+    `<span class="rsk-label">rung heights</span>` + surf.slice(1).map((v,i) =>
+      `<code>${contrast(rgbOf(varOf(v)), rgbOf(varOf(surf[i]))).toFixed(3)}</code>`).join("") +
+    `<code class="dim">ground to surface-3 · ${contrast(rgbOf(varOf(surf[3])), rgbOf(varOf(surf[0]))).toFixed(3)}</code>`;
+
+  const g = rgbOf(varOf("--rsk-ground"));
+  const body = contrast(rgbOf(varOf("--rsk-text-prose")), g);
+  const strong = contrast(rgbOf(varOf("--rsk-text")), g);
+  document.getElementById("prosemeasure").innerHTML =
+    `<span class="rsk-label">measured here</span><code>body ${body.toFixed(2)}:1</code>
+     <code>strong ${strong.toFixed(2)}:1</code><code class="dim">${(strong/body).toFixed(2)}x</code>`;
+
   document.getElementById("depth").innerHTML =
     `<div class="dp" style="background:var(--rsk-ground)"><span class="rsk-label">on ground</span>
        <div class="dp__box">border-rule</div></div>
      <div class="dp" style="background:var(--rsk-surface)"><span class="rsk-label">on surface</span>
        <div class="dp__box">same declaration</div></div>
      <div class="dp" style="background:var(--rsk-surface-2)"><span class="rsk-label">on surface-2</span>
+       <div class="dp__box">same declaration</div></div>
+     <div class="dp" style="background:var(--rsk-surface-3)"><span class="rsk-label">on surface-3</span>
        <div class="dp__box">same declaration</div></div>`;
 
   document.getElementById("f-tokens").textContent =

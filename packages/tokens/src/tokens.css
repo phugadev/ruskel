@@ -285,7 +285,13 @@
   --rsk-surface-2: oklch(0.978 0.005 var(--rsk-h-neutral));
   --rsk-surface-3: oklch(0.996 0.003 var(--rsk-h-neutral));
   --rsk-text: var(--rsk-n-01);                                /* 16.3:1 */
-  --rsk-text-prose: var(--rsk-n-03);
+  /* Prose is not chrome. --rsk-text is maximum contrast, which is right
+     for a label or a value that must be found, and too loud for a
+     paragraph you are meant to sink into. Body copy sits a step back at
+     ~10:1 so that <strong> can step forward to 16.3:1 and be seen doing it.
+     Set the whole paragraph at maximum contrast and bold has nowhere to go
+     but weight alone, which at 500 is not much of a signal. */
+  --rsk-text-prose: var(--rsk-n-04);   /* 10.0:1 on paper */
   --rsk-text-muted: oklch(0.470 0.011 var(--rsk-h-neutral));   /*  5.4:1 */
   --rsk-text-faint: oklch(0.545 0.012 var(--rsk-h-neutral));   /*  4.1:1 non-essential */
 
@@ -424,14 +430,18 @@
 
 
   --rsk-ground: var(--rsk-n-01);
+  /* Ink has room, so the four levels are simply ramp steps 01-04. The
+     rungs widen going up — 1.104, 1.143, 1.238 — which is correct rather
+     than sloppy: a fixed lightness step is less visible the darker it is,
+     so even-looking separation needs growing steps at the ink end. */
   --rsk-surface: var(--rsk-n-02);
   --rsk-surface-2: var(--rsk-n-03);
+  --rsk-surface-3: var(--rsk-n-04);
   --rsk-text: var(--rsk-n-10);          /* 16.3:1 */
-  --rsk-text-prose: var(--rsk-n-09);
+  --rsk-text-prose: var(--rsk-n-08);   /*  9.7:1 on ink */
   --rsk-text-muted: var(--rsk-n-07);    /*  5.8:1 */
   --rsk-text-faint: var(--rsk-n-06);    /*  4.0:1 non-essential */
 
-  --rsk-surface-3: var(--rsk-n-04);
     /* ── The role scale — eight steps per hue ──────────────────────────
      bg/bg2 wash, line/line2 hairline, solid/solid2 mark, text/text2 type.
      Solved by tools/solve_scale.py against this exposure's own ground;
