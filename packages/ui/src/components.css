@@ -53,6 +53,33 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* ── Text setting defaults ─────────────────────────────────────────────
+   Three lines that cost nothing and fix the two ugliest defaults on the
+   web: a heading that drops one word onto its own line, and a paragraph
+   that leaves an orphan. balance is for short runs — it has a line cap and
+   is wasted on body copy — so headings and labels take it and prose takes
+   pretty, which only fixes the last line and stays cheap at any length. */
+[data-exposure] :is(h1, h2, h3, h4, .rsk-display, .rsk-pullquote) { text-wrap: balance; }
+[data-exposure] :is(p, li, dd, figcaption) { text-wrap: pretty; }
+
+/* Long unbroken strings — a token, a URL, a hash — break rather than push
+   the layout sideways. Labels and badges are the exception: they are short
+   by construction and a wrapped badge is a broken badge. */
+[data-exposure] { overflow-wrap: break-word; }
+[data-exposure] :is(.rsk-label, .rsk-chip, .rsk-status) { white-space: nowrap; }
+
+/* An image on a light ground has no edge; on a dark one it glows against
+   the surface. A hairline inset by -1px gives it a boundary without adding
+   a pixel to its box, and derives from --rsk-text so it flips with the
+   exposure like every other rule in the system. */
+[data-exposure] :is(img, video) {
+  outline: 1px solid color-mix(in oklab, var(--rsk-text) 8%, transparent);
+  outline-offset: -1px;
+}
+
+/* Underlines that duck below descenders rather than through them. */
+[data-exposure] a { text-underline-position: from-font; text-decoration-skip-ink: auto; }
+
 /* Kill every shadcn shadow utility inside the system. */
 [data-exposure] :is(.shadow,.shadow-sm,.shadow-md,.shadow-lg,.shadow-xl,.shadow-2xl) {
   box-shadow: none;
@@ -204,8 +231,27 @@
 .rsk-btn--ghost:hover:not(:disabled) { background: var(--rsk-surface); color: var(--rsk-text); }
 
 /* Destructive — the reserved 700nm mark. */
+/* Solid destructive takes INK type, not paper, and the measurement is not
+   close: near-black on #F92040 is 5.00:1 where paper is 3.29:1. That holds
+   for all ten marks — worst case with ink is 4.51:1 at 440nm, and paper's
+   best anywhere is 3.65:1. White-on-red looks like the obvious answer and
+   fails AA. */
 .rsk-btn--destructive { background: var(--destructive); color: var(--destructive-foreground); }
 .rsk-btn--destructive:hover:not(:disabled) { background: var(--rsk-700-solid2); }
+
+/* The quieter destructive: the alarm hue as a wash with the alarm hue as
+   type, rather than as a filled block. A solid red button shouts before the
+   user has decided anything, which spends rule 8's one loud moment on a
+   control that is usually sitting still. This is the form most destructive
+   actions actually want — legible as dangerous, not as urgent — and it only
+   became expressible when the role scale gave 700nm a bg and a text step. */
+.rsk-btn--destructive-subtle {
+  background: var(--rsk-700-bg);
+  color: var(--rsk-700-text);
+  border-color: var(--rsk-700-line);
+}
+.rsk-btn--destructive-subtle:hover:not(:disabled) { background: var(--rsk-700-bg2); }
+.rsk-btn--destructive-subtle:active:not(:disabled) { background: var(--rsk-700-line); }
 
 /* Link */
 /* Ink, not amber. This was the last place a band colour was touching
@@ -642,13 +688,42 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
 /* Confirmation is form plus the one non-alarm mark the system allows for
    "this worked" — the same 520nm the plate verdict uses. */
 .rsk-codeframe__copy[data-copied="true"] { color: var(--rsk-mark-520); }
+/* ── Inline code ───────────────────────────────────────────────────────
+   There was no rule for this at all: inline <code> inherited whatever size
+   it landed in, which meant it shrank inside .rsk-label and grew inside a
+   heading, and read as a different substance in each place.
+
+   It sits at the baseline text size rather than below it. Mono at 0.85em of
+   surrounding text — the usual reflex — is the wrong instinct here: Plex
+   Mono already runs narrower than Inter at the same nominal size, so
+   matching the number and letting the face do the work keeps the x-heights
+   aligned instead of stacking two reductions on top of each other.
+
+   Rule 5 still applies. This is metadata inside a sentence, not content. */
+[data-exposure] :not(pre) > code {
+  font-family: var(--rsk-font-mono);
+  font-size: var(--rsk-text-base);
+  background: var(--rsk-code-bg);
+  color: var(--rsk-code-text);
+  padding: 0.1em 0.32em;
+  border-radius: var(--radius-sm);
+  /* The badge must not push the line box around, so it is inset rather
+     than padded vertically. */
+  line-height: 1;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
 .rsk-codeframe > pre,
 .rsk-codeframe__body {
   margin: 0;
   padding: var(--rsk-pad-x-md);
   overflow-x: auto;
   font-family: var(--rsk-font-mono);
-  font-size: var(--rsk-text-sm);
+  /* 14px. A block of code is content being read line by line, not a token
+     inside a sentence, and 13px was costing legibility for density this
+     surface does not need. */
+  font-size: var(--rsk-text-base);
   line-height: 1.6;
   background: transparent;
   color: var(--rsk-code-text);
