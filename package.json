@@ -7,7 +7,7 @@
   "author": "Enric Trillo",
   "type": "module",
   "scripts": {
-    "docs": "npx serve docs",
+    "docs": "npx serve .",
     "solve": "python3 tools/solve.py",
     "check": "python3 tools/solve.py verify"
   },

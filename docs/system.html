@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ruskel — the system</title>
+
+<!--
+  This page loads the token and component layers from source rather than
+  inlining them, and measures every colour it prints out of the live CSS.
+  It cannot fall out of date with the system it documents: change a value
+  in tokens.css and this page changes with it, including the contrast
+  ratios and the dE readout.
+
+  That is deliberate. docs/index.html is the written argument and it
+  transcribes its figures, which is why it still cites a wavelength.css
+  that has not existed for several versions. A specimen has to be wired
+  to the thing it is a specimen OF, or it is just a screenshot in HTML.
+
+  Serve from the repository root — `npm run docs` — so the ../packages
+  paths below resolve.
+-->
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../packages/tokens/src/tokens.css">
+<link rel="stylesheet" href="../packages/ui/src/components.css">
+<link rel="stylesheet" href="system.css">
+</head>
+
+<body data-exposure="luminous">
+
+<nav class="rail">
+  <span class="rail__mark">RUSKEL</span>
+  <a href="#colour">Colour</a><a href="#type">Type</a><a href="#geometry">Geometry</a>
+  <a href="#space">Space</a><a href="#components">Components</a><a href="#rules">Rules</a><a href="#audit">Audit</a>
+  <button id="flip" class="rsk-btn rsk-btn--outline rsk-btn--sm">Editorial</button>
+</nav>
+
+<div class="sheet">
+
+<header class="mast" data-voice="author">
+  <p class="rsk-label">design system · v0.8 · <span id="gamut"></span></p>
+  <h1 class="mast__h">One spectrum,<br>two exposures.</h1>
+  <p class="mast__sub">A system for interfaces that are either <em>read</em> or <em>operated</em>, and which should look like the same author made both. Every colour on this page is read live from <code>tokens.css</code>; nothing is transcribed.</p>
+  <div class="mast__facts">
+    <div><b id="f-tokens">—</b><span>tokens</span></div>
+    <div><b id="f-steps">—</b><span>colour steps</span></div>
+    <div><b>2</b><span>exposures</span></div>
+    <div><b id="f-comp">—</b><span>components</span></div>
+  </div>
+</header>
+
+<!-- ══ COLOUR ══════════════════════════════════════════════════════════ -->
+<section id="colour">
+  <h2 class="sec">Colour</h2>
+
+  <h3>Neutral ramp · L0</h3>
+  <p class="note">Ten ordinal steps, warm at H 85, shared by both exposures. They do not flip: <code>n-01</code> is ink and <code>n-10</code> is paper on either ground. Warm because cool darks against warm paper made the two exposures read as different families.</p>
+  <div class="ramp" data-ramp="n"></div>
+
+  <h3>Surfaces</h3>
+  <p class="note">What the ramp is actually for. Three levels today — the audit calls this out.</p>
+  <div class="surfaces">
+    <div class="surf" style="background:var(--rsk-ground)"><span>ground</span><code data-hexof="--rsk-ground"></code>
+      <div class="surf" style="background:var(--rsk-surface)"><span>surface</span><code data-hexof="--rsk-surface"></code>
+        <div class="surf" style="background:var(--rsk-surface-2)"><span>surface-2</span><code data-hexof="--rsk-surface-2"></code></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The role scale · 10 hues × 8 steps</h3>
+  <p class="note">Each step is named for the job it does, not for how light it is. This is what lets a whole component be built out of one hue without improvising: <code>bg</code> + <code>line</code> + <code>text</code> is a complete tinted panel.</p>
+  <div class="legend">
+    <span><b>bg · bg2</b> a wash you can set body copy on, and its hover</span>
+    <span><b>line · line2</b> hairline, and emphasised</span>
+    <span><b>solid · solid2</b> the mark — seen, not read — and its hover</span>
+    <span><b>text · text2</b> type at AA, and above</span>
+  </div>
+  <div class="matrixgrid" id="scale"></div>
+
+  <h3>One hue, one component</h3>
+  <p class="note">The same panel in four bands. No <code>color-mix</code>, no per-band CSS — each panel just declares <code>[data-band]</code> and reads <code>--rsk-bg</code>, <code>--rsk-line</code>, <code>--rsk-tint</code>, <code>--rsk-mark</code>.</p>
+  <div class="panels" id="panels"></div>
+
+  <h3>The four bands</h3>
+  <p class="note">A band is a named position on the spectrum with a meaning attached. Rule 1: a band never appears decoratively — if something is amber it is <em>about</em> interface.</p>
+  <div class="bands" id="bands"></div>
+
+  <h3>Reserved · status is not a band</h3>
+  <p class="note">620nm and 700nm are excluded from every categorical set, so an alarm can never be mistaken for a classification. Status carries one hue and encodes the rest in form.</p>
+  <div class="statusrow">
+    <span><i class="rsk-status" data-state="ok"></i> ok — hollow, no hue</span>
+    <span><i class="rsk-status" data-state="watch"></i> watch — ring</span>
+    <span><i class="rsk-status" data-state="critical"></i> critical — filled, 700nm</span>
+  </div>
+
+  <h3>Chart series</h3>
+  <p class="note">Six, in dispersion order. Six is where every stop sits at its own gamut ceiling and nothing collides — past six, label the series directly.</p>
+  <div class="grid grid--8" data-ring="chart"></div>
+  <div class="matrix" id="de"></div>
+
+  <h3>Syntax</h3>
+  <p class="note">Its own solve, against the code block's ground rather than the page's. Roles follow the band taxonomy: keywords take intelligence, strings systems, numbers interface, functions compute.</p>
+  <div class="codeframe" id="code"></div>
+</section>
+
+<!-- ══ TYPE ════════════════════════════════════════════════════════════ -->
+<section id="type">
+  <h2 class="sec">Typography</h2>
+  <p class="note">Three registers, assigned by <b>who is speaking</b>. The test: if a machine could have written it, it is not serif.</p>
+
+  <div class="registers">
+    <div><span class="rsk-label">mono · the machine</span><p class="reg reg--mono">14:22:06 · 84,231 · 590nm</p><code>IBM Plex Mono</code></div>
+    <div><span class="rsk-label">sans · the system</span><p class="reg reg--sans">Deploy to production</p><code>Inter</code></div>
+    <div><span class="rsk-label">serif · a person</span><p class="reg reg--serif" data-voice="author">The spectrum re-solves</p><code>Instrument Serif</code></div>
+  </div>
+
+  <p class="note">The serif is gated on <b>voice</b>, not exposure — a dark site that publishes essays is luminous <em>and</em> authored. Without <code>data-voice="author"</code> the serif stack resolves to the sans, so product surfaces cannot leak it.</p>
+
+  <h3>Scale</h3>
+  <div class="typescale" id="typescale"></div>
+</section>
+
+<!-- ══ GEOMETRY ════════════════════════════════════════════════════════ -->
+<section id="geometry">
+  <h2 class="sec">Geometry</h2>
+  <p class="note">Rule 7: radius encodes role. <b>Structure</b> holds other things and gets the hard corner. <b>Tokens</b> are things you could pick up and get the pill. The test — does it contain something, or is it a thing?</p>
+  <div class="geo">
+    <div><div class="geo__box" style="border-radius:var(--radius-sm)"></div><code>--radius-sm 2px</code><span>cells, checkboxes</span></div>
+    <div><div class="geo__box" style="border-radius:var(--radius)"></div><code>--radius 4px</code><span>cards, inputs, buttons</span></div>
+    <div><div class="geo__box" style="border-radius:var(--radius-lg)"></div><code>--radius-lg 6px</code><span>dialogs, plates</span></div>
+    <div><div class="geo__box" style="border-radius:var(--radius-pill)"></div><code>--radius-pill</code><span>chips, dots, switches</span></div>
+  </div>
+  <h3>Rules and depth</h3>
+  <p class="note">There are no shadows. A hairline derived from <code>--rsk-text</code> at low alpha composites with whatever sits behind it, so the same border reads darker on a raised surface than on the ground — depth, rather than an outline drawn on top. On ink, emission does the job instead.</p>
+  <div class="depth" id="depth"></div>
+</section>
+
+<!-- ══ SPACE ═══════════════════════════════════════════════════════════ -->
+<section id="space">
+  <h2 class="sec">Space &amp; density</h2>
+  <p class="note">New — there was no spacing scale until today, so every gap was a number somebody picked. Ten ordinal steps on a 4px grid.</p>
+  <div class="spacescale" id="spacescale"></div>
+  <h3>Density</h3>
+  <p class="note">One step tighter than shadcn across the board. Instrument panels are dense; marketing pages are not.</p>
+  <div class="controls">
+    <button class="rsk-btn rsk-btn--outline rsk-btn--sm">sm · 26px</button>
+    <button class="rsk-btn rsk-btn--outline">md · 32px</button>
+    <button class="rsk-btn rsk-btn--outline rsk-btn--lg">lg · 40px</button>
+  </div>
+</section>
+
+<!-- ══ COMPONENTS ══════════════════════════════════════════════════════ -->
+<section id="components">
+  <h2 class="sec">Components</h2>
+  <p class="note">Every class in <code>@ruskel/ui</code>. None of them knows which exposure it is in — flip the toggle and nothing here has a variant.</p>
+
+  <h3>Buttons</h3>
+  <div class="row">
+    <button class="rsk-btn rsk-btn--primary">Primary</button>
+    <button class="rsk-btn rsk-btn--secondary">Secondary</button>
+    <button class="rsk-btn rsk-btn--outline">Outline</button>
+    <button class="rsk-btn rsk-btn--ghost">Ghost</button>
+    <button class="rsk-btn rsk-btn--destructive">Destructive</button>
+    <button class="rsk-btn rsk-btn--link">Link</button>
+    <button class="rsk-btn rsk-btn--primary" disabled>Disabled</button>
+  </div>
+
+  <h3>Inputs</h3>
+  <div class="row">
+    <div class="rsk-field" style="width:200px"><label class="rsk-label">Service</label>
+      <input class="rsk-input" placeholder="api-gateway"><span class="rsk-hint">Lowercase, no spaces</span></div>
+    <div class="rsk-field" style="width:200px"><label class="rsk-label">Token</label>
+      <input class="rsk-input rsk-input--mono" value="rsk_8f2a91" aria-invalid="true"><span class="rsk-error">Expired 2 days ago</span></div>
+    <div class="rsk-field"><label class="rsk-label">Options</label>
+      <div class="row" style="gap:14px;align-items:center">
+        <label class="inline"><input type="checkbox" class="rsk-check" checked> Verify</label>
+        <label class="inline"><input type="radio" name="r" class="rsk-check rsk-check--radio" checked> A</label>
+        <label class="inline"><input type="radio" name="r" class="rsk-check rsk-check--radio"> B</label>
+        <label class="inline"><input type="checkbox" class="rsk-switch" checked> Live</label>
+      </div>
+    </div>
+  </div>
+
+  <h3>Chips &amp; tiles</h3>
+  <div class="row">
+    <span class="rsk-chip" data-band="interface">interface</span>
+    <span class="rsk-chip" data-band="systems">systems</span>
+    <span class="rsk-chip" data-band="compute">compute</span>
+    <span class="rsk-chip" data-band="intelligence">intelligence</span>
+    <span class="rsk-chip rsk-chip--solid" data-band="systems">solid</span>
+    <span class="rsk-chip rsk-chip--bare">bare</span>
+    <span class="rsk-tile" data-band="compute">◆</span>
+    <span class="rsk-tile rsk-tile--band" data-band="systems">◆</span>
+    <span class="rsk-tile rsk-tile--sm">·</span>
+  </div>
+
+  <h3>Progress, meter, density grid</h3>
+  <div class="row row--top">
+    <div style="width:180px" data-band="systems"><span class="rsk-label">progress</span>
+      <div class="rsk-progress" style="margin-top:6px"><i class="rsk-progress__bar" style="width:64%"></i></div></div>
+    <div data-band="compute"><span class="rsk-label">meter</span>
+      <div class="rsk-meter" style="margin-top:6px"><i data-on></i><i data-on></i><i data-on></i><i data-on></i><i data-on></i><i data-on></i><i></i><i></i><i></i><i></i></div></div>
+    <div data-band="intelligence"><span class="rsk-label">density</span>
+      <div class="rsk-density" id="density" style="margin-top:6px"></div></div>
+  </div>
+
+  <h3>Card, alert, tabs</h3>
+  <div class="row row--top">
+    <div class="rsk-card" style="width:260px">
+      <div class="rsk-card__head"><span class="rsk-label">Ingest</span></div>
+      <div class="rsk-card__body"><p style="margin:0;font-size:var(--rsk-text-sm)">Events accepted and normalised before fan-out.</p></div>
+      <div class="rsk-card__foot"><span class="rsk-num">7.2k/s</span></div>
+    </div>
+    <div style="flex:1;min-width:280px;display:flex;flex-direction:column;gap:10px">
+      <div class="rsk-alert" data-band="warning"><i class="rsk-tile rsk-tile--sm rsk-tile--band" data-band="warning">!</i>
+        <div><p class="rsk-alert__title">Certificate expires in 6 days</p><p class="rsk-alert__body">Renew before the window closes.</p></div></div>
+      <div class="rsk-tabs"><button class="rsk-tab" aria-selected="true">Overview</button><button class="rsk-tab">Logs</button><button class="rsk-tab">Config</button></div>
+    </div>
+  </div>
+
+  <h3>Table</h3>
+  <table class="rsk-table">
+    <thead><tr><th>Service</th><th>Band</th><th>State</th><th class="num">p95</th><th class="num">Errors</th></tr></thead>
+    <tbody>
+      <tr><td>api-gateway</td><td><span class="rsk-chip" data-band="interface">interface</span></td><td><i class="rsk-status" data-state="ok"></i></td><td class="num">12ms</td><td class="num">0</td></tr>
+      <tr><td>pg-primary</td><td><span class="rsk-chip" data-band="systems">systems</span></td><td><i class="rsk-status" data-state="ok"></i></td><td class="num">4ms</td><td class="num">0</td></tr>
+      <tr><td>build-runner</td><td><span class="rsk-chip" data-band="compute">compute</span></td><td><i class="rsk-status" data-state="watch"></i></td><td class="num">142ms</td><td class="num">17</td></tr>
+      <tr><td>rerank-v3</td><td><span class="rsk-chip" data-band="intelligence">intelligence</span></td><td><i class="rsk-status" data-state="critical"></i></td><td class="num">—</td><td class="num">411</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tooltip, skeleton, hatch, separator</h3>
+  <div class="row row--top">
+    <span class="rsk-tooltip">Shift ⇧ to multi-select</span>
+    <div style="width:180px;display:flex;flex-direction:column;gap:6px">
+      <div class="rsk-skeleton" style="height:10px"></div><div class="rsk-skeleton" style="height:10px;width:70%"></div></div>
+    <div style="width:160px"><div class="rsk-hatch"></div><div class="rsk-hatch rsk-hatch--tall" style="margin-top:6px"></div></div>
+  </div>
+  <hr class="rsk-sep">
+
+  <h3>Authored register</h3>
+  <div data-voice="author" class="authored">
+    <h4 class="rsk-display" style="font-family:var(--rsk-font-serif);font-size:var(--rsk-text-3xl);margin:0">Marks are seen; text is read</h4>
+    <p class="rsk-authored" style="max-width:60ch">Never swap the two rings. A mark exists to be found at a glance and pays no attention to WCAG text ratios; a tint exists to be read and is constrained to AA against its own ground. The two share a hue angle so they read as one colour, and nothing else.</p>
+    <blockquote class="rsk-pullquote">A component that needs a <code>[data-exposure]</code> override is a bug in the tokens.</blockquote>
+  </div>
+</section>
+
+<!-- ══ RULES ═══════════════════════════════════════════════════════════ -->
+<section id="rules">
+  <h2 class="sec">The rules</h2>
+  <ol class="rules" id="rules-list"></ol>
+</section>
+
+<!-- ══ AUDIT ═══════════════════════════════════════════════════════════ -->
+<section id="audit">
+  <h2 class="sec">Visual system audit</h2>
+  <p class="note">Answered against what is actually in the repository today, not against what a checklist says should be there.</p>
+  <div class="audit" id="audit-table"></div>
+</section>
+
+</div>
+
+<script src="system.js"></script>
+</body>
+</html>
