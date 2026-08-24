@@ -253,12 +253,24 @@ set. `--rsk-fg-*` rank naming is on trial and may move.
 
 ### Published
 
-npm carries **0.7.0** for both packages. `main` is 0.9.0 and unpublished, so
-everything between the two is only available from the registry manifest or
-from source — including the emission fix. **0.7.0 ships a glow that never
-fires**: `--rsk-glow-*` was declared on `[data-exposure]`, above the element
-that sets `--rsk-mark`, so it substituted to `transparent` and inherited that
-everywhere. Nothing in the luminous exposure emits on 0.7.0.
+```bash
+npm install @ruskel/tokens @ruskel/ui   # 0.9.0
+```
 
-0.9.0 is breaking against 0.7.0 — the public names changed shape — so `^0.7.0`
-will not pick it up, which is correct.
+`latest` and `next` both point at **0.9.0**, and `main` matches. The tag
+survives so a future release can go up as `next` without moving `latest`
+under anyone.
+
+**0.9.0 is breaking against 0.7.x**, which is the point of the minor bump:
+the public names changed shape, so `^0.7.0` will not pick it up. If you are
+on 0.7.x, `--rsk-n-NN` is now `--rsk-neutral-NN`, `--rsk-520-solid` is
+`--rsk-spectrum-520-solid`, and the 80 wavelength-named Tailwind utilities
+are gone in favour of `bg-band-solid` and the tier-2 names. Most bare token
+names — `--rsk-text`, `--rsk-rule`, `--rsk-ground`, `--rsk-mark-590` — still
+resolve, so the migration is usually smaller than it sounds.
+
+**0.7.1 exists on the `release/0.7.x` branch** and is the last healthy 0.7.
+0.7.0 shipped a glow that never fired: `--rsk-glow-*` was declared on
+`[data-exposure]`, above the element that sets `--rsk-mark`, so it
+substituted to `transparent` and inherited that everywhere. If you are
+pinned to 0.7 for any reason, be on 0.7.1.
