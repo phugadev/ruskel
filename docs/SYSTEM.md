@@ -37,6 +37,13 @@ The fix is to stop treating the four bands as the palette and start treating the
 
 L3 is excluded from L2 so an alarm can never be mistaken for a category, and carries **elevated chroma** so it outshouts every category. That is the correct hierarchy: a warning must be louder than a classification.
 
+> **Naming note, 0.9.0.** This document describes the *engine* and still says
+> "mark ring" and "text ring". Those are now the `solid` and `text` steps of
+> an eight-step role scale, and neither is reachable from the public API —
+> components read `--rsk-band-solid` and `--rsk-fg-*` instead. The physics
+> below is unchanged; only the spelling above it moved. See the README for
+> the four tiers, or `docs/system.html` for the whole thing rendered.
+
 ### 1.3 Two rings, because colour has two jobs
 
 **This is the correction that made v2 look dull.** v2 held lightness *and* chroma constant across the ring so every hue would carry identical WCAG contrast. That is correct for text and disastrous for everything else, because the **sRGB gamut ceiling is not flat** — it varies about 2.5× by hue at any given lightness. At L=0.65, magenta reaches C=0.309 while cyan tops out at C=0.111. Pinning one chroma for all ten hues pins the whole palette to its weakest member. The ring was living at cyan's ceiling. Hence: mud.

@@ -6,11 +6,45 @@ made both.
 
 ```
 registry.json        the shadcn registry manifest — this file is the registry
-packages/tokens      the two-exposure token layer
+packages/tokens      the token layer: engine output, and the API over it
 packages/ui          shadcn primitives, moulded
-docs/                the specimen page and the written system
-tools/solve.py       the colour solver — the palette is its output
+docs/system.html     the specimen — reads the tokens live, cannot drift
+docs/SYSTEM.md       the written system, decision by decision
+tools/solve*.py      the colour engine — the palette is its output
 ```
+
+## Four tiers, and you only type one
+
+```
+0  engine      tools/solve.py, tools/solve_scale.py         private
+1  primitive   --rsk-spectrum-520-solid, --rsk-neutral-04   generated
+2  semantic    --rsk-bg-raised, --rsk-fg-secondary,         THE API
+               --rsk-border-default, --rsk-state-hover,
+               --rsk-band-solid, --rsk-danger-fg
+3  modes       data-exposure, data-density, data-band, data-voice
+```
+
+**Wavelengths never appear above tier 1.** The spectrum is how the colours
+are *computed*, not how they are *addressed* — you should never have to know
+that 470nm is blue, and neither should an agent writing your markup. The
+engine can be re-solved, re-gamuted or replaced outright without a component
+changing.
+
+Meaning is carried by words instead. A band is a subject:
+
+```html
+<tr data-band="intelligence">   <!-- reads --rsk-band-solid, --rsk-band-bg -->
+```
+
+Two rules hold the whole thing together:
+
+- **A component reads tier 2 and nothing else.** Measured in CI: the
+  component layer makes zero primitive reads.
+- **No adjectives without a controlled scale.** There is no `fg-subtle` or
+  `border-light` — "subtle" invites an argument about what is subtler than
+  what. `primary / secondary / tertiary / metadata` are positions and cannot
+  be argued with. Surfaces are levels for the same reason: `canvas`,
+  `surface`, `raised`, `overlay`.
 
 ---
 
@@ -59,8 +93,8 @@ npm install @ruskel/tokens @ruskel/ui
 ```
 
 On Tailwind v4, import the bridge instead of the tokens — it pulls them in
-itself and adds the theme keys, so `bg-mark-520`, `text-tint-470`,
-`h-control-md` and `shadow-glow-sm` become real utilities:
+itself and adds the theme keys, so `bg-raised`, `text-fg-secondary`,
+`bg-band-solid`, `h-control-md` and `shadow-glow-sm` become real utilities:
 
 ```css
 @import "tailwindcss";
@@ -68,7 +102,7 @@ itself and adds the theme keys, so `bg-mark-520`, `text-tint-470`,
 ```
 
 Every key is declared `inline`, which is load-bearing rather than stylistic:
-the mark and text rings live under `[data-exposure]`, not on `:root`, so a
+the role scale lives under `[data-exposure]`, not on `:root`, so a
 theme variable emitted at the root would resolve against a value that is not
 there. Inlining puts the reference in the utility itself, and it resolves at
 the element — inside whatever exposure that element is standing in. Tailwind
@@ -85,13 +119,18 @@ component source is edited.
 
 ## The rules
 
-1. **A band never appears decoratively.** 590nm is interface, 520nm systems,
-   470nm compute, 405nm intelligence. If something is amber it is *about*
-   interface. Corollary: chrome carries no band at all — including focus.
+1. **A band never appears decoratively.** `interface`, `systems`, `compute`
+   and `intelligence` are subjects, not colours. If something is amber it is
+   *about* interface. Corollary: chrome carries no band at all — not the
+   focus ring, not the selection, not a link, not a tab indicator. That
+   reflex has been corrected four separate times; assume it is you.
 2. **Status is not a band.** Health and category are different axes. Status
    carries one hue and otherwise encodes itself in form: hollow = fine,
    ring = watch, filled = critical.
-3. **Components don't know their exposure.** Style against token names.
+3. **Components don't know their exposure — or their band.** Style against
+   tier-2 names. A component that needs a `[data-exposure]` override is a
+   bug in the tokens, and one that names a wavelength is a bug in the
+   component.
 4. **Marks are seen; text is read.** Never swap the two rings.
 5. **Mono is metadata, never content.** Labels, figures, timestamps, code.
 6. **Numbering must encode order.** Unordered peers get a rule and a label.
@@ -110,20 +149,25 @@ Every value is the output of a constraint solve, and the solver ships with
 the repo. That is what makes the system extendable rather than frozen.
 
 ```bash
-python3 tools/solve.py ring          # the mark ring per exposure
-python3 tools/solve.py separation    # pairwise dE across the six series
-python3 tools/solve.py bridge        # the Tailwind theme keys still resolve
-python3 tools/solve.py verify        # assert every constraint still holds
+python3 tools/solve.py ring              # the solid step per exposure
+python3 tools/solve.py separation        # pairwise dE across the six series
+python3 tools/solve.py bridge            # the Tailwind theme keys still resolve
+python3 tools/solve.py verify            # assert every constraint still holds
+
+python3 tools/solve_scale.py hue --nm 520   # one hue's eight role steps
+python3 tools/solve_scale.py neutral        # the ten-step ramp
+python3 tools/solve_scale.py check          # every step against its target
 ```
 
 `verify` re-derives each declared token, checks it against its exposure's
 contrast window, confirms no chroma exceeds the sRGB ceiling, and asserts
-the categorical series never falls below the separation floor. It exits
-non-zero on failure — wire it into CI.
+the categorical series never falls below the separation floor. `check` does
+the same for all eight role steps of all ten hues, in both gamuts. Both exit
+non-zero on failure and both run in CI.
 
 Two constraints worth knowing, because they cost the most to satisfy:
 
-- **The mark ring is per-exposure.** The same hue does not have the same
+- **The solid step is per-exposure.** The same hue does not have the same
   impact on both grounds; a shared amber measured 8.8:1 on ink and 1.7:1 on
   paper. Each ground solves its own ring, at maximum chroma within a
   contrast window.
@@ -131,6 +175,17 @@ Two constraints worth knowing, because they cost the most to satisfy:
   warning and critical, eight hues cannot separate — cyan/blue and
   indigo/violet collapse. Six is where every stop sits at its own gamut
   ceiling and nothing collides. Past six, label the series directly.
+- **Eight role steps per hue, solved against targets rather than fixed
+  lightnesses.** `bg` and `bg2` are washes you can set body copy on, `line`
+  and `line2` are hairlines, `solid` and `solid2` are the mark and its
+  hover, `text` and `text2` are type at AA and above. A fixed lightness
+  means something different on paper than on ink, which is the thing this
+  system exists to deny.
+
+On a Display P3 screen the hues are re-solved in the wider gamut — same
+angles, same lightnesses, same targets, only a higher ceiling. Green gains
+35%, cyan 32%. It rides in a `@media (color-gamut: p3)` block, so no name
+differs and no component knows.
 
 ## Typography
 
@@ -187,6 +242,13 @@ including work I have nothing to do with.
 
 ## Status
 
-Design ratified, tokens and component layer complete and verified. Not yet
-published to npm; registry manifest needs validating against the current
-shadcn schema before it points anywhere.
+**0.9.0.** The token API settled at this version — four tiers, semantic
+public layer, spectrum private. Before 0.9 the palette's internals *were*
+the interface, so anything written against 0.8 names will not work.
+
+Complete and verified: colour, neutrals, surfaces, typography, geometry,
+spacing, density, exposure, and 46 components. Thin: motion is two tokens.
+Absent: charts are tokenised but no library is wired, and there is no icon
+set. `--rsk-fg-*` rank naming is on trial and may move.
+
+Not yet published to npm.
