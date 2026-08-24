@@ -79,12 +79,14 @@
 
   /* ── Ground and surfaces ─────────────────────────────────────────────
      bg-ground is the page itself; bg-surface and bg-surface-2 step up from
-     it. Kept alongside --color-background rather than instead of it: the
+     it, and surface-3 above that. Kept alongside --color-background rather
+     than instead of it: the
      shadcn names are what components read, these are what you reach for
      when writing layout by hand. */
   --color-ground: var(--rsk-ground);
   --color-surface: var(--rsk-surface);
   --color-surface-2: var(--rsk-surface-2);
+  --color-surface-3: var(--rsk-surface-3);
 
   /* ── Text ────────────────────────────────────────────────────────────
      `ink` rather than `text`, because a --color-text-muted key generates
