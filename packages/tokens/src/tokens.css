@@ -405,8 +405,6 @@
      paper look dull. A 6px dot needs help at that level, so it gets a ring
      rather than a darker hue. */
   --rsk-dot-ring: inset 0 0 0 1px color-mix(in oklab, var(--rsk-n-01) 24%, transparent);
-  --rsk-band-fill: 10%;
-  --rsk-band-edge: 40%;
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -549,8 +547,225 @@
   --rsk-dot-ring: 0 0 0 0 transparent;   /* emission already separates it */
   /* Ink emits. */
   --rsk-emit: 1;
-  --rsk-band-fill: 14%;
-  --rsk-band-edge: 45%;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   DISPLAY P3 — the same scale, solved in a wider gamut
+
+   Everything above is sRGB, and sRGB is the reason the warm hues look
+   restrained. A hue's maximum chroma is a property of the gamut, not of
+   the design, and sRGB runs out earliest exactly where this palette needs
+   the most room:
+
+       520 green  +35%      620 orange +16%
+       490 cyan   +32%      590 amber  +15%
+       700 red    +17%      405 violet  +7%
+
+   Which is the same finding tokens.css already recorded from the other
+   side — "the ring was living at cyan's ceiling. Hence: mud." P3 raises
+   the ceiling rather than arguing with it.
+
+   Nothing here is a new decision. Same hue angles, same lightnesses, same
+   contrast targets, same 95% rule — only the ceiling those percentages are
+   taken from changes. So a P3 display shows a more saturated version of
+   the identical palette, and an sRGB display shows what it always showed.
+   No name differs, no component knows, and there is no fallback to author:
+   a browser that does not match the query never reads the block.
+
+   The one thing to know: these values are OUTSIDE sRGB by construction.
+   Do not eyedrop a hex out of here and paste it somewhere — the hex is an
+   approximation of a colour that has no sRGB spelling.
+   ══════════════════════════════════════════════════════════════════════ */
+
+@media (color-gamut: p3) {
+
+  [data-exposure="editorial"] {
+    /* 700nm */
+    --rsk-700-bg: oklch(0.919 0.016 var(--rsk-h-700));  /* ~#EFE0DF  1.07 */
+    --rsk-700-bg2: oklch(0.897 0.027 var(--rsk-h-700));  /* ~#EED7D5  1.14 */
+    --rsk-700-line: oklch(0.829 0.068 var(--rsk-h-700));  /* ~#F0B6B3  1.45 */
+    --rsk-700-line2: oklch(0.732 0.148 var(--rsk-h-700));  /* ~#F77F7E  2.11 */
+    --rsk-700-solid: oklch(0.652 0.282 var(--rsk-h-700));  /* ~#FF0035  3.30 */
+    --rsk-700-solid2: oklch(0.607 0.262 var(--rsk-h-700));  /* ~#F9002F  3.45 */
+    --rsk-700-text: oklch(0.543 0.193 var(--rsk-h-700));  /* ~#C72838  4.61 */
+    --rsk-700-text2: oklch(0.441 0.157 var(--rsk-h-700));  /* ~#961C28  7.01 */
+    /* 620nm */
+    --rsk-620-bg: oklch(0.920 0.017 var(--rsk-h-620));  /* ~#EFE1DC  1.06 */
+    --rsk-620-bg2: oklch(0.896 0.028 var(--rsk-h-620));  /* ~#EED7CF  1.15 */
+    --rsk-620-line: oklch(0.827 0.071 var(--rsk-h-620));  /* ~#EFB8A2  1.45 */
+    --rsk-620-line2: oklch(0.731 0.153 var(--rsk-h-620));  /* ~#F68355  2.11 */
+    --rsk-620-solid: oklch(0.708 0.230 var(--rsk-h-620));  /* ~#FF5C00  2.58 */
+    --rsk-620-solid2: oklch(0.663 0.216 var(--rsk-h-620));  /* ~#F85400  2.79 */
+    --rsk-620-text: oklch(0.534 0.143 var(--rsk-h-620));  /* ~#AE4A1D  4.60 */
+    --rsk-620-text2: oklch(0.433 0.116 var(--rsk-h-620));  /* ~#833512  7.04 */
+    /* 590nm · interface */
+    --rsk-590-bg: oklch(0.919 0.035 var(--rsk-h-590));  /* ~#EEE3CA  1.06 */
+    --rsk-590-bg2: oklch(0.894 0.059 var(--rsk-h-590));  /* ~#ECDBB0  1.14 */
+    --rsk-590-line: oklch(0.820 0.107 var(--rsk-h-590));  /* ~#E1C070  1.46 */
+    --rsk-590-line2: oklch(0.715 0.118 var(--rsk-h-590));  /* ~#C29E41  2.12 */
+    --rsk-590-solid: oklch(0.702 0.158 var(--rsk-h-590));  /* ~#C89700  2.22 */
+    --rsk-590-solid2: oklch(0.657 0.148 var(--rsk-h-590));  /* ~#B78A00  2.63 */
+    --rsk-590-text: oklch(0.521 0.096 var(--rsk-h-590));  /* ~#806519  4.61 */
+    --rsk-590-text2: oklch(0.421 0.078 var(--rsk-h-590));  /* ~#5F4A0F  7.07 */
+    /* 550nm */
+    --rsk-550-bg: oklch(0.914 0.070 var(--rsk-h-550));  /* ~#E5E7B2  1.07 */
+    --rsk-550-bg2: oklch(0.890 0.086 var(--rsk-h-550));  /* ~#DEE09E  1.15 */
+    --rsk-550-line: oklch(0.816 0.114 var(--rsk-h-550));  /* ~#C7C96F  1.46 */
+    --rsk-550-line2: oklch(0.711 0.126 var(--rsk-h-550));  /* ~#A7A840  2.10 */
+    --rsk-550-solid: oklch(0.694 0.168 var(--rsk-h-550));  /* ~#A4A400  2.22 */
+    --rsk-550-solid2: oklch(0.649 0.157 var(--rsk-h-550));  /* ~#969600  2.62 */
+    --rsk-550-text: oklch(0.516 0.103 var(--rsk-h-550));  /* ~#6C6C18  4.60 */
+    --rsk-550-text2: oklch(0.419 0.084 var(--rsk-h-550));  /* ~#50500F  7.00 */
+    /* 520nm · systems */
+    --rsk-520-bg: oklch(0.912 0.050 var(--rsk-h-520));  /* ~#C9ECD4  1.06 */
+    --rsk-520-bg2: oklch(0.884 0.087 var(--rsk-h-520));  /* ~#AAEAC1  1.15 */
+    --rsk-520-line: oklch(0.802 0.149 var(--rsk-h-520));  /* ~#60DA94  1.46 */
+    --rsk-520-line2: oklch(0.696 0.165 var(--rsk-h-520));  /* ~#19BA6F  2.11 */
+    --rsk-520-solid: oklch(0.665 0.214 var(--rsk-h-520));  /* ~#00B755  2.21 */
+    --rsk-520-solid2: oklch(0.620 0.200 var(--rsk-h-520));  /* ~#00A74D  2.63 */
+    --rsk-520-text: oklch(0.500 0.132 var(--rsk-h-520));  /* ~#007841  4.65 */
+    --rsk-520-text2: oklch(0.405 0.108 var(--rsk-h-520));  /* ~#00592E  7.08 */
+    /* 490nm */
+    --rsk-490-bg: oklch(0.915 0.025 var(--rsk-h-490));  /* ~#D1E8EC  1.06 */
+    --rsk-490-bg2: oklch(0.889 0.041 var(--rsk-h-490));  /* ~#BCE2EA  1.15 */
+    --rsk-490-line: oklch(0.811 0.103 var(--rsk-h-490));  /* ~#66D3E6  1.45 */
+    --rsk-490-line2: oklch(0.704 0.114 var(--rsk-h-490));  /* ~#28B2C7  2.11 */
+    --rsk-490-solid: oklch(0.677 0.149 var(--rsk-h-490));  /* ~#00AEC9  2.21 */
+    --rsk-490-solid2: oklch(0.632 0.139 var(--rsk-h-490));  /* ~#009FB8  2.63 */
+    --rsk-490-text: oklch(0.509 0.092 var(--rsk-h-490));  /* ~#007383  4.62 */
+    --rsk-490-text2: oklch(0.412 0.075 var(--rsk-h-490));  /* ~#005561  7.07 */
+    /* 470nm · compute */
+    --rsk-470-bg: oklch(0.917 0.014 var(--rsk-h-470));  /* ~#DDE4ED  1.07 */
+    --rsk-470-bg2: oklch(0.894 0.022 var(--rsk-h-470));  /* ~#D2DDEB  1.14 */
+    --rsk-470-line: oklch(0.819 0.056 var(--rsk-h-470));  /* ~#AAC7E8  1.45 */
+    --rsk-470-line2: oklch(0.713 0.117 var(--rsk-h-470));  /* ~#6BA6E9  2.12 */
+    --rsk-470-solid: oklch(0.606 0.224 var(--rsk-h-470));  /* ~#007FFF  3.19 */
+    --rsk-470-solid2: oklch(0.561 0.208 var(--rsk-h-470));  /* ~#0072E9  3.81 */
+    --rsk-470-text: oklch(0.521 0.159 var(--rsk-h-470));  /* ~#0069C0  4.62 */
+    --rsk-470-text2: oklch(0.421 0.129 var(--rsk-h-470));  /* ~#004D90  7.09 */
+    /* 440nm */
+    --rsk-440-bg: oklch(0.918 0.013 var(--rsk-h-440));  /* ~#E1E3ED  1.07 */
+    --rsk-440-bg2: oklch(0.894 0.022 var(--rsk-h-440));  /* ~#D7DBEB  1.15 */
+    --rsk-440-line: oklch(0.821 0.054 var(--rsk-h-440));  /* ~#BAC2E8  1.46 */
+    --rsk-440-line2: oklch(0.719 0.111 var(--rsk-h-440));  /* ~#909EEA  2.11 */
+    --rsk-440-solid: oklch(0.489 0.295 var(--rsk-h-440));  /* ~#4618FF  6.17 */
+    --rsk-440-solid2: oklch(0.454 0.274 var(--rsk-h-440));  /* ~#3F15E9  7.00 */
+    --rsk-440-text: oklch(0.536 0.217 var(--rsk-h-440));  /* ~#5054E8  4.63 */
+    --rsk-440-text2: oklch(0.442 0.219 var(--rsk-h-440));  /* ~#3B33C8  7.01 */
+    /* 405nm · intelligence */
+    --rsk-405-bg: oklch(0.919 0.015 var(--rsk-h-405));  /* ~#E5E2ED  1.06 */
+    --rsk-405-bg2: oklch(0.895 0.024 var(--rsk-h-405));  /* ~#DDD9EB  1.15 */
+    --rsk-405-line: oklch(0.825 0.060 var(--rsk-h-405));  /* ~#C9BEE9  1.45 */
+    --rsk-405-line2: oklch(0.725 0.124 var(--rsk-h-405));  /* ~#AD95EB  2.11 */
+    --rsk-405-solid: oklch(0.546 0.293 var(--rsk-h-405));  /* ~#890CFF  4.91 */
+    --rsk-405-solid2: oklch(0.501 0.269 var(--rsk-h-405));  /* ~#7A09E6  5.81 */
+    --rsk-405-text: oklch(0.547 0.240 var(--rsk-h-405));  /* ~#833CE9  4.61 */
+    --rsk-405-text2: oklch(0.444 0.196 var(--rsk-h-405));  /* ~#622BB0  7.01 */
+    /* 370nm */
+    --rsk-370-bg: oklch(0.920 0.021 var(--rsk-h-370));  /* ~#EBE0ED  1.06 */
+    --rsk-370-bg2: oklch(0.897 0.034 var(--rsk-h-370));  /* ~#E8D6EC  1.15 */
+    --rsk-370-line: oklch(0.831 0.084 var(--rsk-h-370));  /* ~#E0B6EA  1.45 */
+    --rsk-370-line2: oklch(0.735 0.173 var(--rsk-h-370));  /* ~#D881EC  2.11 */
+    --rsk-370-solid: oklch(0.650 0.319 var(--rsk-h-370));  /* ~#DD00FF  3.17 */
+    --rsk-370-solid2: oklch(0.605 0.298 var(--rsk-h-370));  /* ~#C900EB  3.73 */
+    --rsk-370-text: oklch(0.548 0.222 var(--rsk-h-370));  /* ~#A630BE  4.61 */
+    --rsk-370-text2: oklch(0.444 0.180 var(--rsk-h-370));  /* ~#7C228F  7.04 */
+  }
+
+  [data-exposure="luminous"] {
+    /* 700nm */
+    --rsk-700-bg: oklch(0.190 0.027 var(--rsk-h-700));  /* ~#1F0F0E  1.07 */
+    --rsk-700-bg2: oklch(0.225 0.040 var(--rsk-h-700));  /* ~#2C1413  1.15 */
+    --rsk-700-line: oklch(0.309 0.078 var(--rsk-h-700));  /* ~#511D1D  1.45 */
+    --rsk-700-line2: oklch(0.412 0.132 var(--rsk-h-700));  /* ~#842228  2.11 */
+    --rsk-700-solid: oklch(0.652 0.282 var(--rsk-h-700));  /* ~#FF0035  5.00 */
+    --rsk-700-solid2: oklch(0.697 0.234 var(--rsk-h-700));  /* ~#FF4757  5.93 */
+    --rsk-700-text: oklch(0.691 0.197 var(--rsk-h-700));  /* ~#FE5C62  6.52 */
+    --rsk-700-text2: oklch(0.770 0.136 var(--rsk-h-700));  /* ~#FF8F8D  9.01 */
+    /* 620nm */
+    --rsk-620-bg: oklch(0.185 0.021 var(--rsk-h-620));  /* ~#1B100B  1.06 */
+    --rsk-620-bg2: oklch(0.223 0.031 var(--rsk-h-620));  /* ~#281610  1.14 */
+    --rsk-620-line: oklch(0.306 0.059 var(--rsk-h-620));  /* ~#482416  1.45 */
+    --rsk-620-line2: oklch(0.405 0.098 var(--rsk-h-620));  /* ~#733419  2.11 */
+    --rsk-620-solid: oklch(0.708 0.230 var(--rsk-h-620));  /* ~#FF5C00  6.39 */
+    --rsk-620-solid2: oklch(0.753 0.187 var(--rsk-h-620));  /* ~#FF7F42  7.88 */
+    --rsk-620-text: oklch(0.685 0.183 var(--rsk-h-620));  /* ~#F36A2D  6.51 */
+    --rsk-620-text2: oklch(0.767 0.143 var(--rsk-h-620));  /* ~#FF9267  9.01 */
+    /* 590nm · interface */
+    --rsk-590-bg: oklch(0.186 0.015 var(--rsk-h-590));  /* ~#16130B  1.07 */
+    --rsk-590-bg2: oklch(0.218 0.021 var(--rsk-h-590));  /* ~#1E1A0F  1.14 */
+    --rsk-590-line: oklch(0.300 0.040 var(--rsk-h-590));  /* ~#362D15  1.45 */
+    --rsk-590-line2: oklch(0.397 0.066 var(--rsk-h-590));  /* ~#564517  2.13 */
+    --rsk-590-solid: oklch(0.753 0.169 var(--rsk-h-590));  /* ~#DBA600  8.92 */
+    --rsk-590-solid2: oklch(0.708 0.159 var(--rsk-h-590));  /* ~#CA9900  7.60 */
+    --rsk-590-text: oklch(0.667 0.123 var(--rsk-h-590));  /* ~#B48F28  6.50 */
+    --rsk-590-text2: oklch(0.756 0.139 var(--rsk-h-590));  /* ~#D5AA31  9.07 */
+    /* 550nm */
+    --rsk-550-bg: oklch(0.183 0.016 var(--rsk-h-550));  /* ~#13130B  1.06 */
+    --rsk-550-bg2: oklch(0.218 0.023 var(--rsk-h-550));  /* ~#1B1B0F  1.14 */
+    --rsk-550-line: oklch(0.300 0.043 var(--rsk-h-550));  /* ~#2F3015  1.46 */
+    --rsk-550-line2: oklch(0.392 0.070 var(--rsk-h-550));  /* ~#484916  2.11 */
+    --rsk-550-solid: oklch(0.744 0.180 var(--rsk-h-550));  /* ~#B4B400  8.92 */
+    --rsk-550-solid2: oklch(0.699 0.169 var(--rsk-h-550));  /* ~#A6A600  7.61 */
+    --rsk-550-text: oklch(0.661 0.131 var(--rsk-h-550));  /* ~#989926  6.52 */
+    --rsk-550-text2: oklch(0.748 0.148 var(--rsk-h-550));  /* ~#B4B52F  9.04 */
+    /* 520nm · systems */
+    --rsk-520-bg: oklch(0.182 0.020 var(--rsk-h-520));  /* ~#0B150E  1.06 */
+    --rsk-520-bg2: oklch(0.216 0.029 var(--rsk-h-520));  /* ~#0E1E14  1.14 */
+    --rsk-520-line: oklch(0.295 0.056 var(--rsk-h-520));  /* ~#113520  1.46 */
+    --rsk-520-line2: oklch(0.385 0.092 var(--rsk-h-520));  /* ~#04522D  2.12 */
+    --rsk-520-solid: oklch(0.714 0.230 var(--rsk-h-520));  /* ~#00C95E  8.97 */
+    --rsk-520-solid2: oklch(0.669 0.215 var(--rsk-h-520));  /* ~#00B956  7.61 */
+    --rsk-520-text: oklch(0.642 0.170 var(--rsk-h-520));  /* ~#00AA5E  6.51 */
+    --rsk-520-text2: oklch(0.728 0.192 var(--rsk-h-520));  /* ~#00C970  9.04 */
+    /* 490nm */
+    --rsk-490-bg: oklch(0.181 0.014 var(--rsk-h-490));  /* ~#0B1415  1.06 */
+    --rsk-490-bg2: oklch(0.217 0.020 var(--rsk-h-490));  /* ~#0E1D1F  1.14 */
+    --rsk-490-line: oklch(0.297 0.038 var(--rsk-h-490));  /* ~#123238  1.45 */
+    --rsk-490-line2: oklch(0.389 0.063 var(--rsk-h-490));  /* ~#0A4E57  2.11 */
+    --rsk-490-solid: oklch(0.726 0.159 var(--rsk-h-490));  /* ~#00BFDD  8.95 */
+    --rsk-490-solid2: oklch(0.681 0.149 var(--rsk-h-490));  /* ~#00B0CB  7.61 */
+    --rsk-490-text: oklch(0.653 0.118 var(--rsk-h-490));  /* ~#00A3B8  6.53 */
+    --rsk-490-text2: oklch(0.740 0.133 var(--rsk-h-490));  /* ~#00C1D9  9.07 */
+    /* 470nm · compute */
+    --rsk-470-bg: oklch(0.184 0.024 var(--rsk-h-470));  /* ~#0B131D  1.06 */
+    --rsk-470-bg2: oklch(0.221 0.035 var(--rsk-h-470));  /* ~#0F1C2B  1.15 */
+    --rsk-470-line: oklch(0.299 0.065 var(--rsk-h-470));  /* ~#122F4D  1.45 */
+    --rsk-470-line2: oklch(0.397 0.109 var(--rsk-h-470));  /* ~#0E487F  2.12 */
+    --rsk-470-solid: oklch(0.606 0.224 var(--rsk-h-470));  /* ~#007FFF  5.16 */
+    --rsk-470-solid2: oklch(0.651 0.196 var(--rsk-h-470));  /* ~#0190FF  6.06 */
+    --rsk-470-text: oklch(0.665 0.154 var(--rsk-h-470));  /* ~#4397EF  6.51 */
+    --rsk-470-text2: oklch(0.752 0.111 var(--rsk-h-470));  /* ~#7AB3F3  9.02 */
+    /* 440nm */
+    --rsk-440-bg: oklch(0.188 0.037 var(--rsk-h-440));  /* ~#0F1224  1.07 */
+    --rsk-440-bg2: oklch(0.221 0.054 var(--rsk-h-440));  /* ~#141834  1.14 */
+    --rsk-440-line: oklch(0.308 0.108 var(--rsk-h-440));  /* ~#222765  1.46 */
+    --rsk-440-line2: oklch(0.411 0.183 var(--rsk-h-440));  /* ~#3534AB  2.10 */
+    --rsk-440-solid: oklch(0.593 0.228 var(--rsk-h-440));  /* ~#5E65FF  4.51 */
+    --rsk-440-solid2: oklch(0.638 0.200 var(--rsk-h-440));  /* ~#6C79FF  5.48 */
+    --rsk-440-text: oklch(0.674 0.146 var(--rsk-h-440));  /* ~#7D8DEF  6.53 */
+    --rsk-440-text2: oklch(0.758 0.106 var(--rsk-h-440));  /* ~#9DABF4  9.01 */
+    /* 405nm · intelligence */
+    --rsk-405-bg: oklch(0.188 0.033 var(--rsk-h-405));  /* ~#151020  1.06 */
+    --rsk-405-bg2: oklch(0.223 0.049 var(--rsk-h-405));  /* ~#1E162F  1.14 */
+    --rsk-405-line: oklch(0.311 0.098 var(--rsk-h-405));  /* ~#36235B  1.46 */
+    --rsk-405-line2: oklch(0.414 0.164 var(--rsk-h-405));  /* ~#572D98  2.11 */
+    --rsk-405-solid: oklch(0.605 0.251 var(--rsk-h-405));  /* ~#954DFF  4.51 */
+    --rsk-405-solid2: oklch(0.650 0.219 var(--rsk-h-405));  /* ~#9F68FF  5.56 */
+    --rsk-405-text: oklch(0.680 0.163 var(--rsk-h-405));  /* ~#A380F0  6.51 */
+    --rsk-405-text2: oklch(0.764 0.117 var(--rsk-h-405));  /* ~#B9A3F4  9.05 */
+    /* 370nm */
+    --rsk-370-bg: oklch(0.188 0.031 var(--rsk-h-370));  /* ~#190F1C  1.06 */
+    --rsk-370-bg2: oklch(0.224 0.046 var(--rsk-h-370));  /* ~#251429  1.14 */
+    --rsk-370-line: oklch(0.311 0.090 var(--rsk-h-370));  /* ~#441F4C  1.46 */
+    --rsk-370-line2: oklch(0.415 0.151 var(--rsk-h-370));  /* ~#6E267D  2.11 */
+    --rsk-370-solid: oklch(0.650 0.319 var(--rsk-h-370));  /* ~#DD00FF  5.20 */
+    --rsk-370-solid2: oklch(0.695 0.274 var(--rsk-h-370));  /* ~#E34AFF  6.30 */
+    --rsk-370-text: oklch(0.694 0.226 var(--rsk-h-370));  /* ~#D762F1  6.51 */
+    --rsk-370-text2: oklch(0.774 0.162 var(--rsk-h-370));  /* ~#E291F5  9.05 */
+  }
+
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -606,12 +821,84 @@
    never its own colour. Each resolves to a mark and a text value.
    ══════════════════════════════════════════════════════════════════════ */
 
-[data-band="interface"]    { --rsk-mark: var(--rsk-mark-590); --rsk-tint: var(--rsk-text-590); }
-[data-band="systems"]      { --rsk-mark: var(--rsk-mark-520); --rsk-tint: var(--rsk-text-520); }
-[data-band="compute"]      { --rsk-mark: var(--rsk-mark-470); --rsk-tint: var(--rsk-text-470); }
-[data-band="intelligence"] { --rsk-mark: var(--rsk-mark-405); --rsk-tint: var(--rsk-text-405); }
-[data-band="warning"]      { --rsk-mark: var(--rsk-mark-620); --rsk-tint: var(--rsk-text-620); }
-[data-band="critical"]     { --rsk-mark: var(--rsk-mark-700); --rsk-tint: var(--rsk-text-700); }
+/* A band sets the WHOLE scale, not two values of it.
+
+   Until the role scale existed there were only two to set, so [data-band]
+   handed down --rsk-mark and --rsk-tint and every component that wanted a
+   wash or a border built one with color-mix at the point of use. That is
+   six improvisations of the same idea, each with its own percentage, none
+   of them solved.
+
+   Now the attribute hands down all eight steps under context-free names, so
+   a component writes var(--rsk-bg) and gets the wash belonging to whichever
+   band it is standing in. mark and tint keep their spelling — they are the
+   solid and text steps — so nothing that already worked had to change. */
+
+[data-band="interface"] {
+  --rsk-bg: var(--rsk-590-bg);
+  --rsk-bg2: var(--rsk-590-bg2);
+  --rsk-line: var(--rsk-590-line);
+  --rsk-line2: var(--rsk-590-line2);
+  --rsk-mark: var(--rsk-590-solid);
+  --rsk-mark2: var(--rsk-590-solid2);
+  --rsk-tint: var(--rsk-590-text);
+  --rsk-tint2: var(--rsk-590-text2);
+}
+
+[data-band="systems"] {
+  --rsk-bg: var(--rsk-520-bg);
+  --rsk-bg2: var(--rsk-520-bg2);
+  --rsk-line: var(--rsk-520-line);
+  --rsk-line2: var(--rsk-520-line2);
+  --rsk-mark: var(--rsk-520-solid);
+  --rsk-mark2: var(--rsk-520-solid2);
+  --rsk-tint: var(--rsk-520-text);
+  --rsk-tint2: var(--rsk-520-text2);
+}
+
+[data-band="compute"] {
+  --rsk-bg: var(--rsk-470-bg);
+  --rsk-bg2: var(--rsk-470-bg2);
+  --rsk-line: var(--rsk-470-line);
+  --rsk-line2: var(--rsk-470-line2);
+  --rsk-mark: var(--rsk-470-solid);
+  --rsk-mark2: var(--rsk-470-solid2);
+  --rsk-tint: var(--rsk-470-text);
+  --rsk-tint2: var(--rsk-470-text2);
+}
+
+[data-band="intelligence"] {
+  --rsk-bg: var(--rsk-405-bg);
+  --rsk-bg2: var(--rsk-405-bg2);
+  --rsk-line: var(--rsk-405-line);
+  --rsk-line2: var(--rsk-405-line2);
+  --rsk-mark: var(--rsk-405-solid);
+  --rsk-mark2: var(--rsk-405-solid2);
+  --rsk-tint: var(--rsk-405-text);
+  --rsk-tint2: var(--rsk-405-text2);
+}
+
+[data-band="warning"] {
+  --rsk-bg: var(--rsk-620-bg);
+  --rsk-bg2: var(--rsk-620-bg2);
+  --rsk-line: var(--rsk-620-line);
+  --rsk-line2: var(--rsk-620-line2);
+  --rsk-mark: var(--rsk-620-solid);
+  --rsk-mark2: var(--rsk-620-solid2);
+  --rsk-tint: var(--rsk-620-text);
+  --rsk-tint2: var(--rsk-620-text2);
+}
+
+[data-band="critical"] {
+  --rsk-bg: var(--rsk-700-bg);
+  --rsk-bg2: var(--rsk-700-bg2);
+  --rsk-line: var(--rsk-700-line);
+  --rsk-line2: var(--rsk-700-line2);
+  --rsk-mark: var(--rsk-700-solid);
+  --rsk-mark2: var(--rsk-700-solid2);
+  --rsk-tint: var(--rsk-700-text);
+  --rsk-tint2: var(--rsk-700-text2);
+}
 
 /* ══════════════════════════════════════════════════════════════════════
    VOICE — orthogonal to exposure.

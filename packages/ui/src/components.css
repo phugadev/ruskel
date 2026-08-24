@@ -172,15 +172,25 @@
 
 /* Destructive — the reserved 700nm mark. */
 .rsk-btn--destructive { background: var(--destructive); color: var(--destructive-foreground); }
-.rsk-btn--destructive:hover:not(:disabled) { background: color-mix(in oklab, var(--destructive) 86%, var(--rsk-ground)); }
+.rsk-btn--destructive:hover:not(:disabled) { background: var(--rsk-700-solid2); }
 
 /* Link */
+/* Ink, not amber. This was the last place a band colour was touching
+   chrome — the same mistake the focus ring and the selection highlight were
+   both corrected for, missed here because a link does not look like chrome
+   until you ask what it is ABOUT. It is about nothing; it is a control.
+   Rule 1 applies, and 590nm sitting next to an amber interface chip made
+   "link" and "classified as interface" compete for one signal.
+
+   The underline carries the affordance, which is what an underline is for.
+   Its rest state is the rule weight so the link reads as type with a line
+   under it rather than as a coloured word. */
 .rsk-btn--link {
-  background: transparent; color: var(--rsk-text-590); height: auto; padding: 0;
+  background: transparent; color: var(--rsk-text); height: auto; padding: 0;
   text-decoration: underline; text-underline-offset: 3px;
-  text-decoration-color: color-mix(in oklab, var(--rsk-text-590) 40%, transparent);
+  text-decoration-color: var(--rsk-rule-strong);
 }
-.rsk-btn--link:hover { text-decoration-color: var(--rsk-text-590); }
+.rsk-btn--link:hover { text-decoration-color: var(--rsk-text); }
 
 .rsk-btn--sm { height: var(--rsk-control-sm); padding: 0 var(--rsk-pad-x-sm); font-size: var(--rsk-text-xs); }
 .rsk-btn--lg { height: var(--rsk-control-lg); padding: 0 var(--rsk-pad-x-lg); font-size: var(--rsk-text-base); }
@@ -458,8 +468,8 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
 /* Carrying a band: the glyph takes the mark, the frame a tint of it. */
 .rsk-tile--band {
   color: var(--rsk-mark);
-  border-color: color-mix(in oklab, var(--rsk-mark) var(--rsk-band-edge), transparent);
-  background: color-mix(in oklab, var(--rsk-mark) var(--rsk-band-fill), transparent);
+  border-color: var(--rsk-line);
+  background: var(--rsk-bg);
 }
 
 /*
@@ -644,12 +654,13 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   background: var(--rsk-surface-2);
   display: block;
 }
-/* Four filled steps over the empty ground. Mixed against --rsk-surface
-   rather than given alpha, so the cells stay opaque and do not pick up
-   whatever sits behind the grid. */
-.rsk-density i[data-level="1"] { background: color-mix(in oklab, var(--rsk-mark) 28%, var(--rsk-surface-2)); }
-.rsk-density i[data-level="2"] { background: color-mix(in oklab, var(--rsk-mark) 52%, var(--rsk-surface-2)); }
-.rsk-density i[data-level="3"] { background: color-mix(in oklab, var(--rsk-mark) 76%, var(--rsk-surface-2)); }
+/* Four filled steps over the empty ground, taken straight off the band's
+   own role scale: bg2, line, line2, solid. Previously these were four
+   hand-picked mixes of the mark into the surface — the same ramp the scale
+   now solves, guessed at instead. They stay opaque either way. */
+.rsk-density i[data-level="1"] { background: var(--rsk-bg2); }
+.rsk-density i[data-level="2"] { background: var(--rsk-line); }
+.rsk-density i[data-level="3"] { background: var(--rsk-line2); }
 .rsk-density i[data-level="4"] { background: var(--rsk-mark); }
 
 .rsk-density-legend {
