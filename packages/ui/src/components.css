@@ -98,6 +98,39 @@
   Display sizes only: Instrument Serif is high-contrast and loses its footing
   under about 24px. Below --rsk-text-2xl, use the sans.
 */
+/* ══════════════════════════════════════════════════════════════════════
+   PROSE — body copy is not chrome, and emphasis needs somewhere to go
+
+   A label, a value, a control: all of those must be FOUND, so they sit at
+   --rsk-text and maximum contrast. A paragraph is different. It is read
+   continuously, and setting it at 16.3:1 leaves <strong> nothing to do but
+   change weight, which at 500 against 400 is a whisper.
+
+   So prose sits a step back at --rsk-text-prose, ~10:1, and emphasis steps
+   forward to full contrast. On paper that means grey body and ink-black
+   bold; on ink, grey body and paper-white bold. Same relationship, both
+   grounds, one declaration — the exposure has already flipped --rsk-text
+   and --rsk-text-prose underneath it.
+
+   This is the one place the system asks you to mark up a block: prose that
+   is not inside .rsk-prose or .rsk-authored keeps the interface colour,
+   because a paragraph in a dialog usually IS chrome.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.rsk-prose,
+.rsk-authored { color: var(--rsk-text-prose); }
+
+.rsk-prose :is(strong, b),
+.rsk-authored :is(strong, b) {
+  color: var(--rsk-text);
+  font-weight: 500;
+}
+
+/* Links inside prose are the exception that proves rule 1: they take full
+   contrast too, because a link IS emphasis plus an affordance. */
+.rsk-prose a,
+.rsk-authored a { color: var(--rsk-text); text-decoration-color: var(--rsk-rule-strong); }
+
 .rsk-authored {
   font-family: var(--rsk-font-serif);
   font-weight: 400;

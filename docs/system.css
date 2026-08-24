@@ -145,3 +145,8 @@ section:first-of-type { border-top:0; }
 .dot--green { background:var(--rsk-520-solid); box-shadow:var(--rsk-glow-sm); }
 .dot--amber { background:var(--rsk-620-solid); }
 .dot--red   { background:var(--rsk-700-solid); }
+
+.prosedemo { display:grid; grid-template-columns:1fr 280px; gap:var(--rsk-space-07); align-items:start; }
+.prosedemo .rsk-prose p { font-size:var(--rsk-text-lg); line-height:1.6; margin:0; max-width:62ch; }
+.prosedemo__m { display:flex; flex-direction:column; gap:4px; border:1px solid var(--rsk-rule);
+                border-radius:var(--radius); padding:12px 14px; }

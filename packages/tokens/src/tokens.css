@@ -271,10 +271,27 @@
   color-scheme: light;
 
   --rsk-ground: var(--rsk-n-10);
-  --rsk-surface: oklch(0.960 0.008 var(--rsk-h-neutral));
-  --rsk-surface-2: oklch(0.982 0.005 var(--rsk-h-neutral));
+  /* Four levels, and the first three moved to make room. Paper sits at
+     L 0.937 and white is 1.000, so editorial has 0.063 of lightness for the
+     whole stack — three levels had eaten it and a fourth would have scraped
+     in at a step half the size of the others. Sharing it evenly costs
+     surface 0.002 and surface-2 0.004, which is nothing, and buys a stack
+     whose rungs are the same height: 1.064, 1.063, 1.054.
+
+     Chroma tapers toward the top because the warmth has less room to sit in
+     as the ground approaches white; surface-3 keeps a trace of it rather
+     than going pure, so the raised surface still belongs to the family. */
+  --rsk-surface: oklch(0.958 0.008 var(--rsk-h-neutral));
+  --rsk-surface-2: oklch(0.978 0.005 var(--rsk-h-neutral));
+  --rsk-surface-3: oklch(0.996 0.003 var(--rsk-h-neutral));
   --rsk-text: var(--rsk-n-01);                                /* 16.3:1 */
-  --rsk-text-prose: var(--rsk-n-03);
+  /* Prose is not chrome. --rsk-text is maximum contrast, which is right
+     for a label or a value that must be found, and too loud for a
+     paragraph you are meant to sink into. Body copy sits a step back at
+     ~10:1 so that <strong> can step forward to 16.3:1 and be seen doing it.
+     Set the whole paragraph at maximum contrast and bold has nowhere to go
+     but weight alone, which at 500 is not much of a signal. */
+  --rsk-text-prose: var(--rsk-n-04);   /* 10.0:1 on paper */
   --rsk-text-muted: oklch(0.470 0.011 var(--rsk-h-neutral));   /*  5.4:1 */
   --rsk-text-faint: oklch(0.545 0.012 var(--rsk-h-neutral));   /*  4.1:1 non-essential */
 
@@ -387,11 +404,6 @@
   --rsk-mark-405: var(--rsk-405-solid);   --rsk-text-405: var(--rsk-405-text);
   --rsk-mark-370: var(--rsk-370-solid);   --rsk-text-370: var(--rsk-370-text);
 
-  /* Deep stops — chart series 5–8 */
-  --rsk-deep-590: oklch(0.400 0.078 var(--rsk-h-590));
-  --rsk-deep-520: oklch(0.380 0.089 var(--rsk-h-520));
-  --rsk-deep-470: oklch(0.420 0.121 var(--rsk-h-470));
-  --rsk-deep-405: oklch(0.340 0.176 var(--rsk-h-405));
 
 
   /* On a mark: paper, because editorial marks are dark. */
@@ -418,10 +430,15 @@
 
 
   --rsk-ground: var(--rsk-n-01);
+  /* Ink has room, so the four levels are simply ramp steps 01-04. The
+     rungs widen going up — 1.104, 1.143, 1.238 — which is correct rather
+     than sloppy: a fixed lightness step is less visible the darker it is,
+     so even-looking separation needs growing steps at the ink end. */
   --rsk-surface: var(--rsk-n-02);
   --rsk-surface-2: var(--rsk-n-03);
+  --rsk-surface-3: var(--rsk-n-04);
   --rsk-text: var(--rsk-n-10);          /* 16.3:1 */
-  --rsk-text-prose: var(--rsk-n-09);
+  --rsk-text-prose: var(--rsk-n-08);   /*  9.7:1 on ink */
   --rsk-text-muted: var(--rsk-n-07);    /*  5.8:1 */
   --rsk-text-faint: var(--rsk-n-06);    /*  4.0:1 non-essential */
 
@@ -534,11 +551,6 @@
   --rsk-mark-405: var(--rsk-405-solid);   --rsk-text-405: var(--rsk-405-text);
   --rsk-mark-370: var(--rsk-370-solid);   --rsk-text-370: var(--rsk-370-text);
 
-  /* Deep stops — chart series 5–8 */
-  --rsk-deep-590: oklch(0.480 0.093 var(--rsk-h-590));
-  --rsk-deep-520: oklch(0.540 0.125 var(--rsk-h-520));
-  --rsk-deep-470: oklch(0.460 0.132 var(--rsk-h-470));
-  --rsk-deep-405: oklch(0.760 0.133 var(--rsk-h-405));
 
 
   /* On a mark: ink, because luminous marks are light. */
@@ -1036,10 +1048,6 @@
   --chart-5: var(--rsk-mark-405);   /* violet  */
   --chart-6: var(--rsk-mark-370);   /* magenta */
 
-  /* Overflow only, and a deliberate step down in vividness. Reach for
-     these when a chart genuinely needs 7-8 series and direct labelling
-     is not possible — never as a first choice. */
-  --chart-7: var(--rsk-deep-470);  --chart-8: var(--rsk-deep-405);
 
   /* Chart furniture. Gridlines sit below the hairline weight so they never
      compete with the series. */

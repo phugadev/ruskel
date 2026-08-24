@@ -61,14 +61,17 @@
   <div class="ramp" data-ramp="n"></div>
 
   <h3>Surfaces</h3>
-  <p class="note">What the ramp is actually for. Three levels today — the audit calls this out.</p>
+  <p class="note">What the ramp is actually for. Four levels — page, card, popover, dialog. Editorial has only 0.063 of lightness between paper and white, so all four share it evenly rather than three eating it and a fourth scraping in. Ink has room, so its four are simply ramp steps 01&ndash;04, with rungs that widen going up because a fixed lightness step is less visible the darker it is.</p>
   <div class="surfaces">
     <div class="surf" style="background:var(--rsk-ground)"><span>ground</span><code data-hexof="--rsk-ground"></code>
       <div class="surf" style="background:var(--rsk-surface)"><span>surface</span><code data-hexof="--rsk-surface"></code>
-        <div class="surf" style="background:var(--rsk-surface-2)"><span>surface-2</span><code data-hexof="--rsk-surface-2"></code></div>
+        <div class="surf" style="background:var(--rsk-surface-2)"><span>surface-2</span><code data-hexof="--rsk-surface-2"></code>
+          <div class="surf" style="background:var(--rsk-surface-3)"><span>surface-3</span><code data-hexof="--rsk-surface-3"></code></div>
+        </div>
       </div>
     </div>
   </div>
+  <div class="matrix" id="surfsteps"></div>
 
   <h3>The role scale · 10 hues × 8 steps</h3>
   <p class="note">Each step is named for the job it does, not for how light it is. This is what lets a whole component be built out of one hue without improvising: <code>bg</code> + <code>line</code> + <code>text</code> is a complete tinted panel.</p>
@@ -118,6 +121,15 @@
   </div>
 
   <p class="note">The serif is gated on <b>voice</b>, not exposure — a dark site that publishes essays is luminous <em>and</em> authored. Without <code>data-voice="author"</code> the serif stack resolves to the sans, so product surfaces cannot leak it.</p>
+
+  <h3>Prose sits back so emphasis can step forward</h3>
+  <p class="note">Body copy runs at <code>--rsk-text-prose</code>, about 10:1 — comfortably past AAA, and deliberately not maximum. That leaves <code>&lt;strong&gt;</code> somewhere to go: full contrast at 16.5:1, a 1.65&times; jump. Set the paragraph at maximum and bold has nothing but weight, which at 500 against 400 is a whisper.</p>
+  <div class="prosedemo">
+    <div class="rsk-prose">
+      <p>The mark ring is shared between exposures &mdash; a vivid mark is a vivid mark on either ground. Only the text ring re-solves, pulled back until it passes <strong>AA against whatever it is standing on</strong>. That asymmetry is the whole argument: colour that is <strong>seen</strong> and colour that is <strong>read</strong> answer to different constraints, and pretending otherwise is what made the earlier ring look like mud.</p>
+    </div>
+    <div class="prosedemo__m" id="prosemeasure"></div>
+  </div>
 
   <h3>Scale</h3>
   <div class="typescale" id="typescale"></div>

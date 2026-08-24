@@ -79,12 +79,14 @@
 
   /* ── Ground and surfaces ─────────────────────────────────────────────
      bg-ground is the page itself; bg-surface and bg-surface-2 step up from
-     it. Kept alongside --color-background rather than instead of it: the
+     it, and surface-3 above that. Kept alongside --color-background rather
+     than instead of it: the
      shadcn names are what components read, these are what you reach for
      when writing layout by hand. */
   --color-ground: var(--rsk-ground);
   --color-surface: var(--rsk-surface);
   --color-surface-2: var(--rsk-surface-2);
+  --color-surface-3: var(--rsk-surface-3);
 
   /* ── Text ────────────────────────────────────────────────────────────
      `ink` rather than `text`, because a --color-text-muted key generates
@@ -103,13 +105,6 @@
   --color-rule: var(--rsk-rule);
   --color-rule-strong: var(--rsk-rule-strong);
 
-  /* ── Deep stops ──────────────────────────────────────────────────────
-     The second categorical of each named band. A fifth chart series that
-     reads as a variant of a band rather than a category nobody can name. */
-  --color-deep-590: var(--rsk-deep-590);
-  --color-deep-520: var(--rsk-deep-520);
-  --color-deep-470: var(--rsk-deep-470);
-  --color-deep-405: var(--rsk-deep-405);
 
 
   /* ── The role scale ──────────────────────────────────────────────────
@@ -250,8 +245,6 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-chart-6: var(--chart-6);
-  --color-chart-7: var(--chart-7);
-  --color-chart-8: var(--chart-8);
   --color-chart-grid: var(--chart-grid);
   --color-chart-axis: var(--chart-axis);
   --color-chart-label: var(--chart-label);
