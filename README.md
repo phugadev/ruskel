@@ -251,4 +251,14 @@ spacing, density, exposure, and 46 components. Thin: motion is two tokens.
 Absent: charts are tokenised but no library is wired, and there is no icon
 set. `--rsk-fg-*` rank naming is on trial and may move.
 
-Not yet published to npm.
+### Published
+
+npm carries **0.7.0** for both packages. `main` is 0.9.0 and unpublished, so
+everything between the two is only available from the registry manifest or
+from source — including the emission fix. **0.7.0 ships a glow that never
+fires**: `--rsk-glow-*` was declared on `[data-exposure]`, above the element
+that sets `--rsk-mark`, so it substituted to `transparent` and inherited that
+everywhere. Nothing in the luminous exposure emits on 0.7.0.
+
+0.9.0 is breaking against 0.7.0 — the public names changed shape — so `^0.7.0`
+will not pick it up, which is correct.
