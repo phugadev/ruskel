@@ -73,7 +73,7 @@
    a pixel to its box, and derives from --rsk-text so it flips with the
    exposure like every other rule in the system. */
 [data-exposure] :is(img, video) {
-  outline: 1px solid color-mix(in oklab, var(--rsk-text) 8%, transparent);
+  outline: 1px solid color-mix(in oklab, var(--rsk-fg-primary) 8%, transparent);
   outline-offset: -1px;
 }
 
@@ -107,7 +107,7 @@
   font-size: var(--rsk-text-2xs);
   letter-spacing: var(--rsk-tracking-label);
   text-transform: uppercase;
-  color: var(--rsk-text-faint);
+  color: var(--rsk-fg-metadata);
   line-height: 1.4;
 }
 
@@ -145,18 +145,18 @@
    ══════════════════════════════════════════════════════════════════════ */
 
 .rsk-prose,
-.rsk-authored { color: var(--rsk-text-prose); }
+.rsk-authored { color: var(--rsk-fg-secondary); }
 
 .rsk-prose :is(strong, b),
 .rsk-authored :is(strong, b) {
-  color: var(--rsk-text);
+  color: var(--rsk-fg-primary);
   font-weight: 500;
 }
 
 /* Links inside prose are the exception that proves rule 1: they take full
    contrast too, because a link IS emphasis plus an affordance. */
 .rsk-prose a,
-.rsk-authored a { color: var(--rsk-text); text-decoration-color: var(--rsk-rule-strong); }
+.rsk-authored a { color: var(--rsk-fg-primary); text-decoration-color: var(--rsk-border-strong); }
 
 .rsk-authored {
   font-family: var(--rsk-font-serif);
@@ -175,10 +175,10 @@
   font-size: var(--rsk-text-2xl);
   line-height: 1.25;
   letter-spacing: var(--rsk-tracking-serif);
-  border-left: 2px solid var(--rsk-mark, var(--rsk-rule-strong));
+  border-left: 2px solid var(--rsk-band-solid, var(--rsk-border-strong));
   padding-left: var(--rsk-pad-x-lg);
   margin: var(--rsk-text-2xl) 0;
-  color: var(--rsk-text);
+  color: var(--rsk-fg-primary);
 }
 
 .rsk-display {
@@ -195,10 +195,10 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  height: var(--rsk-control-md);
+  height: var(--rsk-size-control-md);
   padding: 0 var(--rsk-pad-x-md);
   border-radius: var(--radius);
-  border: var(--rsk-hairline) solid transparent;
+  border: var(--rsk-size-hairline) solid transparent;
   font-family: var(--rsk-font-sans);
   font-size: var(--rsk-text-sm);
   font-weight: 500;
@@ -213,22 +213,22 @@
 
 /* Primary — ink on paper, paper on ink. A block of type, not a colour event. */
 .rsk-btn--primary { background: var(--primary); color: var(--primary-foreground); }
-.rsk-btn--primary:hover:not(:disabled) { background: color-mix(in oklab, var(--primary) 86%, var(--rsk-ground)); }
-.rsk-btn--primary:active:not(:disabled) { background: color-mix(in oklab, var(--primary) 76%, var(--rsk-ground)); }
+.rsk-btn--primary:hover:not(:disabled) { background: color-mix(in oklab, var(--primary) 86%, var(--rsk-bg-canvas)); }
+.rsk-btn--primary:active:not(:disabled) { background: color-mix(in oklab, var(--primary) 76%, var(--rsk-bg-canvas)); }
 
 /* Secondary — filled surface with a hairline. */
 .rsk-btn--secondary {
-  background: var(--rsk-surface-2); color: var(--rsk-text); border-color: var(--rsk-rule);
+  background: var(--rsk-bg-raised); color: var(--rsk-fg-primary); border-color: var(--rsk-border-default);
 }
-.rsk-btn--secondary:hover:not(:disabled) { border-color: var(--rsk-rule-strong); background: var(--rsk-surface); }
+.rsk-btn--secondary:hover:not(:disabled) { border-color: var(--rsk-border-strong); background: var(--rsk-bg-surface); }
 
 /* Outline — hairline only, no fill. */
-.rsk-btn--outline { background: transparent; color: var(--rsk-text); border-color: var(--rsk-rule); }
-.rsk-btn--outline:hover:not(:disabled) { border-color: var(--rsk-rule-strong); background: var(--rsk-surface); }
+.rsk-btn--outline { background: transparent; color: var(--rsk-fg-primary); border-color: var(--rsk-border-default); }
+.rsk-btn--outline:hover:not(:disabled) { border-color: var(--rsk-border-strong); background: var(--rsk-bg-surface); }
 
 /* Ghost — text until touched. */
-.rsk-btn--ghost { background: transparent; color: var(--rsk-text-muted); }
-.rsk-btn--ghost:hover:not(:disabled) { background: var(--rsk-surface); color: var(--rsk-text); }
+.rsk-btn--ghost { background: transparent; color: var(--rsk-fg-tertiary); }
+.rsk-btn--ghost:hover:not(:disabled) { background: var(--rsk-bg-surface); color: var(--rsk-fg-primary); }
 
 /* Destructive — the reserved 700nm mark. */
 /* Solid destructive takes INK type, not paper, and the measurement is not
@@ -237,7 +237,7 @@
    best anywhere is 3.65:1. White-on-red looks like the obvious answer and
    fails AA. */
 .rsk-btn--destructive { background: var(--destructive); color: var(--destructive-foreground); }
-.rsk-btn--destructive:hover:not(:disabled) { background: var(--rsk-spectrum-700-solid2); }
+.rsk-btn--destructive:hover:not(:disabled) { background: var(--rsk-danger-solid-hover); }
 
 /* The quieter destructive: the alarm hue as a wash with the alarm hue as
    type, rather than as a filled block. A solid red button shouts before the
@@ -246,12 +246,12 @@
    actions actually want — legible as dangerous, not as urgent — and it only
    became expressible when the role scale gave 700nm a bg and a text step. */
 .rsk-btn--destructive-subtle {
-  background: var(--rsk-spectrum-700-bg);
-  color: var(--rsk-spectrum-700-text);
-  border-color: var(--rsk-spectrum-700-line);
+  background: var(--rsk-danger-bg);
+  color: var(--rsk-danger-fg);
+  border-color: var(--rsk-danger-line);
 }
-.rsk-btn--destructive-subtle:hover:not(:disabled) { background: var(--rsk-spectrum-700-bg2); }
-.rsk-btn--destructive-subtle:active:not(:disabled) { background: var(--rsk-spectrum-700-line); }
+.rsk-btn--destructive-subtle:hover:not(:disabled) { background: var(--rsk-danger-bg-hover); }
+.rsk-btn--destructive-subtle:active:not(:disabled) { background: var(--rsk-danger-line); }
 
 /* Link */
 /* Ink, not amber. This was the last place a band colour was touching
@@ -265,15 +265,15 @@
    Its rest state is the rule weight so the link reads as type with a line
    under it rather than as a coloured word. */
 .rsk-btn--link {
-  background: transparent; color: var(--rsk-text); height: auto; padding: 0;
+  background: transparent; color: var(--rsk-fg-primary); height: auto; padding: 0;
   text-decoration: underline; text-underline-offset: 3px;
-  text-decoration-color: var(--rsk-rule-strong);
+  text-decoration-color: var(--rsk-border-strong);
 }
-.rsk-btn--link:hover { text-decoration-color: var(--rsk-text); }
+.rsk-btn--link:hover { text-decoration-color: var(--rsk-fg-primary); }
 
-.rsk-btn--sm { height: var(--rsk-control-sm); padding: 0 var(--rsk-pad-x-sm); font-size: var(--rsk-text-xs); }
-.rsk-btn--lg { height: var(--rsk-control-lg); padding: 0 var(--rsk-pad-x-lg); font-size: var(--rsk-text-base); }
-.rsk-btn--icon { width: var(--rsk-control-md); padding: 0; }
+.rsk-btn--sm { height: var(--rsk-size-control-sm); padding: 0 var(--rsk-pad-x-sm); font-size: var(--rsk-text-xs); }
+.rsk-btn--lg { height: var(--rsk-size-control-lg); padding: 0 var(--rsk-pad-x-lg); font-size: var(--rsk-text-base); }
+.rsk-btn--icon { width: var(--rsk-size-control-md); padding: 0; }
 
 /* ══════════════════════════════════════════════════════════════════════
    INPUT · TEXTAREA · SELECT
@@ -281,28 +281,28 @@
 
 .rsk-input {
   width: 100%;
-  height: var(--rsk-control-md);
+  height: var(--rsk-size-control-md);
   padding: 0 10px;
   border-radius: var(--radius);
-  border: var(--rsk-hairline) solid var(--input);
-  background: var(--rsk-ground);
-  color: var(--rsk-text);
+  border: var(--rsk-size-hairline) solid var(--input);
+  background: var(--rsk-bg-canvas);
+  color: var(--rsk-fg-primary);
   font-family: var(--rsk-font-sans);
   font-size: var(--rsk-text-sm);
   transition: border-color var(--duration) var(--ease);
 }
-.rsk-input::placeholder { color: var(--rsk-text-faint); }
-.rsk-input:hover:not(:disabled) { border-color: var(--rsk-rule-strong); }
+.rsk-input::placeholder { color: var(--rsk-fg-metadata); }
+.rsk-input:hover:not(:disabled) { border-color: var(--rsk-border-strong); }
 .rsk-input:disabled { opacity: 0.5; cursor: not-allowed; }
-.rsk-input[aria-invalid="true"] { border-color: var(--rsk-mark-700); }
+.rsk-input[aria-invalid="true"] { border-color: var(--rsk-danger-solid); }
 textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: vertical; line-height: 1.5; }
 
 /* Search and any field holding data uses mono. */
 .rsk-input--mono { font-family: var(--rsk-font-mono); font-size: var(--rsk-text-xs); }
 
 .rsk-field { display: flex; flex-direction: column; gap: 5px; }
-.rsk-field .rsk-hint { font-size: var(--rsk-text-xs); color: var(--rsk-text-muted); }
-.rsk-field .rsk-error { font-size: var(--rsk-text-xs); color: var(--rsk-text-700); }
+.rsk-field .rsk-hint { font-size: var(--rsk-text-xs); color: var(--rsk-fg-tertiary); }
+.rsk-field .rsk-error { font-size: var(--rsk-text-xs); color: var(--rsk-danger-fg); }
 
 /* ══════════════════════════════════════════════════════════════════════
    CHECKBOX · RADIO · SWITCH
@@ -311,9 +311,9 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
 .rsk-check {
   appearance: none; margin: 0;
   width: 15px; height: 15px;
-  border: var(--rsk-hairline) solid var(--rsk-rule-strong);
+  border: var(--rsk-size-hairline) solid var(--rsk-border-strong);
   border-radius: var(--radius-sm);       /* near-square, per house geometry */
-  background: var(--rsk-ground);
+  background: var(--rsk-bg-canvas);
   display: inline-grid; place-content: center;
   cursor: pointer;
   transition: background-color var(--duration) var(--ease), border-color var(--duration) var(--ease);
@@ -336,15 +336,15 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   appearance: none; margin: 0;
   width: 32px; height: 18px;
   border-radius: 999px;
-  background: var(--rsk-surface-2);
-  border: var(--rsk-hairline) solid var(--rsk-rule-strong);
+  background: var(--rsk-bg-raised);
+  border: var(--rsk-size-hairline) solid var(--rsk-border-strong);
   position: relative; cursor: pointer;
   transition: background-color var(--duration) var(--ease), border-color var(--duration) var(--ease);
 }
 .rsk-switch::after {
   content: ""; position: absolute; top: 2px; left: 2px;
   width: 12px; height: 12px; border-radius: 50%;
-  background: var(--rsk-text-muted);
+  background: var(--rsk-fg-tertiary);
   transition: transform var(--duration) var(--ease), background-color var(--duration) var(--ease);
 }
 .rsk-switch:checked { background: var(--primary); border-color: var(--primary); }
@@ -359,9 +359,9 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   height: 20px; padding: 0 9px;
   /* A chip is a token, not a container — see the radius note in tokens.css. */
   border-radius: var(--radius-pill);
-  border: var(--rsk-hairline) solid var(--rsk-rule);
-  background: var(--rsk-surface);
-  color: var(--rsk-text);
+  border: var(--rsk-size-hairline) solid var(--rsk-border-default);
+  background: var(--rsk-bg-surface);
+  color: var(--rsk-fg-primary);
   font-family: var(--rsk-font-mono);
   font-size: var(--rsk-text-2xs);
   letter-spacing: var(--rsk-tracking-label);
@@ -372,60 +372,65 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
    Tinted-background-plus-tinted-text cancels itself out and reads as mud. */
 .rsk-chip::before {
   content: ""; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--rsk-mark); box-shadow: var(--rsk-glow-sm), var(--rsk-dot-ring); flex: none;
+  background: var(--rsk-band-solid); box-shadow: var(--rsk-glow-sm), var(--rsk-dot-ring); flex: none;
 }
 .rsk-chip--solid {
   border-radius: var(--radius-pill);
-  background: var(--rsk-mark); color: var(--rsk-on-mark);
+  background: var(--rsk-band-solid); color: var(--rsk-fg-on-solid);
   border-color: transparent; box-shadow: var(--rsk-glow-sm); font-weight: 500;
 }
 .rsk-chip--solid::before { display: none; }
 .rsk-chip--bare::before { display: none; }
 
 /*
-  Labelled categories. A chip always carries its name, so colour is redundant
-  reinforcement rather than the carrier — which is why these may use any of
-  the eight categorical hues, including the display pair the six-hue chart
-  floor excludes. 620nm and 700nm stay out: an alarm hue used as a category
-  is a lie however well labelled.
+  The four display stops — 550, 490, 440 and 370 — used to be reachable here
+  as [data-band="lime|cyan|indigo|magenta"]. They are gone. A band names a
+  SUBJECT, and "magenta" names a colour; having both in one attribute was
+  the mixed vocabulary the semantic layer exists to prevent, and it forced
+  anyone reading the markup to know which values meant something and which
+  were just hues.
+
+  Those four hues still exist in the engine and are still reachable through
+  the chart series, which is the one place a colour legitimately carries no
+  meaning beyond "not the previous one".
 */
-[data-band="lime"]    { --rsk-mark: var(--rsk-mark-550); --rsk-tint: var(--rsk-text-550); }
-[data-band="cyan"]    { --rsk-mark: var(--rsk-mark-490); --rsk-tint: var(--rsk-text-490); }
-[data-band="indigo"]  { --rsk-mark: var(--rsk-mark-440); --rsk-tint: var(--rsk-text-440); }
-[data-band="magenta"] { --rsk-mark: var(--rsk-mark-370); --rsk-tint: var(--rsk-text-370); }
 
 /* ══════════════════════════════════════════════════════════════════════
    CARD · SEPARATOR
    ══════════════════════════════════════════════════════════════════════ */
 
 .rsk-card {
-  border: var(--rsk-hairline) solid var(--rsk-rule);
+  border: var(--rsk-size-hairline) solid var(--rsk-border-default);
   border-radius: var(--radius);
-  background: var(--rsk-surface);
+  background: var(--rsk-bg-surface);
   box-shadow: none;
 }
-.rsk-card__head { padding: 12px 14px; border-bottom: var(--rsk-hairline) solid var(--rsk-rule); }
+.rsk-card__head { padding: 12px 14px; border-bottom: var(--rsk-size-hairline) solid var(--rsk-border-default); }
 .rsk-card__body { padding: 14px; }
-.rsk-card__foot { padding: 12px 14px; border-top: var(--rsk-hairline) solid var(--rsk-rule); }
+.rsk-card__foot { padding: 12px 14px; border-top: var(--rsk-size-hairline) solid var(--rsk-border-default); }
 
-.rsk-sep { border: 0; border-top: var(--rsk-hairline) solid var(--rsk-rule); margin: 0; }
+.rsk-sep { border: 0; border-top: var(--rsk-size-hairline) solid var(--rsk-border-default); margin: 0; }
 
 /* ══════════════════════════════════════════════════════════════════════
    TABS — underline, never a pill segment
    ══════════════════════════════════════════════════════════════════════ */
 
-.rsk-tabs { display: flex; gap: 2px; border-bottom: var(--rsk-hairline) solid var(--rsk-rule); }
+.rsk-tabs { display: flex; gap: 2px; border-bottom: var(--rsk-size-hairline) solid var(--rsk-border-default); }
 .rsk-tab {
   appearance: none; background: transparent; border: 0;
   padding: 7px 12px;
   font-family: var(--rsk-font-mono); font-size: var(--rsk-text-2xs);
   letter-spacing: var(--rsk-tracking-label); text-transform: uppercase;
-  color: var(--rsk-text-faint); cursor: pointer;
+  color: var(--rsk-fg-metadata); cursor: pointer;
   border-bottom: 2px solid transparent; margin-bottom: -1px;
   transition: color var(--duration) var(--ease), border-color var(--duration) var(--ease);
 }
-.rsk-tab:hover { color: var(--rsk-text); }
-.rsk-tab[aria-selected="true"] { color: var(--rsk-text); border-bottom-color: var(--rsk-mark-590); }
+.rsk-tab:hover { color: var(--rsk-fg-primary); }
+/* Ink, not amber. A selected tab is the interface reporting state, not a
+   thing that is ABOUT interface — the same correction already applied to
+   the focus ring, the selection highlight and the link. This is the fourth
+   place the reflex reached for 590nm. */
+.rsk-tab[aria-selected="true"] { color: var(--rsk-fg-primary); border-bottom-color: var(--rsk-fg-primary); }
 
 /* ══════════════════════════════════════════════════════════════════════
    TABLE
@@ -434,15 +439,15 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
 .rsk-table { width: 100%; border-collapse: collapse; font-size: var(--rsk-text-sm); }
 .rsk-table th {
   text-align: left; padding: 8px 12px;
-  border-bottom: var(--rsk-hairline) solid var(--rsk-rule);
+  border-bottom: var(--rsk-size-hairline) solid var(--rsk-border-default);
   font-family: var(--rsk-font-mono); font-size: var(--rsk-text-2xs); font-weight: 400;
   letter-spacing: var(--rsk-tracking-label); text-transform: uppercase;
-  color: var(--rsk-text-faint); white-space: nowrap;
+  color: var(--rsk-fg-metadata); white-space: nowrap;
 }
-.rsk-table td { padding: 8px 12px; border-bottom: var(--rsk-hairline) solid var(--rsk-rule); }
+.rsk-table td { padding: 8px 12px; border-bottom: var(--rsk-size-hairline) solid var(--rsk-border-default); }
 .rsk-table tr:last-child td { border-bottom: 0; }
-.rsk-table tbody tr:hover { background: var(--rsk-surface); }
-.rsk-table .num { font-family: var(--rsk-font-mono); font-variant-numeric: tabular-nums; text-align: right; color: var(--rsk-text-muted); }
+.rsk-table tbody tr:hover { background: var(--rsk-bg-surface); }
+.rsk-table .num { font-family: var(--rsk-font-mono); font-variant-numeric: tabular-nums; text-align: right; color: var(--rsk-fg-tertiary); }
 
 /* ══════════════════════════════════════════════════════════════════════
    ALERT — a rail, not a tinted box
@@ -451,27 +456,27 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
 .rsk-alert {
   display: grid; grid-template-columns: auto 1fr; gap: 10px;
   padding: 11px 13px;
-  border: var(--rsk-hairline) solid var(--rsk-rule);
-  border-left: 2px solid var(--rsk-mark, var(--rsk-rule-strong));
+  border: var(--rsk-size-hairline) solid var(--rsk-border-default);
+  border-left: 2px solid var(--rsk-band-solid, var(--rsk-border-strong));
   border-radius: var(--radius);
-  background: var(--rsk-surface);
+  background: var(--rsk-bg-surface);
 }
 .rsk-alert__title { font-size: var(--rsk-text-sm); font-weight: 500; margin: 0; }
-.rsk-alert__body { font-size: var(--rsk-text-sm); color: var(--rsk-text-muted); margin: 3px 0 0; }
+.rsk-alert__body { font-size: var(--rsk-text-sm); color: var(--rsk-fg-tertiary); margin: 3px 0 0; }
 
 /* ══════════════════════════════════════════════════════════════════════
    DIALOG · POPOVER · TOOLTIP
    ══════════════════════════════════════════════════════════════════════ */
 
 .rsk-dialog {
-  border: var(--rsk-hairline) solid var(--rsk-rule-strong);
+  border: var(--rsk-size-hairline) solid var(--rsk-border-strong);
   border-radius: var(--radius-lg);
-  background: var(--rsk-surface-2);
+  background: var(--rsk-bg-raised);
   box-shadow: none;
 }
-.rsk-overlay { background: color-mix(in oklab, var(--rsk-neutral-01) 62%, transparent); }
+.rsk-overlay { background: var(--rsk-scrim); }
 .rsk-tooltip {
-  background: var(--rsk-text); color: var(--rsk-ground);
+  background: var(--rsk-fg-primary); color: var(--rsk-bg-canvas);
   padding: 4px 7px; border-radius: var(--radius-sm);
   font-family: var(--rsk-font-mono); font-size: var(--rsk-text-2xs);
   letter-spacing: 0.04em;
@@ -482,18 +487,18 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
    ══════════════════════════════════════════════════════════════════════ */
 
 .rsk-progress {
-  height: 4px; border-radius: 1px; background: var(--rsk-surface-2); overflow: hidden;
+  height: 4px; border-radius: 1px; background: var(--rsk-bg-raised); overflow: hidden;
 }
 .rsk-progress__bar {
-  height: 100%; background: var(--rsk-mark, var(--primary)); box-shadow: var(--rsk-glow-sm);
+  height: 100%; background: var(--rsk-band-solid, var(--primary)); box-shadow: var(--rsk-glow-sm);
 }
 /* Segmented meter — the instrument-panel read, per the reference boards. */
 .rsk-meter { display: flex; gap: 2px; height: 14px; }
-.rsk-meter i { flex: 1; border-radius: 1px; background: var(--rsk-surface-2); }
-.rsk-meter i[data-on] { background: var(--rsk-mark); box-shadow: var(--rsk-glow-sm); }
+.rsk-meter i { flex: 1; border-radius: 1px; background: var(--rsk-bg-raised); }
+.rsk-meter i[data-on] { background: var(--rsk-band-solid); box-shadow: var(--rsk-glow-sm); }
 
 .rsk-skeleton {
-  background: var(--rsk-surface-2); border-radius: var(--radius-sm);
+  background: var(--rsk-bg-raised); border-radius: var(--radius-sm);
   animation: wl-pulse 1.6s var(--ease) infinite;
 }
 @keyframes wl-pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.55 } }
@@ -519,7 +524,7 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   height: 12px;
   background-image: repeating-linear-gradient(
     315deg,
-    var(--rsk-rule-strong) 0 1px,
+    var(--rsk-border-strong) 0 1px,
     transparent 0 50%
   );
   background-size: 10px 10px;
@@ -538,17 +543,17 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   width: 30px;
   height: 30px;
   flex: none;
-  border: var(--rsk-hairline) solid var(--rsk-rule);
+  border: var(--rsk-size-hairline) solid var(--rsk-border-default);
   border-radius: var(--radius);
-  background: var(--rsk-surface);
-  color: var(--rsk-text-muted);
+  background: var(--rsk-bg-surface);
+  color: var(--rsk-fg-tertiary);
 }
 .rsk-tile--sm { width: 22px; height: 22px; border-radius: var(--radius-sm); }
 /* Carrying a band: the glyph takes the mark, the frame a tint of it. */
 .rsk-tile--band {
-  color: var(--rsk-mark);
-  border-color: var(--rsk-line);
-  background: var(--rsk-bg);
+  color: var(--rsk-band-solid);
+  border-color: var(--rsk-band-line);
+  background: var(--rsk-band-bg);
 }
 
 /*
@@ -563,16 +568,16 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
 .rsk-plate {
   display: flex;
   flex-direction: column;
-  border: var(--rsk-hairline) solid var(--rsk-rule);
+  border: var(--rsk-size-hairline) solid var(--rsk-border-default);
   border-radius: var(--radius-lg);
-  background: var(--rsk-surface);
+  background: var(--rsk-bg-surface);
   overflow: hidden;
 }
 @media (min-width: 640px) {
   .rsk-plate { flex-direction: row; }
   .rsk-plate > .rsk-plate__cell + .rsk-plate__cell {
     border-top: 0;
-    border-left: var(--rsk-hairline) solid var(--rsk-rule);
+    border-left: var(--rsk-size-hairline) solid var(--rsk-border-default);
   }
 }
 .rsk-plate__cell {
@@ -584,7 +589,7 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   gap: var(--rsk-pad-x-sm);
 }
 .rsk-plate__cell + .rsk-plate__cell {
-  border-top: var(--rsk-hairline) solid var(--rsk-rule);
+  border-top: var(--rsk-size-hairline) solid var(--rsk-border-default);
 }
 .rsk-plate__foot {
   display: flex;
@@ -593,22 +598,22 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   gap: var(--rsk-pad-x-sm);
   margin-top: auto;
   padding-top: var(--rsk-pad-x-md);
-  border-top: var(--rsk-hairline) solid var(--rsk-rule);
+  border-top: var(--rsk-size-hairline) solid var(--rsk-border-default);
   font-family: var(--rsk-font-mono);
   font-size: var(--rsk-text-2xs);
   letter-spacing: var(--rsk-tracking-label);
   text-transform: uppercase;
-  color: var(--rsk-text-faint);
+  color: var(--rsk-fg-metadata);
 }
 /* The verdict. Form carries it — a ring or a fill — with the one alarm hue
    for the negative case, exactly as the status dot does. */
 .rsk-plate__verdict { width: 16px; height: 16px; border-radius: 50%; display: inline-grid; place-content: center; flex: none; font-size: 10px; }
-.rsk-plate__verdict[data-verdict="yes"] { background: var(--rsk-mark-520); color: var(--rsk-on-mark); }
-.rsk-plate__verdict[data-verdict="no"]  { background: transparent; box-shadow: inset 0 0 0 1.5px var(--rsk-mark-700); color: var(--rsk-mark-700); }
+.rsk-plate__verdict[data-verdict="yes"] { background: var(--rsk-success-solid); color: var(--rsk-fg-on-solid); }
+.rsk-plate__verdict[data-verdict="no"]  { background: transparent; box-shadow: inset 0 0 0 1.5px var(--rsk-danger-solid); color: var(--rsk-danger-solid); }
 .rsk-plate__caption {
   margin: var(--rsk-pad-x-sm) 0 0;
   font-size: var(--rsk-text-xs);
-  color: var(--rsk-text-muted);
+  color: var(--rsk-fg-tertiary);
   text-align: center;
 }
 
@@ -631,7 +636,7 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
    ══════════════════════════════════════════════════════════════════════ */
 
 .rsk-codeframe {
-  border: var(--rsk-hairline) solid var(--rsk-rule);
+  border: var(--rsk-size-hairline) solid var(--rsk-border-default);
   border-radius: var(--radius);
   background: var(--rsk-code-bg);
   overflow: hidden;
@@ -643,8 +648,8 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   justify-content: space-between;
   gap: var(--rsk-pad-x-sm);
   padding: 6px 6px 6px var(--rsk-pad-x-md);
-  background: var(--rsk-surface);
-  border-bottom: var(--rsk-hairline) solid var(--rsk-rule);
+  background: var(--rsk-bg-surface);
+  border-bottom: var(--rsk-size-hairline) solid var(--rsk-border-default);
 }
 /* The filename or language. Mono, because it is metadata about the payload
    rather than part of it. */
@@ -653,7 +658,7 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   font-size: var(--rsk-text-2xs);
   letter-spacing: var(--rsk-tracking-label);
   text-transform: uppercase;
-  color: var(--rsk-text-faint);
+  color: var(--rsk-fg-metadata);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -662,18 +667,18 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--rsk-control-sm);
-  height: var(--rsk-control-sm);
+  width: var(--rsk-size-control-sm);
+  height: var(--rsk-size-control-sm);
   flex: none;
   border: 0;
   border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--rsk-text-faint);
+  color: var(--rsk-fg-metadata);
   cursor: pointer;
   transition: background-color var(--duration) var(--ease),
               color var(--duration) var(--ease);
 }
-.rsk-codeframe__copy:hover { background: var(--rsk-surface-2); color: var(--rsk-text); }
+.rsk-codeframe__copy:hover { background: var(--rsk-bg-raised); color: var(--rsk-fg-primary); }
 /* Expects an inline SVG, not a glyph or an emoji. An emoji renders in the
    platform's own colour and weight, so it ignores the exposure entirely and
    reads as a foreign object dropped into the panel. currentColor on a 1.5px
@@ -687,7 +692,7 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
 }
 /* Confirmation is form plus the one non-alarm mark the system allows for
    "this worked" — the same 520nm the plate verdict uses. */
-.rsk-codeframe__copy[data-copied="true"] { color: var(--rsk-mark-520); }
+.rsk-codeframe__copy[data-copied="true"] { color: var(--rsk-success-solid); }
 /* ── Inline code ───────────────────────────────────────────────────────
    There was no rule for this at all: inline <code> inherited whatever size
    it landed in, which meant it shrank inside .rsk-label and grew inside a
@@ -759,17 +764,17 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   width: 9px;
   height: 9px;
   border-radius: var(--radius-sm);
-  background: var(--rsk-surface-2);
+  background: var(--rsk-bg-raised);
   display: block;
 }
 /* Four filled steps over the empty ground, taken straight off the band's
    own role scale: bg2, line, line2, solid. Previously these were four
    hand-picked mixes of the mark into the surface — the same ramp the scale
    now solves, guessed at instead. They stay opaque either way. */
-.rsk-density i[data-level="1"] { background: var(--rsk-bg2); }
-.rsk-density i[data-level="2"] { background: var(--rsk-line); }
-.rsk-density i[data-level="3"] { background: var(--rsk-line2); }
-.rsk-density i[data-level="4"] { background: var(--rsk-mark); }
+.rsk-density i[data-level="1"] { background: var(--rsk-band-bg-hover); }
+.rsk-density i[data-level="2"] { background: var(--rsk-band-line); }
+.rsk-density i[data-level="3"] { background: var(--rsk-band-line-strong); }
+.rsk-density i[data-level="4"] { background: var(--rsk-band-solid); }
 
 .rsk-density-legend {
   display: flex;
@@ -779,11 +784,11 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
   font-size: var(--rsk-text-2xs);
   letter-spacing: var(--rsk-tracking-label);
   text-transform: uppercase;
-  color: var(--rsk-text-faint);
+  color: var(--rsk-fg-metadata);
 }
 .rsk-density-legend i {
   width: 9px; height: 9px; border-radius: var(--radius-sm); display: block;
-  background: var(--rsk-surface-2);
+  background: var(--rsk-bg-raised);
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -791,6 +796,6 @@ textarea.rsk-input { height: auto; padding: 8px 10px; min-height: 72px; resize: 
    ══════════════════════════════════════════════════════════════════════ */
 
 .rsk-status { width: 7px; height: 7px; border-radius: 50%; flex: none; display: inline-block; }
-.rsk-status[data-state="ok"]       { background: var(--rsk-text-faint); }
-.rsk-status[data-state="watch"]    { background: transparent; box-shadow: inset 0 0 0 1.5px var(--rsk-text); }
-.rsk-status[data-state="critical"] { --rsk-mark: var(--rsk-mark-700); background: var(--rsk-mark-700); box-shadow: var(--rsk-glow-sm), var(--rsk-dot-ring); }
+.rsk-status[data-state="ok"]       { background: var(--rsk-fg-metadata); }
+.rsk-status[data-state="watch"]    { background: transparent; box-shadow: inset 0 0 0 1.5px var(--rsk-fg-primary); }
+.rsk-status[data-state="critical"] { --rsk-mark: var(--rsk-danger-solid); background: var(--rsk-danger-solid); box-shadow: var(--rsk-glow-sm), var(--rsk-dot-ring); }

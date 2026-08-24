@@ -15,15 +15,15 @@
    before the theme block extends it.
 
    ── Why every key is `inline` ──────────────────────────────────────────
-   Without `inline`, Tailwind emits `--color-mark-520: var(--rsk-mark-520)`
+   Without `inline`, Tailwind emits `--color-bg-raised: var(--rsk-bg-raised)`
    into `@layer theme` on :root, and utilities point at THAT variable. But
-   --rsk-mark-520 does not exist on :root — it is declared under
+   --rsk-bg-raised does not exist on :root — it is declared under
    [data-exposure], which is the whole architecture. The theme variable
    would resolve against a value that is not there, freeze as invalid, and
    the utility would render nothing.
 
    With `inline`, no variable is emitted: the utility inlines the reference,
-   so `.bg-mark-520 { background-color: var(--rsk-mark-520) }` resolves at
+   so `.bg-band-solid { background-color: var(--rsk-band-solid) }` resolves at
    the element, inside whatever exposure it is standing in. A Tailwind
    utility then obeys rule 3 for free — it does not know its exposure
    either.
@@ -77,34 +77,6 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* ── Ground and surfaces ─────────────────────────────────────────────
-     bg-ground is the page itself; bg-surface and bg-surface-2 step up from
-     it, and surface-3 above that. Kept alongside --color-background rather
-     than instead of it: the
-     shadcn names are what components read, these are what you reach for
-     when writing layout by hand. */
-  --color-ground: var(--rsk-ground);
-  --color-surface: var(--rsk-surface);
-  --color-surface-2: var(--rsk-surface-2);
-  --color-surface-3: var(--rsk-surface-3);
-
-  /* ── Text ────────────────────────────────────────────────────────────
-     `ink` rather than `text`, because a --color-text-muted key generates
-     the class `text-text-muted`. The system's word for maximum-contrast
-     type on its own ground is ink, so the utilities use it: text-ink,
-     text-ink-muted, and — where type is set as prose rather than as
-     interface — text-ink-prose. */
-  --color-ink: var(--rsk-text);
-  --color-ink-prose: var(--rsk-text-prose);
-  --color-ink-muted: var(--rsk-text-muted);
-  --color-ink-faint: var(--rsk-text-faint);
-
-  /* ── Rules ───────────────────────────────────────────────────────────
-     Translucent by construction, so border-rule composites with whatever
-     is behind it. Do not stack two — the alpha doubles at the seam. */
-  --color-rule: var(--rsk-rule);
-  --color-rule-strong: var(--rsk-rule-strong);
-
 
 
   /* ── The role scale ──────────────────────────────────────────────────
@@ -118,123 +90,78 @@
 
      mark-NNN and tint-NNN are the same keys the two-value ring used, so
      `bg-mark-520` and `text-tint-520` mean exactly what they always did —
-     the scale grew around them rather than replacing them. `text` and
-     `solid` are not used as key names here: --color-text-520 would generate
-     the class `text-text-520`. */
-  /* 700nm */
-  --color-bg-700: var(--rsk-spectrum-700-bg);
-  --color-bg2-700: var(--rsk-spectrum-700-bg2);
-  --color-line-700: var(--rsk-spectrum-700-line);
-  --color-line2-700: var(--rsk-spectrum-700-line2);
-  --color-mark-700: var(--rsk-spectrum-700-solid);
-  --color-mark2-700: var(--rsk-spectrum-700-solid2);
-  --color-tint-700: var(--rsk-spectrum-700-text);
-  --color-tint2-700: var(--rsk-spectrum-700-text2);
-  /* 620nm */
-  --color-bg-620: var(--rsk-spectrum-620-bg);
-  --color-bg2-620: var(--rsk-spectrum-620-bg2);
-  --color-line-620: var(--rsk-spectrum-620-line);
-  --color-line2-620: var(--rsk-spectrum-620-line2);
-  --color-mark-620: var(--rsk-spectrum-620-solid);
-  --color-mark2-620: var(--rsk-spectrum-620-solid2);
-  --color-tint-620: var(--rsk-spectrum-620-text);
-  --color-tint2-620: var(--rsk-spectrum-620-text2);
-  /* 590nm · interface */
-  --color-bg-590: var(--rsk-spectrum-590-bg);
-  --color-bg2-590: var(--rsk-spectrum-590-bg2);
-  --color-line-590: var(--rsk-spectrum-590-line);
-  --color-line2-590: var(--rsk-spectrum-590-line2);
-  --color-mark-590: var(--rsk-spectrum-590-solid);
-  --color-mark2-590: var(--rsk-spectrum-590-solid2);
-  --color-tint-590: var(--rsk-spectrum-590-text);
-  --color-tint2-590: var(--rsk-spectrum-590-text2);
-  /* 550nm */
-  --color-bg-550: var(--rsk-spectrum-550-bg);
-  --color-bg2-550: var(--rsk-spectrum-550-bg2);
-  --color-line-550: var(--rsk-spectrum-550-line);
-  --color-line2-550: var(--rsk-spectrum-550-line2);
-  --color-mark-550: var(--rsk-spectrum-550-solid);
-  --color-mark2-550: var(--rsk-spectrum-550-solid2);
-  --color-tint-550: var(--rsk-spectrum-550-text);
-  --color-tint2-550: var(--rsk-spectrum-550-text2);
-  /* 520nm · systems */
-  --color-bg-520: var(--rsk-spectrum-520-bg);
-  --color-bg2-520: var(--rsk-spectrum-520-bg2);
-  --color-line-520: var(--rsk-spectrum-520-line);
-  --color-line2-520: var(--rsk-spectrum-520-line2);
-  --color-mark-520: var(--rsk-spectrum-520-solid);
-  --color-mark2-520: var(--rsk-spectrum-520-solid2);
-  --color-tint-520: var(--rsk-spectrum-520-text);
-  --color-tint2-520: var(--rsk-spectrum-520-text2);
-  /* 490nm */
-  --color-bg-490: var(--rsk-spectrum-490-bg);
-  --color-bg2-490: var(--rsk-spectrum-490-bg2);
-  --color-line-490: var(--rsk-spectrum-490-line);
-  --color-line2-490: var(--rsk-spectrum-490-line2);
-  --color-mark-490: var(--rsk-spectrum-490-solid);
-  --color-mark2-490: var(--rsk-spectrum-490-solid2);
-  --color-tint-490: var(--rsk-spectrum-490-text);
-  --color-tint2-490: var(--rsk-spectrum-490-text2);
-  /* 470nm · compute */
-  --color-bg-470: var(--rsk-spectrum-470-bg);
-  --color-bg2-470: var(--rsk-spectrum-470-bg2);
-  --color-line-470: var(--rsk-spectrum-470-line);
-  --color-line2-470: var(--rsk-spectrum-470-line2);
-  --color-mark-470: var(--rsk-spectrum-470-solid);
-  --color-mark2-470: var(--rsk-spectrum-470-solid2);
-  --color-tint-470: var(--rsk-spectrum-470-text);
-  --color-tint2-470: var(--rsk-spectrum-470-text2);
-  /* 440nm */
-  --color-bg-440: var(--rsk-spectrum-440-bg);
-  --color-bg2-440: var(--rsk-spectrum-440-bg2);
-  --color-line-440: var(--rsk-spectrum-440-line);
-  --color-line2-440: var(--rsk-spectrum-440-line2);
-  --color-mark-440: var(--rsk-spectrum-440-solid);
-  --color-mark2-440: var(--rsk-spectrum-440-solid2);
-  --color-tint-440: var(--rsk-spectrum-440-text);
-  --color-tint2-440: var(--rsk-spectrum-440-text2);
-  /* 405nm · intelligence */
-  --color-bg-405: var(--rsk-spectrum-405-bg);
-  --color-bg2-405: var(--rsk-spectrum-405-bg2);
-  --color-line-405: var(--rsk-spectrum-405-line);
-  --color-line2-405: var(--rsk-spectrum-405-line2);
-  --color-mark-405: var(--rsk-spectrum-405-solid);
-  --color-mark2-405: var(--rsk-spectrum-405-solid2);
-  --color-tint-405: var(--rsk-spectrum-405-text);
-  --color-tint2-405: var(--rsk-spectrum-405-text2);
-  /* 370nm */
-  --color-bg-370: var(--rsk-spectrum-370-bg);
-  --color-bg2-370: var(--rsk-spectrum-370-bg2);
-  --color-line-370: var(--rsk-spectrum-370-line);
-  --color-line2-370: var(--rsk-spectrum-370-line2);
-  --color-mark-370: var(--rsk-spectrum-370-solid);
-  --color-mark2-370: var(--rsk-spectrum-370-solid2);
-  --color-tint-370: var(--rsk-spectrum-370-text);
-  --color-tint2-370: var(--rsk-spectrum-370-text2);
+     the scale grew around them rather than replacing them. `text` and*/
 
-  /* ── The contextual band ─────────────────────────────────────────────
-     Inside [data-band="systems"], bg-mark is the 520nm mark and text-tint
-     is its text ring — no per-band class needed, which is the point of the
-     attribute. The fallback is --rsk-text, because outside a band there is
-     no band, and rule 1 says chrome carries none. */
-  --color-mark: var(--rsk-mark, var(--rsk-text));
-  --color-tint: var(--rsk-tint, var(--rsk-text));
-  --color-on-mark: var(--rsk-on-mark);
+  /* ── The semantic tier — this is the API ─────────────────────────────
+     Wavelengths are gone from here on purpose. bg-mark-520 required you to
+     know that 520 is green; bg-band-solid requires you to know that the
+     element is inside a band, which its own markup already says. */
+  --color-bg-canvas: var(--rsk-bg-canvas);
+  --color-bg-surface: var(--rsk-bg-surface);
+  --color-bg-raised: var(--rsk-bg-raised);
+  --color-bg-overlay: var(--rsk-bg-overlay);
 
-  /* ── L0 neutral ramp ─────────────────────────────────────────────────
+  --color-fg-primary: var(--rsk-fg-primary);
+  --color-fg-secondary: var(--rsk-fg-secondary);
+  --color-fg-tertiary: var(--rsk-fg-tertiary);
+  --color-fg-metadata: var(--rsk-fg-metadata);
+  --color-fg-on-solid: var(--rsk-fg-on-solid);
+
+  --color-border-default: var(--rsk-border-default);
+  --color-border-strong: var(--rsk-border-strong);
+
+  --color-state-hover: var(--rsk-state-hover);
+  --color-state-pressed: var(--rsk-state-pressed);
+  --color-state-selected: var(--rsk-state-selected);
+  --color-state-focus: var(--rsk-state-focus);
+
+  --color-scrim: var(--rsk-scrim);
+
+  /* Resolved by the enclosing [data-band]; no hue is named. */
+  --color-band-bg: var(--rsk-band-bg);
+  --color-band-bg-hover: var(--rsk-band-bg-hover);
+  --color-band-line: var(--rsk-band-line);
+  --color-band-line-strong: var(--rsk-band-line-strong);
+  --color-band-solid: var(--rsk-band-solid);
+  --color-band-solid-hover: var(--rsk-band-solid-hover);
+  --color-band-fg: var(--rsk-band-fg);
+  --color-band-fg-strong: var(--rsk-band-fg-strong);
+
+  --color-danger-bg: var(--rsk-danger-bg);
+  --color-danger-solid: var(--rsk-danger-solid);
+  --color-danger-fg: var(--rsk-danger-fg);
+  --color-warning-bg: var(--rsk-warning-bg);
+  --color-warning-solid: var(--rsk-warning-solid);
+  --color-warning-fg: var(--rsk-warning-fg);
+  --color-success-solid: var(--rsk-success-solid);
+  --color-success-fg: var(--rsk-success-fg);
+
+  --spacing-inset: var(--rsk-space-inset);
+  --spacing-stack: var(--rsk-space-stack);
+  --spacing-section: var(--rsk-space-section);
+  --spacing-control-sm: var(--rsk-size-control-sm);
+  --spacing-control-md: var(--rsk-size-control-md);
+  --spacing-control-lg: var(--rsk-size-control-lg);
+
+  /* ── L0 neutral ramp — the one primitive left on the surface ─────────
+     Everything else here is tier 2. These are not, and that is deliberate:
+     a grey carries no meaning to leak, so reaching for a specific step is
+     an escape hatch rather than a coupling. Prefer bg-surface, fg-tertiary
+     and border-default; use these when you genuinely want a rung and not
+     a role.
      Shared across exposures, warm at H 85. Ordinal 01-10, light-last, so
      n-01 is ink and n-10 is paper in BOTH exposures — these do not flip.
      Reach for them when you need a specific step rather than a role. */
-  --color-n-01: var(--rsk-neutral-01);
-  --color-n-02: var(--rsk-neutral-02);
-  --color-n-03: var(--rsk-neutral-03);
-  --color-n-04: var(--rsk-neutral-04);
-  --color-n-05: var(--rsk-neutral-05);
-  --color-n-06: var(--rsk-neutral-06);
-  --color-n-07: var(--rsk-neutral-07);
-  --color-n-08: var(--rsk-neutral-08);
-  --color-n-09: var(--rsk-neutral-09);
-  --color-n-10: var(--rsk-neutral-10);
+  --color-neutral-01: var(--rsk-neutral-01);
+  --color-neutral-02: var(--rsk-neutral-02);
+  --color-neutral-03: var(--rsk-neutral-03);
+  --color-neutral-04: var(--rsk-neutral-04);
+  --color-neutral-05: var(--rsk-neutral-05);
+  --color-neutral-06: var(--rsk-neutral-06);
+  --color-neutral-07: var(--rsk-neutral-07);
+  --color-neutral-08: var(--rsk-neutral-08);
+  --color-neutral-09: var(--rsk-neutral-09);
+  --color-neutral-10: var(--rsk-neutral-10);
 
   /* ── Charts ──────────────────────────────────────────────────────────
      Six series at dE 0.131, then two overflow stops that are deliberately

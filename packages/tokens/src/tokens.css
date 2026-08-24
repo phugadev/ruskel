@@ -830,87 +830,304 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════
+   TIER 2 — THE SEMANTIC LAYER, WHICH IS THE PUBLIC API
+
+   Everything above this line is the engine and its output: wavelengths,
+   gamut ceilings, contrast solves, ramp steps. It is generated, it is not
+   hand-written, and nothing outside this file should read it.
+
+   Everything below is what you actually type. The names say what a value
+   is FOR, never what it is made of, so the palette underneath can be
+   re-solved — or replaced outright — without a single component changing.
+
+   Two rules hold this together:
+
+     A component reads tier 2 and nothing else.
+     No adjectives without a controlled scale.
+
+   The second one is why there is no --rsk-fg-subtle or --rsk-border-light.
+   "Subtle" invites an argument about what is subtler than what; primary,
+   secondary, tertiary and metadata are positions on a scale and cannot be
+   argued with. Surfaces are levels for the same reason: canvas, surface,
+   raised, overlay is a stack, not four opinions.
+
+   Wavelengths do not appear here. They stay in the engine, which is where
+   they belong — the spectrum is how the colours are COMPUTED, not how they
+   are ADDRESSED. A person building a dashboard should never need to know
+   that 470nm is blue, and an agent writing markup should never have to
+   guess. The bands carry the meaning instead, and they are words.
+   ══════════════════════════════════════════════════════════════════════ */
+
+[data-exposure] {
+
+  /* ── Surfaces — a stack, bottom to top ────────────────────────────── */
+  --rsk-bg-canvas: var(--rsk-ground);
+  --rsk-bg-surface: var(--rsk-surface);
+  --rsk-bg-raised: var(--rsk-surface-2);
+  --rsk-bg-overlay: var(--rsk-surface-3);
+
+  /* ── Foreground — contrast rank, highest first ────────────────────── */
+  --rsk-fg-primary: var(--rsk-text);         /* 16.5:1 — must be found  */
+  --rsk-fg-secondary: var(--rsk-text-prose); /* 10.0:1 — read at length */
+  --rsk-fg-tertiary: var(--rsk-text-muted);  /*  5.5:1 — supporting     */
+  --rsk-fg-metadata: var(--rsk-text-faint);  /*  4.0:1 — non-essential  */
+  --rsk-fg-on-solid: var(--rsk-on-mark);     /* type on a vivid fill    */
+
+  /* ── Borders ──────────────────────────────────────────────────────── */
+  --rsk-border-default: var(--rsk-rule);
+  --rsk-border-strong: var(--rsk-rule-strong);
+
+  /* ── States ───────────────────────────────────────────────────────────
+     hover, pressed and selected are TRANSLUCENT OVERLAYS rather than
+     opaque colours, and that is the only way one token can serve a ghost
+     button, a table row and a raised card at once: each composites over
+     whatever it is standing on instead of replacing it. A solid fill has
+     its own solved hover — --rsk-band-solid-hover — because compositing a
+     grey wash over a vivid mark would desaturate it.
+
+     disabled is a scalar, not a colour, for the same reason --rsk-emit is:
+     it multiplies whatever the component already had. */
+  --rsk-state-hover: color-mix(in oklab, var(--rsk-text) 6%, transparent);
+  --rsk-state-pressed: color-mix(in oklab, var(--rsk-text) 12%, transparent);
+  --rsk-state-selected: color-mix(in oklab, var(--rsk-text) 9%, transparent);
+  --rsk-state-focus: var(--rsk-text);
+  --rsk-state-disabled: 0.45;
+
+  /* ── Sizing ───────────────────────────────────────────────────────────
+     Remapped by [data-density]; see the density block. A component reads
+     these, never the raw control heights. */
+  --rsk-size-control-sm: var(--rsk-control-sm);
+  --rsk-size-control-md: var(--rsk-control-md);
+  --rsk-size-control-lg: var(--rsk-control-lg);
+  --rsk-size-hairline: var(--rsk-hairline);
+
+  /* ── Status, as meanings rather than as wavelengths ───────────────────
+     danger, warning and success are subjects the same way the bands are,
+     so they get words here and the component layer never names 700nm or
+     620nm. They are aliases onto reserved hues, which is why they are NOT
+     available as bands: an alarm used as a classification is a lie however
+     well it is labelled, and giving it a [data-band] would invite exactly
+     that.
+
+     success borrows 520nm, which IS a band. That is deliberate and it is
+     the one overlap in the system: "this worked" and "this is a systems
+     concern" are different claims, and the two never share a surface —
+     a verdict and a taxonomy do not co-occur. If that ever stops being
+     true, success needs its own angle. */
+  --rsk-danger-bg: var(--rsk-spectrum-700-bg);
+  --rsk-danger-bg-hover: var(--rsk-spectrum-700-bg2);
+  --rsk-danger-line: var(--rsk-spectrum-700-line);
+  --rsk-danger-solid: var(--rsk-spectrum-700-solid);
+  --rsk-danger-solid-hover: var(--rsk-spectrum-700-solid2);
+  --rsk-danger-fg: var(--rsk-spectrum-700-text);
+
+  --rsk-warning-bg: var(--rsk-spectrum-620-bg);
+  --rsk-warning-line: var(--rsk-spectrum-620-line);
+  --rsk-warning-solid: var(--rsk-spectrum-620-solid);
+  --rsk-warning-fg: var(--rsk-spectrum-620-text);
+
+  --rsk-success-solid: var(--rsk-spectrum-520-solid);
+  --rsk-success-fg: var(--rsk-spectrum-520-text);
+
+  /* The scrim behind a dialog. Ink at 62% on either ground — a modal
+     darkens the page whichever exposure the page is in, because the point
+     is to remove it from consideration, not to invert it. */
+  --rsk-scrim: color-mix(in oklab, var(--rsk-neutral-01) 62%, transparent);
+
+  /* ── Spacing, by relationship rather than by number ───────────────────
+     inset is padding inside a thing; stack is the gap between related
+     things; section is the gap between unrelated ones. section is always
+     at least twice stack — the grouping rule, encoded rather than
+     remembered. Reach for --rsk-space-NN directly only when none of these
+     three is what you mean. */
+  --rsk-space-inset: var(--rsk-space-05);
+  --rsk-space-stack: var(--rsk-space-04);
+  --rsk-space-section: var(--rsk-space-08);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
    L1 — the four named bands. A band is a named position on the spectrum,
    never its own colour. Each resolves to a mark and a text value.
    ══════════════════════════════════════════════════════════════════════ */
 
-/* A band sets the WHOLE scale, not two values of it.
+/* ══════════════════════════════════════════════════════════════════════
+   BANDS — the meaning layer, and the reason wavelengths can stay hidden
 
-   Until the role scale existed there were only two to set, so [data-band]
-   handed down --rsk-mark and --rsk-tint and every component that wanted a
-   wash or a border built one with color-mix at the point of use. That is
-   six improvisations of the same idea, each with its own percentage, none
-   of them solved.
+   A band is a subject, not a colour. 590nm is interface, 520nm systems,
+   470nm compute, 405nm intelligence — but a component never sees those
+   numbers. It sees an attribute with a word in it:
 
-   Now the attribute hands down all eight steps under context-free names, so
-   a component writes var(--rsk-bg) and gets the wash belonging to whichever
-   band it is standing in. mark and tint keep their spelling — they are the
-   solid and text steps — so nothing that already worked had to change. */
+     <tr data-band="intelligence">
+
+   and reads --rsk-band-solid, which resolves to whatever the engine
+   currently says intelligence looks like. Change the wavelength, re-solve
+   the palette, swap the gamut: the markup does not move.
+
+   This is deliberately CONTEXTUAL rather than explicit. There is no
+   --rsk-band-systems-bg, only --rsk-band-bg resolved by the enclosing
+   attribute, which extends rule 3 one step: a component does not know its
+   exposure, and it does not know its band either. It costs the ability to
+   put two bands on one surface — a case that has always turned out to be
+   a content problem rather than a colour one — and it buys components that
+   work in all six bands without naming any of them.
+
+   The four unnamed hues (550, 490, 440, 370) are NOT bands. They have no
+   subject, so they stay in the engine as display stops and are reachable
+   only through the chart series. That is what keeps the vocabulary from
+   becoming "systems, interface, cyan, magenta" — a mixed namespace where
+   half the words mean something and half are just colours.
+   ══════════════════════════════════════════════════════════════════════ */
 
 [data-band="interface"] {
-  --rsk-bg: var(--rsk-spectrum-590-bg);
-  --rsk-bg2: var(--rsk-spectrum-590-bg2);
-  --rsk-line: var(--rsk-spectrum-590-line);
-  --rsk-line2: var(--rsk-spectrum-590-line2);
+  --rsk-band-bg: var(--rsk-spectrum-590-bg);
+  --rsk-band-bg-hover: var(--rsk-spectrum-590-bg2);
+  --rsk-band-line: var(--rsk-spectrum-590-line);
+  --rsk-band-line-strong: var(--rsk-spectrum-590-line2);
+  --rsk-band-solid: var(--rsk-spectrum-590-solid);
+  --rsk-band-solid-hover: var(--rsk-spectrum-590-solid2);
+  --rsk-band-fg: var(--rsk-spectrum-590-text);
+  --rsk-band-fg-strong: var(--rsk-spectrum-590-text2);
+  /* mark and tint are the older spelling of solid and fg; the
+     component layer still reads them in a few places. */
   --rsk-mark: var(--rsk-spectrum-590-solid);
-  --rsk-mark2: var(--rsk-spectrum-590-solid2);
   --rsk-tint: var(--rsk-spectrum-590-text);
-  --rsk-tint2: var(--rsk-spectrum-590-text2);
 }
 
 [data-band="systems"] {
-  --rsk-bg: var(--rsk-spectrum-520-bg);
-  --rsk-bg2: var(--rsk-spectrum-520-bg2);
-  --rsk-line: var(--rsk-spectrum-520-line);
-  --rsk-line2: var(--rsk-spectrum-520-line2);
+  --rsk-band-bg: var(--rsk-spectrum-520-bg);
+  --rsk-band-bg-hover: var(--rsk-spectrum-520-bg2);
+  --rsk-band-line: var(--rsk-spectrum-520-line);
+  --rsk-band-line-strong: var(--rsk-spectrum-520-line2);
+  --rsk-band-solid: var(--rsk-spectrum-520-solid);
+  --rsk-band-solid-hover: var(--rsk-spectrum-520-solid2);
+  --rsk-band-fg: var(--rsk-spectrum-520-text);
+  --rsk-band-fg-strong: var(--rsk-spectrum-520-text2);
+  /* mark and tint are the older spelling of solid and fg; the
+     component layer still reads them in a few places. */
   --rsk-mark: var(--rsk-spectrum-520-solid);
-  --rsk-mark2: var(--rsk-spectrum-520-solid2);
   --rsk-tint: var(--rsk-spectrum-520-text);
-  --rsk-tint2: var(--rsk-spectrum-520-text2);
 }
 
 [data-band="compute"] {
-  --rsk-bg: var(--rsk-spectrum-470-bg);
-  --rsk-bg2: var(--rsk-spectrum-470-bg2);
-  --rsk-line: var(--rsk-spectrum-470-line);
-  --rsk-line2: var(--rsk-spectrum-470-line2);
+  --rsk-band-bg: var(--rsk-spectrum-470-bg);
+  --rsk-band-bg-hover: var(--rsk-spectrum-470-bg2);
+  --rsk-band-line: var(--rsk-spectrum-470-line);
+  --rsk-band-line-strong: var(--rsk-spectrum-470-line2);
+  --rsk-band-solid: var(--rsk-spectrum-470-solid);
+  --rsk-band-solid-hover: var(--rsk-spectrum-470-solid2);
+  --rsk-band-fg: var(--rsk-spectrum-470-text);
+  --rsk-band-fg-strong: var(--rsk-spectrum-470-text2);
+  /* mark and tint are the older spelling of solid and fg; the
+     component layer still reads them in a few places. */
   --rsk-mark: var(--rsk-spectrum-470-solid);
-  --rsk-mark2: var(--rsk-spectrum-470-solid2);
   --rsk-tint: var(--rsk-spectrum-470-text);
-  --rsk-tint2: var(--rsk-spectrum-470-text2);
 }
 
 [data-band="intelligence"] {
-  --rsk-bg: var(--rsk-spectrum-405-bg);
-  --rsk-bg2: var(--rsk-spectrum-405-bg2);
-  --rsk-line: var(--rsk-spectrum-405-line);
-  --rsk-line2: var(--rsk-spectrum-405-line2);
+  --rsk-band-bg: var(--rsk-spectrum-405-bg);
+  --rsk-band-bg-hover: var(--rsk-spectrum-405-bg2);
+  --rsk-band-line: var(--rsk-spectrum-405-line);
+  --rsk-band-line-strong: var(--rsk-spectrum-405-line2);
+  --rsk-band-solid: var(--rsk-spectrum-405-solid);
+  --rsk-band-solid-hover: var(--rsk-spectrum-405-solid2);
+  --rsk-band-fg: var(--rsk-spectrum-405-text);
+  --rsk-band-fg-strong: var(--rsk-spectrum-405-text2);
+  /* mark and tint are the older spelling of solid and fg; the
+     component layer still reads them in a few places. */
   --rsk-mark: var(--rsk-spectrum-405-solid);
-  --rsk-mark2: var(--rsk-spectrum-405-solid2);
   --rsk-tint: var(--rsk-spectrum-405-text);
-  --rsk-tint2: var(--rsk-spectrum-405-text2);
 }
 
 [data-band="warning"] {
-  --rsk-bg: var(--rsk-spectrum-620-bg);
-  --rsk-bg2: var(--rsk-spectrum-620-bg2);
-  --rsk-line: var(--rsk-spectrum-620-line);
-  --rsk-line2: var(--rsk-spectrum-620-line2);
+  --rsk-band-bg: var(--rsk-spectrum-620-bg);
+  --rsk-band-bg-hover: var(--rsk-spectrum-620-bg2);
+  --rsk-band-line: var(--rsk-spectrum-620-line);
+  --rsk-band-line-strong: var(--rsk-spectrum-620-line2);
+  --rsk-band-solid: var(--rsk-spectrum-620-solid);
+  --rsk-band-solid-hover: var(--rsk-spectrum-620-solid2);
+  --rsk-band-fg: var(--rsk-spectrum-620-text);
+  --rsk-band-fg-strong: var(--rsk-spectrum-620-text2);
+  /* mark and tint are the older spelling of solid and fg; the
+     component layer still reads them in a few places. */
   --rsk-mark: var(--rsk-spectrum-620-solid);
-  --rsk-mark2: var(--rsk-spectrum-620-solid2);
   --rsk-tint: var(--rsk-spectrum-620-text);
-  --rsk-tint2: var(--rsk-spectrum-620-text2);
 }
 
 [data-band="critical"] {
-  --rsk-bg: var(--rsk-spectrum-700-bg);
-  --rsk-bg2: var(--rsk-spectrum-700-bg2);
-  --rsk-line: var(--rsk-spectrum-700-line);
-  --rsk-line2: var(--rsk-spectrum-700-line2);
+  --rsk-band-bg: var(--rsk-spectrum-700-bg);
+  --rsk-band-bg-hover: var(--rsk-spectrum-700-bg2);
+  --rsk-band-line: var(--rsk-spectrum-700-line);
+  --rsk-band-line-strong: var(--rsk-spectrum-700-line2);
+  --rsk-band-solid: var(--rsk-spectrum-700-solid);
+  --rsk-band-solid-hover: var(--rsk-spectrum-700-solid2);
+  --rsk-band-fg: var(--rsk-spectrum-700-text);
+  --rsk-band-fg-strong: var(--rsk-spectrum-700-text2);
+  /* mark and tint are the older spelling of solid and fg; the
+     component layer still reads them in a few places. */
   --rsk-mark: var(--rsk-spectrum-700-solid);
-  --rsk-mark2: var(--rsk-spectrum-700-solid2);
   --rsk-tint: var(--rsk-spectrum-700-text);
-  --rsk-tint2: var(--rsk-spectrum-700-text2);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   DENSITY — an environment, not a component preference
+
+   Control size used to be chosen at every call site: .rsk-btn--sm here,
+   default there. That makes density a property of each button rather than
+   of the interface, and a dense dashboard becomes a hundred small
+   decisions that drift apart.
+
+   One attribute instead:
+
+     <section data-density="compact">
+
+   and the whole subtree tightens. It composes with data-exposure, which is
+   orthogonal — an editorial plate can be spacious inside a compact
+   luminous dashboard, and both attributes inherit independently.
+
+   ── The rule, so the numbers are not magic ────────────────────────────
+
+   Density moves you ONE RUNG on the control scale.
+
+             sm    md    lg
+     compact  22    26    32
+     default  26    32    40
+     spacious 32    40    48
+
+   Compact's md is default's sm. Spacious's md is default's lg. There is
+   nothing to memorise and nothing to get subtly wrong later: the modes are
+   the same ladder, entered at different heights.
+
+   Spacing shifts with it, through the three relationship slots rather than
+   raw steps — and section stays at least twice stack in every mode, so the
+   grouping rule survives the shift instead of being re-checked by hand.
+   ══════════════════════════════════════════════════════════════════════ */
+
+[data-density="compact"] {
+  --rsk-size-control-sm: 22px;
+  --rsk-size-control-md: 26px;
+  --rsk-size-control-lg: 32px;
+  --rsk-space-inset: var(--rsk-space-04);
+  --rsk-space-stack: var(--rsk-space-03);
+  --rsk-space-section: var(--rsk-space-06);
+}
+
+[data-density="default"] {
+  --rsk-size-control-sm: 26px;
+  --rsk-size-control-md: 32px;
+  --rsk-size-control-lg: 40px;
+  --rsk-space-inset: var(--rsk-space-05);
+  --rsk-space-stack: var(--rsk-space-04);
+  --rsk-space-section: var(--rsk-space-08);
+}
+
+[data-density="spacious"] {
+  --rsk-size-control-sm: 32px;
+  --rsk-size-control-md: 40px;
+  --rsk-size-control-lg: 48px;
+  --rsk-space-inset: var(--rsk-space-06);
+  --rsk-space-stack: var(--rsk-space-05);
+  --rsk-space-section: var(--rsk-space-09);
 }
 
 /* ══════════════════════════════════════════════════════════════════════

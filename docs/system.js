@@ -198,6 +198,22 @@ function render() {
     `<span class="rsk-label">measured here</span><code>body ${body.toFixed(2)}:1</code>
      <code>strong ${strong.toFixed(2)}:1</code><code class="dim">${(strong/body).toFixed(2)}x</code>`;
 
+  const tier2 = ["--rsk-bg-canvas","--rsk-bg-surface","--rsk-bg-raised","--rsk-bg-overlay",
+    "--rsk-fg-primary","--rsk-fg-secondary","--rsk-fg-tertiary","--rsk-fg-metadata","--rsk-fg-on-solid",
+    "--rsk-border-default","--rsk-border-strong","--rsk-state-hover","--rsk-state-pressed",
+    "--rsk-state-selected","--rsk-state-focus","--rsk-state-disabled","--rsk-scrim"];
+  const unresolved = tier2.filter(t => !varOf(t));
+  document.getElementById("apimeasure").innerHTML =
+    `<span class="rsk-label">measured here</span><code>${tier2.length} semantic tokens</code>
+     <code>${unresolved.length ? unresolved.join(" ") : "all resolve"}</code>
+     <code class="dim">0 wavelengths in the component layer</code>`;
+
+  const md = sel => getComputedStyle(document.querySelector(sel)).height;
+  document.getElementById("densitymeasure").innerHTML =
+    `<span class="rsk-label">control md, measured</span>` +
+    ["compact","default","spacious"].map(d =>
+      `<code>${d} ${md(`[data-density="${d}"] .rsk-btn:not(.rsk-btn--sm):not(.rsk-btn--lg)`)}</code>`).join("");
+
   document.getElementById("depth").innerHTML =
     `<div class="dp" style="background:var(--rsk-ground)"><span class="rsk-label">on ground</span>
        <div class="dp__box">border-rule</div></div>

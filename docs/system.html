@@ -33,7 +33,7 @@
 
 <nav class="rail">
   <span class="rail__mark">RUSKEL</span>
-  <a href="#colour">Colour</a><a href="#type">Type</a><a href="#geometry">Geometry</a>
+  <a href="#colour">Colour</a><a href="#api">API</a><a href="#type">Type</a><a href="#geometry">Geometry</a>
   <a href="#space">Space</a><a href="#components">Components</a><a href="#rules">Rules</a><a href="#audit">Audit</a>
   <button id="flip" class="rsk-btn rsk-btn--outline rsk-btn--sm">Editorial</button>
 </nav>
@@ -107,6 +107,28 @@
   <h3>Syntax</h3>
   <p class="note">Its own solve, against the code block's ground rather than the page's. Roles follow the band taxonomy: keywords take intelligence, strings systems, numbers interface, functions compute.</p>
   <div class="codeframe" id="code"></div>
+</section>
+
+<!-- ══ API ══════════════════════════════════════════════════════════ -->
+<section id="api">
+  <h2 class="sec">The token API</h2>
+  <p class="note">Four tiers. A component reads tier 2 and nothing else — no wavelength appears anywhere in it. The spectrum is how these colours are <em>computed</em>, not how they are <em>addressed</em>: the engine can be re-solved, re-gamuted or replaced without a single component changing.</p>
+  <div class="tiers">
+    <div class="tier"><span class="rsk-label">0 · engine</span><code>solve.py · solve_scale.py</code><p>Wavelengths, gamut ceilings, contrast solves. Private.</p></div>
+    <div class="tier"><span class="rsk-label">1 · primitive</span><code>--rsk-spectrum-520-solid<br>--rsk-neutral-04</code><p>Generated. Never hand-written, never read by a component.</p></div>
+    <div class="tier tier--api"><span class="rsk-label">2 · semantic — the API</span><code>--rsk-bg-raised · --rsk-fg-secondary<br>--rsk-border-default · --rsk-state-hover<br>--rsk-band-solid · --rsk-danger-fg</code><p>What you type. Names say what a value is <em>for</em>, never what it is made of.</p></div>
+    <div class="tier"><span class="rsk-label">3 · modes</span><code>data-exposure · data-density · data-band · data-voice</code><p>Environments. They compose; none of them knows about the others.</p></div>
+  </div>
+  <div class="matrix" id="apimeasure"></div>
+
+  <h3>Density is an environment</h3>
+  <p class="note">One attribute on a subtree, not a decision at every call site. The rule is that <b>density moves you one rung on the control scale</b> — compact&rsquo;s md is default&rsquo;s sm, spacious&rsquo;s md is default&rsquo;s lg. Nothing to memorise. It composes with exposure: an editorial plate can be spacious inside a compact luminous dashboard.</p>
+  <div class="densities">
+    <div data-density="compact"><span class="rsk-label">compact</span><div class="row"><button class="rsk-btn rsk-btn--outline rsk-btn--sm">sm</button><button class="rsk-btn rsk-btn--outline">md</button><button class="rsk-btn rsk-btn--outline rsk-btn--lg">lg</button></div></div>
+    <div data-density="default"><span class="rsk-label">default</span><div class="row"><button class="rsk-btn rsk-btn--outline rsk-btn--sm">sm</button><button class="rsk-btn rsk-btn--outline">md</button><button class="rsk-btn rsk-btn--outline rsk-btn--lg">lg</button></div></div>
+    <div data-density="spacious"><span class="rsk-label">spacious</span><div class="row"><button class="rsk-btn rsk-btn--outline rsk-btn--sm">sm</button><button class="rsk-btn rsk-btn--outline">md</button><button class="rsk-btn rsk-btn--outline rsk-btn--lg">lg</button></div></div>
+  </div>
+  <div class="matrix" id="densitymeasure"></div>
 </section>
 
 <!-- ══ TYPE ════════════════════════════════════════════════════════════ -->

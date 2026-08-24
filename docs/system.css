@@ -168,3 +168,12 @@ section:first-of-type { border-top:0; }
 .prosedemo .rsk-prose p { font-size:var(--rsk-text-lg); line-height:1.6; margin:0; max-width:62ch; }
 .prosedemo__m { display:flex; flex-direction:column; gap:4px; border:1px solid var(--rsk-rule);
                 border-radius:var(--radius); padding:12px 14px; }
+
+.tiers { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--rsk-space-05); }
+.tier { border:1px solid var(--rsk-border-default); border-radius:var(--radius); padding:var(--rsk-space-05); }
+.tier--api { border-color:var(--rsk-border-strong); background:var(--rsk-bg-surface); }
+.tier code { display:block; margin:8px 0 10px; color:var(--rsk-fg-secondary); line-height:1.6; }
+.tier p { margin:0; font-size:var(--rsk-text-2xs); color:var(--rsk-fg-tertiary); line-height:1.5; }
+.densities { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--rsk-space-06); align-items:start; }
+.densities > div { border:1px solid var(--rsk-border-default); border-radius:var(--radius); padding:var(--rsk-space-05); }
+.densities .row { margin-top:8px; }

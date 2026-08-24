@@ -325,7 +325,7 @@ def _emit_block(exposure, gamut):
         row = []
         for name, *_ in STEPS:
             L, C, hx, r = sc[name]
-            row.append(f"  --rsk-{nm}-{name}: oklch({L:.3f} {C:.3f} var(--rsk-h-{nm}));"
+            row.append(f"  --rsk-spectrum-{nm}-{name}: oklch({L:.3f} {C:.3f} var(--rsk-spectrum-{nm}-hue));"
                        f"  /* {hx} {r:5.2f} */")
         lines.append(f"  /* ── {nm}nm{tail} ── */")
         lines.extend(row)
