@@ -17,6 +17,19 @@
       }
     },
     {
+      "name": "ruskel-tailwind",
+      "type": "registry:style",
+      "title": "Ruskel tokens (Tailwind v4)",
+      "author": "Enric Trillo",
+      "description": "The token layer plus the Tailwind v4 theme bridge. Adds utilities for the mark and tint rings, the neutral ramp, the density scale and the emission tokens, on top of the shadcn contract. Import after \"tailwindcss\".",
+      "dependencies": [
+        "@ruskel/tokens"
+      ],
+      "css": {
+        "@import \"@ruskel/tokens/tailwind\"": {}
+      }
+    },
+    {
       "name": "ruskel",
       "type": "registry:style",
       "title": "Ruskel",

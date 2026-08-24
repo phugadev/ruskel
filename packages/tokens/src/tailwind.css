@@ -1,0 +1,272 @@
+/* ══════════════════════════════════════════════════════════════════════
+   RUSKEL — TAILWIND v4 BRIDGE
+
+   The token layer already speaks two contracts: --rsk-* (the system's own
+   names) and the bare shadcn names (--background, --primary, --chart-1).
+   Tailwind v4 needs a third, because a utility class does not exist until
+   a --color-*, --radius-*, --font-* key declares it.
+
+   Import this INSTEAD of "@ruskel/tokens" — it pulls the tokens in itself:
+
+     @import "tailwindcss";
+     @import "@ruskel/tokens/tailwind";
+
+   Order matters. Tailwind must be first so its @layer order is established
+   before the theme block extends it.
+
+   ── Why every key is `inline` ──────────────────────────────────────────
+   Without `inline`, Tailwind emits `--color-mark-520: var(--rsk-mark-520)`
+   into `@layer theme` on :root, and utilities point at THAT variable. But
+   --rsk-mark-520 does not exist on :root — it is declared under
+   [data-exposure], which is the whole architecture. The theme variable
+   would resolve against a value that is not there, freeze as invalid, and
+   the utility would render nothing.
+
+   With `inline`, no variable is emitted: the utility inlines the reference,
+   so `.bg-mark-520 { background-color: var(--rsk-mark-520) }` resolves at
+   the element, inside whatever exposure it is standing in. A Tailwind
+   utility then obeys rule 3 for free — it does not know its exposure
+   either.
+
+   ── What is deliberately NOT here ──────────────────────────────────────
+   Tailwind's default palette is left switched on. Ruskel has an opinion
+   about it (bg-red-500 is a hue nobody solved) but a bridge that silently
+   deletes 250 utilities from someone's existing app is a bridge that gets
+   uninstalled. To hold the line, add this after the import:
+
+     @theme { --color-*: initial; }
+
+   and the only colours that survive are the ones below.
+   ══════════════════════════════════════════════════════════════════════ */
+
+@import "./tokens.css";
+
+@theme inline {
+
+  /* ── The shadcn contract, as utilities ───────────────────────────────
+     These mirror the mapping tokens.css already performs. shadcn's own
+     components are written against these class names, so without this
+     block `bg-background` and `text-muted-foreground` are undefined and
+     every installed component renders unstyled. */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ── Ground and surfaces ─────────────────────────────────────────────
+     bg-ground is the page itself; bg-surface and bg-surface-2 step up from
+     it. Kept alongside --color-background rather than instead of it: the
+     shadcn names are what components read, these are what you reach for
+     when writing layout by hand. */
+  --color-ground: var(--rsk-ground);
+  --color-surface: var(--rsk-surface);
+  --color-surface-2: var(--rsk-surface-2);
+
+  /* ── Text ────────────────────────────────────────────────────────────
+     `ink` rather than `text`, because a --color-text-muted key generates
+     the class `text-text-muted`. The system's word for maximum-contrast
+     type on its own ground is ink, so the utilities use it: text-ink,
+     text-ink-muted, and — where type is set as prose rather than as
+     interface — text-ink-prose. */
+  --color-ink: var(--rsk-text);
+  --color-ink-prose: var(--rsk-text-prose);
+  --color-ink-muted: var(--rsk-text-muted);
+  --color-ink-faint: var(--rsk-text-faint);
+
+  /* ── Rules ───────────────────────────────────────────────────────────
+     Translucent by construction, so border-rule composites with whatever
+     is behind it. Do not stack two — the alpha doubles at the seam. */
+  --color-rule: var(--rsk-rule);
+  --color-rule-strong: var(--rsk-rule-strong);
+
+  /* ── The MARK ring — seen, not read ──────────────────────────────────
+     Fills, bars, dots, glows, solid buttons, borders. WCAG text ratios do
+     not apply; these are at 93% of each hue's own sRGB ceiling. Never set
+     type in one: use the tint ring below. */
+  --color-mark-700: var(--rsk-mark-700);
+  --color-mark-620: var(--rsk-mark-620);
+  --color-mark-590: var(--rsk-mark-590);
+  --color-mark-550: var(--rsk-mark-550);
+  --color-mark-520: var(--rsk-mark-520);
+  --color-mark-490: var(--rsk-mark-490);
+  --color-mark-470: var(--rsk-mark-470);
+  --color-mark-440: var(--rsk-mark-440);
+  --color-mark-405: var(--rsk-mark-405);
+  --color-mark-370: var(--rsk-mark-370);
+
+  /* ── The TEXT ring — read, not seen ──────────────────────────────────
+     `tint`, matching what [data-band] already calls it. Same hue angle as
+     the mark, pulled back until it passes AA on its ground: 4.6:1 on
+     paper, 6.5:1 on ink. This is the only ring that re-solves per
+     exposure. */
+  --color-tint-700: var(--rsk-text-700);
+  --color-tint-620: var(--rsk-text-620);
+  --color-tint-590: var(--rsk-text-590);
+  --color-tint-550: var(--rsk-text-550);
+  --color-tint-520: var(--rsk-text-520);
+  --color-tint-490: var(--rsk-text-490);
+  --color-tint-470: var(--rsk-text-470);
+  --color-tint-440: var(--rsk-text-440);
+  --color-tint-405: var(--rsk-text-405);
+  --color-tint-370: var(--rsk-text-370);
+
+  /* ── Deep stops ──────────────────────────────────────────────────────
+     The second categorical of each named band. A fifth chart series that
+     reads as a variant of a band rather than a category nobody can name. */
+  --color-deep-590: var(--rsk-deep-590);
+  --color-deep-520: var(--rsk-deep-520);
+  --color-deep-470: var(--rsk-deep-470);
+  --color-deep-405: var(--rsk-deep-405);
+
+  /* ── The contextual band ─────────────────────────────────────────────
+     Inside [data-band="systems"], bg-mark is the 520nm mark and text-tint
+     is its text ring — no per-band class needed, which is the point of the
+     attribute. The fallback is --rsk-text, because outside a band there is
+     no band, and rule 1 says chrome carries none. */
+  --color-mark: var(--rsk-mark, var(--rsk-text));
+  --color-tint: var(--rsk-tint, var(--rsk-text));
+  --color-on-mark: var(--rsk-on-mark);
+
+  /* ── L0 neutral ramp ─────────────────────────────────────────────────
+     Shared across exposures, warm at H 85. Ordinal 01-12, light-last, so
+     n-01 is ink and n-12 is paper in BOTH exposures — these do not flip.
+     Reach for them when you need a specific step rather than a role. */
+  --color-n-01: var(--rsk-n-01);
+  --color-n-02: var(--rsk-n-02);
+  --color-n-03: var(--rsk-n-03);
+  --color-n-04: var(--rsk-n-04);
+  --color-n-05: var(--rsk-n-05);
+  --color-n-06: var(--rsk-n-06);
+  --color-n-07: var(--rsk-n-07);
+  --color-n-08: var(--rsk-n-08);
+  --color-n-09: var(--rsk-n-09);
+  --color-n-10: var(--rsk-n-10);
+  --color-n-11: var(--rsk-n-11);
+  --color-n-12: var(--rsk-n-12);
+
+  /* ── Charts ──────────────────────────────────────────────────────────
+     Six series at dE 0.131, then two overflow stops that are deliberately
+     less vivid. Past six, label the series directly. */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-axis: var(--chart-axis);
+  --color-chart-label: var(--chart-label);
+
+  /* ── Code ────────────────────────────────────────────────────────────
+     Its own solve, against the block's ground rather than the page's. */
+  --color-code: var(--code);
+  --color-code-foreground: var(--code-foreground);
+  --color-code-comment: var(--rsk-code-comment);
+  --color-code-keyword: var(--rsk-code-keyword);
+  --color-code-string: var(--rsk-code-string);
+  --color-code-number: var(--rsk-code-number);
+  --color-code-function: var(--rsk-code-function);
+  --color-code-type: var(--rsk-code-type);
+  --color-code-special: var(--rsk-code-special);
+  --color-code-punctuation: var(--rsk-code-punctuation);
+
+  /* ── Emission ────────────────────────────────────────────────────────
+     shadow-glow-* resolves to nothing on paper, which is what lets a
+     component write it unconditionally. That is rule 3 as a utility: no
+     dark: variant, no [data-exposure] override. shadow-dot-ring is the
+     hairline a 6px mark needs at 2.2:1 on paper, and is likewise inert on
+     ink where emission already separates it. */
+  --shadow-glow-sm: var(--rsk-glow-sm);
+  --shadow-glow-md: var(--rsk-glow-md);
+  --shadow-glow-lg: var(--rsk-glow-lg);
+  --shadow-dot-ring: var(--rsk-dot-ring);
+
+  /* ── Type ────────────────────────────────────────────────────────────
+     font-serif resolves to the SANS stack until [data-voice="author"]
+     opens it. That is not a bug in the bridge — the serif is gated on
+     voice, not on exposure, and product is the default. */
+  --font-sans: var(--rsk-font-sans);
+  --font-mono: var(--rsk-font-mono);
+  --font-serif: var(--rsk-font-serif);
+
+  /* Each size carries its own leading. Overriding --text-sm WITHOUT its
+     companion leaves Tailwind's --text-sm--line-height in place, which is
+     calc(1.25 / 0.875) — a ratio solved for Tailwind's 14px and silently
+     applied to this system's 13px. */
+  --text-2xs: var(--rsk-text-2xs);
+  --text-2xs--line-height: var(--rsk-leading-2xs);
+  --text-xs: var(--rsk-text-xs);
+  --text-xs--line-height: var(--rsk-leading-xs);
+  --text-sm: var(--rsk-text-sm);
+  --text-sm--line-height: var(--rsk-leading-sm);
+  --text-base: var(--rsk-text-base);
+  --text-base--line-height: var(--rsk-leading-base);
+  --text-lg: var(--rsk-text-lg);
+  --text-lg--line-height: var(--rsk-leading-lg);
+  --text-xl: var(--rsk-text-xl);
+  --text-xl--line-height: var(--rsk-leading-xl);
+  --text-2xl: var(--rsk-text-2xl);
+  --text-2xl--line-height: var(--rsk-leading-2xl);
+  --text-3xl: var(--rsk-text-3xl);
+  --text-3xl--line-height: var(--rsk-leading-3xl);
+  --text-4xl: var(--rsk-text-4xl);
+  --text-4xl--line-height: var(--rsk-leading-4xl);
+
+  --tracking-display: var(--rsk-tracking-display);
+  --tracking-label: var(--rsk-tracking-label);
+  --tracking-serif: var(--rsk-tracking-serif);
+  --leading-serif: var(--rsk-leading-serif);
+
+  /* ── Geometry ────────────────────────────────────────────────────────
+     Rule 7 as utilities. rounded-sm/md/lg are STRUCTURE — things that hold
+     other things. rounded-pill is a TOKEN — a thing you could pick up.
+     Mixing them is the rule working, not the rule breaking. */
+  --radius-sm: var(--rsk-radius-sm);
+  --radius-md: var(--rsk-radius);
+  --radius-lg: var(--rsk-radius-lg);
+  --radius-pill: var(--rsk-radius-pill);
+
+  /* ── Density ─────────────────────────────────────────────────────────
+     One step tighter than shadcn's defaults. h-control-md is the height
+     every 32px control shares; px-control-md is its horizontal padding. */
+  --spacing-control-sm: var(--rsk-control-sm);
+  --spacing-control-md: var(--rsk-control-md);
+  --spacing-control-lg: var(--rsk-control-lg);
+  --spacing-control-x-sm: var(--rsk-pad-x-sm);
+  --spacing-control-x-md: var(--rsk-pad-x-md);
+  --spacing-control-x-lg: var(--rsk-pad-x-lg);
+  --spacing-hairline: var(--rsk-hairline);
+
+  /* max-w-measure — 68ch, the line length prose is set to. */
+  --container-measure: var(--rsk-measure);
+
+  /* ── Motion ──────────────────────────────────────────────────────────
+     Colour only. There is no scale-on-hover utility here on purpose. */
+  --ease-ruskel: var(--ease);
+}

@@ -1,6 +1,6 @@
 {
   "name": "@ruskel/ui",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "The component layer: shadcn primitives moulded to the two-exposure system.",
   "license": "MIT",
   "type": "module",
@@ -35,6 +35,6 @@
   "homepage": "https://github.com/phugadev/ruskel/tree/main/packages/ui#readme",
   "author": "Enric Trillo",
   "dependencies": {
-    "@ruskel/tokens": "^0.7.0"
+    "@ruskel/tokens": "^0.8.0"
   }
 }

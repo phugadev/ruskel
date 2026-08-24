@@ -42,8 +42,9 @@ Via the shadcn CLI — the repo *is* the registry, so there is nothing hosted
 and no build step:
 
 ```bash
-npx shadcn@latest add phugadev/ruskel/ruskel          # tokens + components
-npx shadcn@latest add phugadev/ruskel/ruskel-tokens   # tokens only
+npx shadcn@latest add phugadev/ruskel/ruskel            # tokens + components
+npx shadcn@latest add phugadev/ruskel/ruskel-tokens     # tokens only
+npx shadcn@latest add phugadev/ruskel/ruskel-tailwind   # tokens + Tailwind v4 utilities
 ```
 
 Or plainly, if you are not using shadcn:
@@ -56,6 +57,22 @@ npm install @ruskel/tokens @ruskel/ui
 @import "@ruskel/tokens";
 @import "@ruskel/ui";
 ```
+
+On Tailwind v4, import the bridge instead of the tokens — it pulls them in
+itself and adds the theme keys, so `bg-mark-520`, `text-tint-470`,
+`h-control-md` and `shadow-glow-sm` become real utilities:
+
+```css
+@import "tailwindcss";
+@import "@ruskel/tokens/tailwind";
+```
+
+Every key is declared `inline`, which is load-bearing rather than stylistic:
+the mark and text rings live under `[data-exposure]`, not on `:root`, so a
+theme variable emitted at the root would resolve against a value that is not
+there. Inlining puts the reference in the utility itself, and it resolves at
+the element — inside whatever exposure that element is standing in. Tailwind
+utilities obey rule 3 for the same reason components do.
 
 ```html
 <body data-exposure="editorial">
@@ -95,6 +112,7 @@ the repo. That is what makes the system extendable rather than frozen.
 ```bash
 python3 tools/solve.py ring          # the mark ring per exposure
 python3 tools/solve.py separation    # pairwise dE across the six series
+python3 tools/solve.py bridge        # the Tailwind theme keys still resolve
 python3 tools/solve.py verify        # assert every constraint still holds
 ```
 

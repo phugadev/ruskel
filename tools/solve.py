@@ -15,16 +15,22 @@ re-running, not eyedropping something that looks close.
       Pairwise OKLab dE across the categorical series. This is the number
       that decides how many series the system can carry.
 
+  solve.py bridge
+      Check the Tailwind v4 theme bridge against the token file: every
+      variable it points at must exist, and no theme key may reference a
+      custom property of its own name.
+
   solve.py verify
       Parse packages/tokens/src/tokens.css, recompute every mark and text
-      value, and assert the constraints the system claims to hold.
-      Exit 1 on failure. Run it in CI.
+      value, and assert the constraints the system claims to hold. Runs the
+      bridge check too. Exit 1 on failure. Run it in CI.
 """
 import argparse, math, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TOKENS = ROOT / "packages" / "tokens" / "src" / "tokens.css"
+BRIDGE = ROOT / "packages" / "tokens" / "src" / "tailwind.css"
 
 # ── colour space ──────────────────────────────────────────────────────────
 def _s2l(c): return c/12.92 if c <= 0.04045 else ((c+0.055)/1.055)**2.4
@@ -136,6 +142,44 @@ def parse_tokens():
         out[exposure] = found
     return out
 
+def cmd_bridge(args):
+    """The bridge is a second contract, and a rename in tokens.css breaks it silently.
+
+    A Tailwind utility built on a variable that does not exist renders
+    nothing at all — no warning at build time, no error in the console, just
+    a component that is quietly the wrong colour. So the check is blunt:
+    every var() the bridge reaches for must be declared in the token file.
+
+    The second check is the cycle trap. A theme key that references a custom
+    property of its own name — `--radius-sm: var(--radius-sm)` — compiles,
+    emits, and voids itself at computed-value time. It is invisible in the
+    output CSS and fatal at runtime, which is why the radius tokens carry a
+    --rsk- source name for the bridge to point at.
+    """
+    if not BRIDGE.exists():
+        raise SystemExit(f"no bridge at {BRIDGE}")
+    strip = lambda t: re.sub(r'/\*.*?\*/', '', t, flags=re.S)
+    tokens, bridge = strip(TOKENS.read_text()), strip(BRIDGE.read_text())
+    # Declarations are not one per line — the scale packs three to a row and
+    # [data-band] declares its pair inline — so this cannot be line-anchored.
+    declared = set(re.findall(r'(--[\w-]+)\s*:', tokens))
+    failures, checks = [], 0
+
+    for key, value in re.findall(r'(--[\w-]+)\s*:\s*([^;]+);', bridge):
+        for ref in re.findall(r'var\(\s*(--[\w-]+)', value):
+            checks += 1
+            if ref == key:
+                failures.append(f"{key} references itself — the cycle voids the declaration")
+            elif ref not in declared:
+                failures.append(f"{key} -> {ref} is not declared in {TOKENS.name}")
+
+    print(f"{checks} bridge references against {TOKENS.relative_to(ROOT)}")
+    if failures:
+        print("\nFAILED:")
+        for f in failures: print(f"  - {f}")
+        sys.exit(1)
+    print("the bridge resolves")
+
 def cmd_verify(args):
     declared = parse_tokens()
     failures, checks = [], 0
@@ -185,11 +229,13 @@ def cmd_verify(args):
         for f in failures: print(f"  - {f}")
         sys.exit(1)
     print("all constraints hold")
+    cmd_bridge(args)
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name, fn in (("ring", cmd_ring), ("separation", cmd_separation)):
         p = sub.add_parser(name); p.add_argument("--exposure", choices=["editorial", "luminous"]); p.set_defaults(fn=fn)
+    sub.add_parser("bridge").set_defaults(fn=cmd_bridge)
     sub.add_parser("verify").set_defaults(fn=cmd_verify)
     a = ap.parse_args(); a.fn(a)

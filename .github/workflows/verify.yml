@@ -4,6 +4,10 @@ name: verify
 # it drifting: solve.py re-derives every declared token and asserts the
 # contrast windows, the sRGB gamut ceilings, the AA floor for coloured type,
 # and the separation floor across the categorical series.
+#
+# It also checks the Tailwind bridge, because that failure mode is silent: a
+# theme key pointing at a variable that no longer exists compiles cleanly and
+# renders nothing.
 on:
   push:
     branches: [main]
@@ -20,7 +24,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Verify the token constraints still hold
-        run: python3 tools/solve.py verify
+        run: python3 tools/solve.py verify   # includes the bridge check
       - name: Report separation across the categorical series
         run: python3 tools/solve.py separation
 

@@ -1,6 +1,6 @@
 {
   "name": "@ruskel/tokens",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Two-exposure design tokens. Ink on paper, paper on ink.",
   "license": "MIT",
   "type": "module",
@@ -13,17 +13,21 @@
   "exports": {
     ".": "./src/tokens.css",
     "./tokens.css": "./src/tokens.css",
+    "./tailwind": "./src/tailwind.css",
+    "./tailwind.css": "./src/tailwind.css",
     "./package.json": "./package.json"
   },
   "publishConfig": {
     "access": "public"
   },
   "keywords": [
-    "design-tokens",
     "css",
+    "design-system",
+    "design-tokens",
     "oklch",
     "shadcn",
-    "design-system"
+    "tailwind-v4",
+    "tailwindcss"
   ],
   "repository": {
     "type": "git",
